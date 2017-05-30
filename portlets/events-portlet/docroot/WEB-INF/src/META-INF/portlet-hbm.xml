@@ -3,6 +3,7 @@
 
 <hibernate-mapping default-lazy="false" auto-import="false">
 	<import class="com.rivetlogic.event.model.Event" />
+	<import class="com.rivetlogic.event.model.Location" />
 	<import class="com.rivetlogic.event.model.Participant" />
 	<import class="com.rivetlogic.event.model.Token" />
 	<class name="com.rivetlogic.event.model.impl.EventImpl" table="rivetlogic_event_Event">
@@ -22,6 +23,20 @@
 		<property name="eventDate" type="org.hibernate.type.TimestampType" />
 		<property name="eventEndDate" type="org.hibernate.type.TimestampType" />
 		<property name="privateEvent" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="locationId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="com.rivetlogic.event.model.impl.LocationImpl" table="rivetlogic_event_Location">
+		<cache usage="read-write" />
+		<id name="locationId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
 	</class>
 	<class name="com.rivetlogic.event.model.impl.ParticipantImpl" table="rivetlogic_event_Participant">
 		<cache usage="read-write" />

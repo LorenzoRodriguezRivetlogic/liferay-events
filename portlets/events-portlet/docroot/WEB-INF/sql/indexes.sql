@@ -4,6 +4,8 @@ create index IX_736ACD08 on rivetlogic_event_Event (uuid_);
 create index IX_82CA4220 on rivetlogic_event_Event (uuid_, companyId);
 create unique index IX_D83CD0A2 on rivetlogic_event_Event (uuid_, groupId);
 
+create index IX_5CC6261B on rivetlogic_event_Location (groupId);
+
 create index IX_17A3EC60 on rivetlogic_event_Participant (eventId);
 create index IX_8B36D2EC on rivetlogic_event_Participant (eventId, email);
 create index IX_B112358F on rivetlogic_event_Participant (uuid_);

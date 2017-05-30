@@ -16,6 +16,7 @@ package com.rivetlogic.event.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -52,6 +53,7 @@ public interface ParticipantLocalService extends BaseLocalService,
 	* @return the participant that was added
 	* @throws SystemException if a system exception occurred
 	*/
+	@com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
 	public com.rivetlogic.event.model.Participant addParticipant(
 		com.rivetlogic.event.model.Participant participant)
 		throws com.liferay.portal.kernel.exception.SystemException;
@@ -73,6 +75,7 @@ public interface ParticipantLocalService extends BaseLocalService,
 	* @throws PortalException if a participant with the primary key could not be found
 	* @throws SystemException if a system exception occurred
 	*/
+	@com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
 	public com.rivetlogic.event.model.Participant deleteParticipant(
 		long participantId)
 		throws com.liferay.portal.kernel.exception.PortalException,
@@ -85,6 +88,7 @@ public interface ParticipantLocalService extends BaseLocalService,
 	* @return the participant that was removed
 	* @throws SystemException if a system exception occurred
 	*/
+	@com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
 	public com.rivetlogic.event.model.Participant deleteParticipant(
 		com.rivetlogic.event.model.Participant participant)
 		throws com.liferay.portal.kernel.exception.SystemException;
@@ -282,6 +286,7 @@ public interface ParticipantLocalService extends BaseLocalService,
 	* @return the participant that was updated
 	* @throws SystemException if a system exception occurred
 	*/
+	@com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
 	public com.rivetlogic.event.model.Participant updateParticipant(
 		com.rivetlogic.event.model.Participant participant)
 		throws com.liferay.portal.kernel.exception.SystemException;

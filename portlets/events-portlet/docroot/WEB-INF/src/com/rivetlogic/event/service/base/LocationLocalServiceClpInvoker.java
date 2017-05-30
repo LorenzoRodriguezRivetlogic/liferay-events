@@ -14,7 +14,7 @@
 
 package com.rivetlogic.event.service.base;
 
-import com.rivetlogic.event.service.TokenLocalServiceUtil;
+import com.rivetlogic.event.service.LocationLocalServiceUtil;
 
 import java.util.Arrays;
 
@@ -22,23 +22,27 @@ import java.util.Arrays;
  * @author juancarrillo
  * @generated
  */
-public class TokenLocalServiceClpInvoker {
-	public TokenLocalServiceClpInvoker() {
-		_methodName0 = "addToken";
+public class LocationLocalServiceClpInvoker {
+	public LocationLocalServiceClpInvoker() {
+		_methodName0 = "addLocation";
 
-		_methodParameterTypes0 = new String[] { "com.rivetlogic.event.model.Token" };
+		_methodParameterTypes0 = new String[] {
+				"com.rivetlogic.event.model.Location"
+			};
 
-		_methodName1 = "createToken";
+		_methodName1 = "createLocation";
 
 		_methodParameterTypes1 = new String[] { "long" };
 
-		_methodName2 = "deleteToken";
+		_methodName2 = "deleteLocation";
 
 		_methodParameterTypes2 = new String[] { "long" };
 
-		_methodName3 = "deleteToken";
+		_methodName3 = "deleteLocation";
 
-		_methodParameterTypes3 = new String[] { "com.rivetlogic.event.model.Token" };
+		_methodParameterTypes3 = new String[] {
+				"com.rivetlogic.event.model.Location"
+			};
 
 		_methodName4 = "dynamicQuery";
 
@@ -76,11 +80,11 @@ public class TokenLocalServiceClpInvoker {
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
 
-		_methodName10 = "fetchToken";
+		_methodName10 = "fetchLocation";
 
 		_methodParameterTypes10 = new String[] { "long" };
 
-		_methodName11 = "getToken";
+		_methodName11 = "getLocation";
 
 		_methodParameterTypes11 = new String[] { "long" };
 
@@ -88,18 +92,18 @@ public class TokenLocalServiceClpInvoker {
 
 		_methodParameterTypes12 = new String[] { "java.io.Serializable" };
 
-		_methodName13 = "getTokens";
+		_methodName13 = "getLocations";
 
 		_methodParameterTypes13 = new String[] { "int", "int" };
 
-		_methodName14 = "getTokensCount";
+		_methodName14 = "getLocationsCount";
 
 		_methodParameterTypes14 = new String[] {  };
 
-		_methodName15 = "updateToken";
+		_methodName15 = "updateLocation";
 
 		_methodParameterTypes15 = new String[] {
-				"com.rivetlogic.event.model.Token"
+				"com.rivetlogic.event.model.Location"
 			};
 
 		_methodName44 = "getBeanIdentifier";
@@ -110,73 +114,56 @@ public class TokenLocalServiceClpInvoker {
 
 		_methodParameterTypes45 = new String[] { "java.lang.String" };
 
-		_methodName50 = "createToken";
+		_methodName50 = "addLocation";
 
 		_methodParameterTypes50 = new String[] {
-				"com.rivetlogic.event.model.Participant"
+				"long", "long", "java.lang.String", "java.lang.String",
+				"com.liferay.portal.service.ServiceContext"
 			};
-
-		_methodName51 = "getTokenByUuid";
-
-		_methodParameterTypes51 = new String[] { "java.lang.String" };
-
-		_methodName52 = "getTokensByParticipantId";
-
-		_methodParameterTypes52 = new String[] { "java.lang.Long" };
-
-		_methodName53 = "expireToken";
-
-		_methodParameterTypes53 = new String[] {
-				"com.rivetlogic.event.model.Token"
-			};
-
-		_methodName54 = "expiredTokenByParticipantId";
-
-		_methodParameterTypes54 = new String[] { "java.lang.Long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
 		if (_methodName0.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes0, parameterTypes)) {
-			return TokenLocalServiceUtil.addToken((com.rivetlogic.event.model.Token)arguments[0]);
+			return LocationLocalServiceUtil.addLocation((com.rivetlogic.event.model.Location)arguments[0]);
 		}
 
 		if (_methodName1.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes1, parameterTypes)) {
-			return TokenLocalServiceUtil.createToken(((Long)arguments[0]).longValue());
+			return LocationLocalServiceUtil.createLocation(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName2.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes2, parameterTypes)) {
-			return TokenLocalServiceUtil.deleteToken(((Long)arguments[0]).longValue());
+			return LocationLocalServiceUtil.deleteLocation(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName3.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes3, parameterTypes)) {
-			return TokenLocalServiceUtil.deleteToken((com.rivetlogic.event.model.Token)arguments[0]);
+			return LocationLocalServiceUtil.deleteLocation((com.rivetlogic.event.model.Location)arguments[0]);
 		}
 
 		if (_methodName4.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes4, parameterTypes)) {
-			return TokenLocalServiceUtil.dynamicQuery();
+			return LocationLocalServiceUtil.dynamicQuery();
 		}
 
 		if (_methodName5.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes5, parameterTypes)) {
-			return TokenLocalServiceUtil.dynamicQuery((com.liferay.portal.kernel.dao.orm.DynamicQuery)arguments[0]);
+			return LocationLocalServiceUtil.dynamicQuery((com.liferay.portal.kernel.dao.orm.DynamicQuery)arguments[0]);
 		}
 
 		if (_methodName6.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes6, parameterTypes)) {
-			return TokenLocalServiceUtil.dynamicQuery((com.liferay.portal.kernel.dao.orm.DynamicQuery)arguments[0],
+			return LocationLocalServiceUtil.dynamicQuery((com.liferay.portal.kernel.dao.orm.DynamicQuery)arguments[0],
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue());
 		}
 
 		if (_methodName7.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes7, parameterTypes)) {
-			return TokenLocalServiceUtil.dynamicQuery((com.liferay.portal.kernel.dao.orm.DynamicQuery)arguments[0],
+			return LocationLocalServiceUtil.dynamicQuery((com.liferay.portal.kernel.dao.orm.DynamicQuery)arguments[0],
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue(),
 				(com.liferay.portal.kernel.util.OrderByComparator)arguments[3]);
@@ -184,83 +171,64 @@ public class TokenLocalServiceClpInvoker {
 
 		if (_methodName8.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes8, parameterTypes)) {
-			return TokenLocalServiceUtil.dynamicQueryCount((com.liferay.portal.kernel.dao.orm.DynamicQuery)arguments[0]);
+			return LocationLocalServiceUtil.dynamicQueryCount((com.liferay.portal.kernel.dao.orm.DynamicQuery)arguments[0]);
 		}
 
 		if (_methodName9.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes9, parameterTypes)) {
-			return TokenLocalServiceUtil.dynamicQueryCount((com.liferay.portal.kernel.dao.orm.DynamicQuery)arguments[0],
+			return LocationLocalServiceUtil.dynamicQueryCount((com.liferay.portal.kernel.dao.orm.DynamicQuery)arguments[0],
 				(com.liferay.portal.kernel.dao.orm.Projection)arguments[1]);
 		}
 
 		if (_methodName10.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes10, parameterTypes)) {
-			return TokenLocalServiceUtil.fetchToken(((Long)arguments[0]).longValue());
+			return LocationLocalServiceUtil.fetchLocation(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName11.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes11, parameterTypes)) {
-			return TokenLocalServiceUtil.getToken(((Long)arguments[0]).longValue());
+			return LocationLocalServiceUtil.getLocation(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName12.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes12, parameterTypes)) {
-			return TokenLocalServiceUtil.getPersistedModel((java.io.Serializable)arguments[0]);
+			return LocationLocalServiceUtil.getPersistedModel((java.io.Serializable)arguments[0]);
 		}
 
 		if (_methodName13.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes13, parameterTypes)) {
-			return TokenLocalServiceUtil.getTokens(((Integer)arguments[0]).intValue(),
+			return LocationLocalServiceUtil.getLocations(((Integer)arguments[0]).intValue(),
 				((Integer)arguments[1]).intValue());
 		}
 
 		if (_methodName14.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes14, parameterTypes)) {
-			return TokenLocalServiceUtil.getTokensCount();
+			return LocationLocalServiceUtil.getLocationsCount();
 		}
 
 		if (_methodName15.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes15, parameterTypes)) {
-			return TokenLocalServiceUtil.updateToken((com.rivetlogic.event.model.Token)arguments[0]);
+			return LocationLocalServiceUtil.updateLocation((com.rivetlogic.event.model.Location)arguments[0]);
 		}
 
 		if (_methodName44.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes44, parameterTypes)) {
-			return TokenLocalServiceUtil.getBeanIdentifier();
+			return LocationLocalServiceUtil.getBeanIdentifier();
 		}
 
 		if (_methodName45.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes45, parameterTypes)) {
-			TokenLocalServiceUtil.setBeanIdentifier((java.lang.String)arguments[0]);
+			LocationLocalServiceUtil.setBeanIdentifier((java.lang.String)arguments[0]);
 
 			return null;
 		}
 
 		if (_methodName50.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes50, parameterTypes)) {
-			return TokenLocalServiceUtil.createToken((com.rivetlogic.event.model.Participant)arguments[0]);
-		}
-
-		if (_methodName51.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes51, parameterTypes)) {
-			return TokenLocalServiceUtil.getTokenByUuid((java.lang.String)arguments[0]);
-		}
-
-		if (_methodName52.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes52, parameterTypes)) {
-			return TokenLocalServiceUtil.getTokensByParticipantId((java.lang.Long)arguments[0]);
-		}
-
-		if (_methodName53.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes53, parameterTypes)) {
-			return TokenLocalServiceUtil.expireToken((com.rivetlogic.event.model.Token)arguments[0]);
-		}
-
-		if (_methodName54.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes54, parameterTypes)) {
-			TokenLocalServiceUtil.expiredTokenByParticipantId((java.lang.Long)arguments[0]);
-
-			return null;
+			return LocationLocalServiceUtil.addLocation(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				(java.lang.String)arguments[2], (java.lang.String)arguments[3],
+				(com.liferay.portal.service.ServiceContext)arguments[4]);
 		}
 
 		throw new UnsupportedOperationException();
@@ -304,12 +272,4 @@ public class TokenLocalServiceClpInvoker {
 	private String[] _methodParameterTypes45;
 	private String _methodName50;
 	private String[] _methodParameterTypes50;
-	private String _methodName51;
-	private String[] _methodParameterTypes51;
-	private String _methodName52;
-	private String[] _methodParameterTypes52;
-	private String _methodName53;
-	private String[] _methodParameterTypes53;
-	private String _methodName54;
-	private String[] _methodParameterTypes54;
 }

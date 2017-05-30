@@ -268,6 +268,20 @@ public interface EventModel extends BaseModel<Event> {
 	 */
 	public void setPrivateEvent(boolean privateEvent);
 
+	/**
+	 * Returns the location ID of this event.
+	 *
+	 * @return the location ID of this event
+	 */
+	public long getLocationId();
+
+	/**
+	 * Sets the location ID of this event.
+	 *
+	 * @param locationId the location ID of this event
+	 */
+	public void setLocationId(long locationId);
+
 	@Override
 	public boolean isNew();
 
@@ -305,19 +319,19 @@ public interface EventModel extends BaseModel<Event> {
 	public Object clone();
 
 	@Override
-	public int compareTo(Event event);
+	public int compareTo(com.rivetlogic.event.model.Event event);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<Event> toCacheModel();
+	public CacheModel<com.rivetlogic.event.model.Event> toCacheModel();
 
 	@Override
-	public Event toEscapedModel();
+	public com.rivetlogic.event.model.Event toEscapedModel();
 
 	@Override
-	public Event toUnescapedModel();
+	public com.rivetlogic.event.model.Event toUnescapedModel();
 
 	@Override
 	public String toString();

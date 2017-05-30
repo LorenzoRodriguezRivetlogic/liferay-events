@@ -28,6 +28,27 @@
 				<temporal>TIMESTAMP</temporal>
 			</basic>
 			<basic name="privateEvent" />
+			<basic name="locationId" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.rivetlogic.event.model.impl.LocationModelImpl">
+		<attributes>
+			<id name="locationId" />
+			<basic name="name" />
+			<basic name="description" />
+			<basic name="userId" />
+			<basic name="companyId" />
+			<basic name="groupId" />
+			<basic name="createDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="modifiedDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
@@ -70,6 +91,10 @@
 	</mapped-superclass>
 	<entity class="com.rivetlogic.event.model.impl.EventImpl" name="Event">
 		<table name="rivetlogic_event_Event" />
+		<attributes />
+	</entity>
+	<entity class="com.rivetlogic.event.model.impl.LocationImpl" name="Location">
+		<table name="rivetlogic_event_Location" />
 		<attributes />
 	</entity>
 	<entity class="com.rivetlogic.event.model.impl.ParticipantImpl" name="Participant">

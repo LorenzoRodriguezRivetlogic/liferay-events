@@ -88,6 +88,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		attributes.put("eventDate", getEventDate());
 		attributes.put("eventEndDate", getEventEndDate());
 		attributes.put("privateEvent", getPrivateEvent());
+		attributes.put("locationId", getLocationId());
 
 		return attributes;
 	}
@@ -170,6 +171,12 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 		if (privateEvent != null) {
 			setPrivateEvent(privateEvent);
+		}
+
+		Long locationId = (Long)attributes.get("locationId");
+
+		if (locationId != null) {
+			setLocationId(locationId);
 		}
 	}
 
@@ -489,6 +496,29 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 	}
 
 	@Override
+	public long getLocationId() {
+		return _locationId;
+	}
+
+	@Override
+	public void setLocationId(long locationId) {
+		_locationId = locationId;
+
+		if (_eventRemoteModel != null) {
+			try {
+				Class<?> clazz = _eventRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setLocationId", long.class);
+
+				method.invoke(_eventRemoteModel, locationId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
 	public java.util.List<com.rivetlogic.event.model.Participant> getParticipants() {
 		try {
 			String methodName = "getParticipants";
@@ -628,6 +658,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		clone.setEventDate(getEventDate());
 		clone.setEventEndDate(getEventEndDate());
 		clone.setPrivateEvent(getPrivateEvent());
+		clone.setLocationId(getLocationId());
 
 		return clone;
 	}
@@ -673,6 +704,10 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		}
 	}
 
+	public Class<?> getClpSerializerClass() {
+		return _clpSerializerClass;
+	}
+
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
@@ -680,7 +715,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(27);
+		StringBundler sb = new StringBundler(29);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -708,6 +743,8 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		sb.append(getEventEndDate());
 		sb.append(", privateEvent=");
 		sb.append(getPrivateEvent());
+		sb.append(", locationId=");
+		sb.append(getLocationId());
 		sb.append("}");
 
 		return sb.toString();
@@ -715,7 +752,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(46);
 
 		sb.append("<model><model-name>");
 		sb.append("com.rivetlogic.event.model.Event");
@@ -773,6 +810,10 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 			"<column><column-name>privateEvent</column-name><column-value><![CDATA[");
 		sb.append(getPrivateEvent());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>locationId</column-name><column-value><![CDATA[");
+		sb.append(getLocationId());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -793,5 +834,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 	private Date _eventDate;
 	private Date _eventEndDate;
 	private boolean _privateEvent;
+	private long _locationId;
 	private BaseModel<?> _eventRemoteModel;
+	private Class<?> _clpSerializerClass = com.rivetlogic.event.service.ClpSerializer.class;
 }

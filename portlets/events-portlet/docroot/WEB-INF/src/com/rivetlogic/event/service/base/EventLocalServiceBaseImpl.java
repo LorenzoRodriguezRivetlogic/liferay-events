@@ -34,6 +34,7 @@ import com.liferay.portal.service.persistence.UserPersistence;
 import com.rivetlogic.event.model.Event;
 import com.rivetlogic.event.service.EventLocalService;
 import com.rivetlogic.event.service.persistence.EventPersistence;
+import com.rivetlogic.event.service.persistence.LocationPersistence;
 import com.rivetlogic.event.service.persistence.ParticipantPersistence;
 import com.rivetlogic.event.service.persistence.TokenPersistence;
 
@@ -369,6 +370,43 @@ public abstract class EventLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	/**
+	 * Returns the location local service.
+	 *
+	 * @return the location local service
+	 */
+	public com.rivetlogic.event.service.LocationLocalService getLocationLocalService() {
+		return locationLocalService;
+	}
+
+	/**
+	 * Sets the location local service.
+	 *
+	 * @param locationLocalService the location local service
+	 */
+	public void setLocationLocalService(
+		com.rivetlogic.event.service.LocationLocalService locationLocalService) {
+		this.locationLocalService = locationLocalService;
+	}
+
+	/**
+	 * Returns the location persistence.
+	 *
+	 * @return the location persistence
+	 */
+	public LocationPersistence getLocationPersistence() {
+		return locationPersistence;
+	}
+
+	/**
+	 * Sets the location persistence.
+	 *
+	 * @param locationPersistence the location persistence
+	 */
+	public void setLocationPersistence(LocationPersistence locationPersistence) {
+		this.locationPersistence = locationPersistence;
+	}
+
+	/**
 	 * Returns the participant local service.
 	 *
 	 * @return the participant local service
@@ -623,6 +661,10 @@ public abstract class EventLocalServiceBaseImpl extends BaseLocalServiceImpl
 	protected com.rivetlogic.event.service.EventLocalService eventLocalService;
 	@BeanReference(type = EventPersistence.class)
 	protected EventPersistence eventPersistence;
+	@BeanReference(type = com.rivetlogic.event.service.LocationLocalService.class)
+	protected com.rivetlogic.event.service.LocationLocalService locationLocalService;
+	@BeanReference(type = LocationPersistence.class)
+	protected LocationPersistence locationPersistence;
 	@BeanReference(type = com.rivetlogic.event.service.ParticipantLocalService.class)
 	protected com.rivetlogic.event.service.ParticipantLocalService participantLocalService;
 	@BeanReference(type = ParticipantPersistence.class)

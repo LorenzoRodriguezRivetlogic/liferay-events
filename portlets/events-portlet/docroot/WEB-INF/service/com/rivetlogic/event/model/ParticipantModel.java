@@ -239,19 +239,19 @@ public interface ParticipantModel extends BaseModel<Participant> {
 	public Object clone();
 
 	@Override
-	public int compareTo(Participant participant);
+	public int compareTo(com.rivetlogic.event.model.Participant participant);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<Participant> toCacheModel();
+	public CacheModel<com.rivetlogic.event.model.Participant> toCacheModel();
 
 	@Override
-	public Participant toEscapedModel();
+	public com.rivetlogic.event.model.Participant toEscapedModel();
 
 	@Override
-	public Participant toUnescapedModel();
+	public com.rivetlogic.event.model.Participant toUnescapedModel();
 
 	@Override
 	public String toString();

@@ -153,19 +153,19 @@ public interface TokenModel extends BaseModel<Token> {
 	public Object clone();
 
 	@Override
-	public int compareTo(Token token);
+	public int compareTo(com.rivetlogic.event.model.Token token);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<Token> toCacheModel();
+	public CacheModel<com.rivetlogic.event.model.Token> toCacheModel();
 
 	@Override
-	public Token toEscapedModel();
+	public com.rivetlogic.event.model.Token toEscapedModel();
 
 	@Override
-	public Token toUnescapedModel();
+	public com.rivetlogic.event.model.Token toUnescapedModel();
 
 	@Override
 	public String toString();

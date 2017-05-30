@@ -2810,6 +2810,7 @@ public class EventPersistenceImpl extends BasePersistenceImpl<Event>
 		eventImpl.setEventDate(event.getEventDate());
 		eventImpl.setEventEndDate(event.getEventEndDate());
 		eventImpl.setPrivateEvent(event.isPrivateEvent());
+		eventImpl.setLocationId(event.getLocationId());
 
 		return eventImpl;
 	}

@@ -11,7 +11,19 @@ create table rivetlogic_event_Event (
 	description STRING null,
 	eventDate DATE null,
 	eventEndDate DATE null,
-	privateEvent BOOLEAN
+	privateEvent BOOLEAN,
+	locationId LONG
+);
+
+create table rivetlogic_event_Location (
+	locationId LONG not null primary key,
+	name VARCHAR(75) null,
+	description VARCHAR(75) null,
+	userId LONG,
+	companyId LONG,
+	groupId LONG,
+	createDate DATE null,
+	modifiedDate DATE null
 );
 
 create table rivetlogic_event_Participant (

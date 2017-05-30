@@ -62,6 +62,7 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 		attributes.put("eventDate", getEventDate());
 		attributes.put("eventEndDate", getEventEndDate());
 		attributes.put("privateEvent", getPrivateEvent());
+		attributes.put("locationId", getLocationId());
 
 		return attributes;
 	}
@@ -144,6 +145,12 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 
 		if (privateEvent != null) {
 			setPrivateEvent(privateEvent);
+		}
+
+		Long locationId = (Long)attributes.get("locationId");
+
+		if (locationId != null) {
+			setLocationId(locationId);
 		}
 	}
 
@@ -457,6 +464,26 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 	@Override
 	public void setPrivateEvent(boolean privateEvent) {
 		_event.setPrivateEvent(privateEvent);
+	}
+
+	/**
+	* Returns the location ID of this event.
+	*
+	* @return the location ID of this event
+	*/
+	@Override
+	public long getLocationId() {
+		return _event.getLocationId();
+	}
+
+	/**
+	* Sets the location ID of this event.
+	*
+	* @param locationId the location ID of this event
+	*/
+	@Override
+	public void setLocationId(long locationId) {
+		_event.setLocationId(locationId);
 	}
 
 	@Override
