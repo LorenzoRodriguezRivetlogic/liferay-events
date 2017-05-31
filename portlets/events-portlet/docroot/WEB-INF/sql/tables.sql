@@ -12,7 +12,9 @@ create table rivetlogic_event_Event (
 	eventDate DATE null,
 	eventEndDate DATE null,
 	privateEvent BOOLEAN,
-	locationId LONG
+	locationId LONG,
+	targetId LONG,
+	typeId LONG
 );
 
 create table rivetlogic_event_Location (
@@ -39,9 +41,31 @@ create table rivetlogic_event_Participant (
 	status INTEGER
 );
 
+create table rivetlogic_event_Target (
+	targetId LONG not null primary key,
+	name VARCHAR(75) null,
+	description VARCHAR(75) null,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	createDate DATE null,
+	modifiedDate DATE null
+);
+
 create table rivetlogic_event_Token (
 	uuid_ VARCHAR(75) null,
 	tokenId LONG not null primary key,
 	participantId LONG,
 	expiredDate DATE null
+);
+
+create table rivetlogic_event_Type (
+	typeId LONG not null primary key,
+	name VARCHAR(75) null,
+	description VARCHAR(75) null,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	createDate DATE null,
+	modifiedDate DATE null
 );

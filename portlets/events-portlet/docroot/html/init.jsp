@@ -46,9 +46,11 @@
 <%@ page import="com.liferay.portal.kernel.util.UnicodeFormatter" %>
 <%@ page import="com.liferay.portal.kernel.util.Validator" %>
 <%@ page import="com.liferay.portal.kernel.dao.search.ResultRow" %>
+<%@ page import="com.liferay.portal.kernel.portlet.LiferayWindowState"%>
 
 <%@ page import="com.rivetlogic.event.util.WebKeys" %>
 <%@ page import="com.rivetlogic.event.model.Event" %>
+<%@ page import="com.rivetlogic.event.model.Location" %>
 <%@ page import="com.rivetlogic.event.model.Participant" %>
 <%@ page import="com.rivetlogic.event.service.EventLocalServiceUtil" %>
 <%@ page import="com.rivetlogic.event.service.ParticipantLocalServiceUtil" %>

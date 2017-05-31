@@ -19,6 +19,7 @@
 */
 --%>
 
+<%@page import="com.rivetlogic.event.service.LocationLocalServiceUtil"%>
 <%@page import="com.liferay.portal.security.permission.ActionKeys"%>
 <%@page import="com.liferay.calendar.util.comparator.CalendarNameComparator"%>
 <%@page import="com.liferay.portal.kernel.dao.orm.QueryUtil"%>
@@ -57,6 +58,9 @@ List<com.liferay.calendar.model.Calendar> manageableCalendars = CalendarServiceU
 
 long calendarId = event.getCalendarId();
 	
+List<Location> locations = LocationLocalServiceUtil.getLocationsByGroupId(portletGroupId);
+
+Long locationId = event.getLocationId();
 %>
 
 <liferay-ui:error key="event-save-error" message="event-save-error" />
@@ -90,6 +94,10 @@ long calendarId = event.getCalendarId();
 	<portlet:param name="<%=WebKeys.MVC_PATH %>" value="/html/eventManagementPortlet/view.jsp" />
 </portlet:renderURL>
 
+<portlet:renderURL var="dialogLocations" windowState="<%=LiferayWindowState.POP_UP.toString()%>">
+	<portlet:param name="mvcPath" value="/html/dialog/locations_dialog.jsp"/>
+</portlet:renderURL>
+
 <portlet:actionURL name="addEditEvent" var="addEditEventURL" >
 	<portlet:param name="<%=EventPortletConstants.PARAMETER_RESOURCE_PRIMARY_KEY %>" value="${event.eventId}" />
 	<portlet:param name="<%=WebKeys.REDIRECT%>" value="${backURL}"/>
@@ -115,9 +123,20 @@ long calendarId = event.getCalendarId();
 			<aui:input name="<%=EventPortletConstants.PARAMETER_NAME%>" label="participant-name" type="text" value="${event.name}">
 				<!-- aui:validator name="required"/-->
 			</aui:input>
-			<aui:input name="<%=EventPortletConstants.PARAMETER_LOCATION%>" label="event-location" type="textarea" value="${event.location}">
-				<!--aui:validator name="required"/-->
-			</aui:input>
+			<div>
+				<aui:select id="locations" name="locations" label="locations" showEmptyOption="true" >
+					<% 
+					for (Location locationSel : locations) {
+					%>
+						<aui:option value="<%=locationSel.getLocationId()%>"  selected="<%= locationId == locationSel.getLocationId() %>">
+							<liferay-ui:message key="<%=locationSel.getName()%>" />
+						</aui:option>
+					<% 
+					}
+					%>
+				</aui:select>
+				<aui:button style="display:inline-block" name="dialog-locations"  id="dialog-locations" value="event-add-location"> </aui:button>
+			</div>
     	</aui:fieldset>
     	
     	<aui:fieldset label="event-start-date">
@@ -198,6 +217,9 @@ long calendarId = event.getCalendarId();
 				</aui:input>
 				<liferay-ui:input-editor toolbarSet="liferay"/>
 			</aui:field-wrapper>
+		</aui:fieldset>
+		
+		<aui:fieldset label="event-categorization">
 		</aui:fieldset>
 		
 		<aui:fieldset label="calendar">
@@ -317,4 +339,27 @@ long calendarId = event.getCalendarId();
 		return document.<portlet:namespace/>fm_edit_event.<portlet:namespace/>description.value; 
 	}
 </aui:script>
-
+<aui:script>
+AUI().use('aui-base','aui-io-plugin-deprecated','liferay-util-window','aui-dialog-iframe-deprecated',function(A) {
+	A.one('#<portlet:namespace />dialog-locations').on('click', function(event){
+		Liferay.Util.openWindow({
+	    	dialog: {
+	        	width: 400,                        
+	         	modal: true,
+	         	constrain: true,
+	         	destroyOnClose: true,
+	         	destroyOnHide: true,
+	         	cache: false,
+	        	on: {
+	            	destroy: function() { 
+	            		window.location.reload();             
+	            	}
+	        	}
+	    	},
+   			uri: '<%=dialogLocations.toString()%>',
+    		id: 'locationPopup',
+    		title: 'Locations'
+		});
+	});
+});
+</aui:script>

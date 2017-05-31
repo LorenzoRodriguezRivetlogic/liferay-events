@@ -292,6 +292,44 @@ public class LocationLocalServiceWrapper implements LocationLocalService,
 			description, serviceContext);
 	}
 
+	@Override
+	public java.util.List<com.rivetlogic.event.model.Location> getLocationsByGroupId(
+		long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _locationLocalService.getLocationsByGroupId(groupId);
+	}
+
+	@Override
+	public java.util.List<com.rivetlogic.event.model.Location> getLocationsByGroupId(
+		long groupId, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _locationLocalService.getLocationsByGroupId(groupId, start, end);
+	}
+
+	@Override
+	public int getLocationsCountByGroupId(long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _locationLocalService.getLocationsCountByGroupId(groupId);
+	}
+
+	@Override
+	public com.rivetlogic.event.model.Location updateEvent(long userId,
+		long eventId, java.lang.String name, java.lang.String description,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _locationLocalService.updateEvent(userId, eventId, name,
+			description, serviceContext);
+	}
+
+	@Override
+	public com.rivetlogic.event.model.Location deleteLocation(long locationId,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _locationLocalService.deleteLocation(locationId, serviceContext);
+	}
+
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */

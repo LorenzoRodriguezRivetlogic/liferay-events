@@ -7,6 +7,10 @@
 	<bean id="com.rivetlogic.event.service.persistence.LocationPersistence" class="com.rivetlogic.event.service.persistence.LocationPersistenceImpl" parent="basePersistence" />
 	<bean id="com.rivetlogic.event.service.ParticipantLocalService" class="com.rivetlogic.event.service.impl.ParticipantLocalServiceImpl" />
 	<bean id="com.rivetlogic.event.service.persistence.ParticipantPersistence" class="com.rivetlogic.event.service.persistence.ParticipantPersistenceImpl" parent="basePersistence" />
+	<bean id="com.rivetlogic.event.service.TargetLocalService" class="com.rivetlogic.event.service.impl.TargetLocalServiceImpl" />
+	<bean id="com.rivetlogic.event.service.persistence.TargetPersistence" class="com.rivetlogic.event.service.persistence.TargetPersistenceImpl" parent="basePersistence" />
 	<bean id="com.rivetlogic.event.service.TokenLocalService" class="com.rivetlogic.event.service.impl.TokenLocalServiceImpl" />
 	<bean id="com.rivetlogic.event.service.persistence.TokenPersistence" class="com.rivetlogic.event.service.persistence.TokenPersistenceImpl" parent="basePersistence" />
+	<bean id="com.rivetlogic.event.service.TypeLocalService" class="com.rivetlogic.event.service.impl.TypeLocalServiceImpl" />
+	<bean id="com.rivetlogic.event.service.persistence.TypePersistence" class="com.rivetlogic.event.service.persistence.TypePersistenceImpl" parent="basePersistence" />
 </beans>

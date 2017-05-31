@@ -102,37 +102,37 @@ public class TokenLocalServiceClpInvoker {
 				"com.rivetlogic.event.model.Token"
 			};
 
-		_methodName44 = "getBeanIdentifier";
+		_methodName52 = "getBeanIdentifier";
 
-		_methodParameterTypes44 = new String[] {  };
+		_methodParameterTypes52 = new String[] {  };
 
-		_methodName45 = "setBeanIdentifier";
+		_methodName53 = "setBeanIdentifier";
 
-		_methodParameterTypes45 = new String[] { "java.lang.String" };
+		_methodParameterTypes53 = new String[] { "java.lang.String" };
 
-		_methodName50 = "createToken";
+		_methodName58 = "createToken";
 
-		_methodParameterTypes50 = new String[] {
+		_methodParameterTypes58 = new String[] {
 				"com.rivetlogic.event.model.Participant"
 			};
 
-		_methodName51 = "getTokenByUuid";
+		_methodName59 = "getTokenByUuid";
 
-		_methodParameterTypes51 = new String[] { "java.lang.String" };
+		_methodParameterTypes59 = new String[] { "java.lang.String" };
 
-		_methodName52 = "getTokensByParticipantId";
+		_methodName60 = "getTokensByParticipantId";
 
-		_methodParameterTypes52 = new String[] { "java.lang.Long" };
+		_methodParameterTypes60 = new String[] { "java.lang.Long" };
 
-		_methodName53 = "expireToken";
+		_methodName61 = "expireToken";
 
-		_methodParameterTypes53 = new String[] {
+		_methodParameterTypes61 = new String[] {
 				"com.rivetlogic.event.model.Token"
 			};
 
-		_methodName54 = "expiredTokenByParticipantId";
+		_methodName62 = "expiredTokenByParticipantId";
 
-		_methodParameterTypes54 = new String[] { "java.lang.Long" };
+		_methodParameterTypes62 = new String[] { "java.lang.Long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -224,40 +224,40 @@ public class TokenLocalServiceClpInvoker {
 			return TokenLocalServiceUtil.updateToken((com.rivetlogic.event.model.Token)arguments[0]);
 		}
 
-		if (_methodName44.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes44, parameterTypes)) {
+		if (_methodName52.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes52, parameterTypes)) {
 			return TokenLocalServiceUtil.getBeanIdentifier();
 		}
 
-		if (_methodName45.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes45, parameterTypes)) {
+		if (_methodName53.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes53, parameterTypes)) {
 			TokenLocalServiceUtil.setBeanIdentifier((java.lang.String)arguments[0]);
 
 			return null;
 		}
 
-		if (_methodName50.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes50, parameterTypes)) {
+		if (_methodName58.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes58, parameterTypes)) {
 			return TokenLocalServiceUtil.createToken((com.rivetlogic.event.model.Participant)arguments[0]);
 		}
 
-		if (_methodName51.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes51, parameterTypes)) {
+		if (_methodName59.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes59, parameterTypes)) {
 			return TokenLocalServiceUtil.getTokenByUuid((java.lang.String)arguments[0]);
 		}
 
-		if (_methodName52.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes52, parameterTypes)) {
+		if (_methodName60.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes60, parameterTypes)) {
 			return TokenLocalServiceUtil.getTokensByParticipantId((java.lang.Long)arguments[0]);
 		}
 
-		if (_methodName53.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes53, parameterTypes)) {
+		if (_methodName61.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes61, parameterTypes)) {
 			return TokenLocalServiceUtil.expireToken((com.rivetlogic.event.model.Token)arguments[0]);
 		}
 
-		if (_methodName54.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes54, parameterTypes)) {
+		if (_methodName62.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes62, parameterTypes)) {
 			TokenLocalServiceUtil.expiredTokenByParticipantId((java.lang.Long)arguments[0]);
 
 			return null;
@@ -298,18 +298,18 @@ public class TokenLocalServiceClpInvoker {
 	private String[] _methodParameterTypes14;
 	private String _methodName15;
 	private String[] _methodParameterTypes15;
-	private String _methodName44;
-	private String[] _methodParameterTypes44;
-	private String _methodName45;
-	private String[] _methodParameterTypes45;
-	private String _methodName50;
-	private String[] _methodParameterTypes50;
-	private String _methodName51;
-	private String[] _methodParameterTypes51;
 	private String _methodName52;
 	private String[] _methodParameterTypes52;
 	private String _methodName53;
 	private String[] _methodParameterTypes53;
-	private String _methodName54;
-	private String[] _methodParameterTypes54;
+	private String _methodName58;
+	private String[] _methodParameterTypes58;
+	private String _methodName59;
+	private String[] _methodParameterTypes59;
+	private String _methodName60;
+	private String[] _methodParameterTypes60;
+	private String _methodName61;
+	private String[] _methodParameterTypes61;
+	private String _methodName62;
+	private String[] _methodParameterTypes62;
 }

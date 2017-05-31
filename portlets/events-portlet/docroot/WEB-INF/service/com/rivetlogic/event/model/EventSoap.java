@@ -44,6 +44,8 @@ public class EventSoap implements Serializable {
 		soapModel.setEventEndDate(model.getEventEndDate());
 		soapModel.setPrivateEvent(model.getPrivateEvent());
 		soapModel.setLocationId(model.getLocationId());
+		soapModel.setTargetId(model.getTargetId());
+		soapModel.setTypeId(model.getTypeId());
 
 		return soapModel;
 	}
@@ -212,6 +214,22 @@ public class EventSoap implements Serializable {
 		_locationId = locationId;
 	}
 
+	public long getTargetId() {
+		return _targetId;
+	}
+
+	public void setTargetId(long targetId) {
+		_targetId = targetId;
+	}
+
+	public long getTypeId() {
+		return _typeId;
+	}
+
+	public void setTypeId(long typeId) {
+		_typeId = typeId;
+	}
+
 	private String _uuid;
 	private long _eventId;
 	private long _calendarBookingId;
@@ -226,4 +244,6 @@ public class EventSoap implements Serializable {
 	private Date _eventEndDate;
 	private boolean _privateEvent;
 	private long _locationId;
+	private long _targetId;
+	private long _typeId;
 }

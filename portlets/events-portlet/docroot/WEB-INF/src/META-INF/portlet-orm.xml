@@ -29,6 +29,8 @@
 			</basic>
 			<basic name="privateEvent" />
 			<basic name="locationId" />
+			<basic name="targetId" />
+			<basic name="typeId" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
@@ -74,6 +76,26 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.rivetlogic.event.model.impl.TargetModelImpl">
+		<attributes>
+			<id name="targetId" />
+			<basic name="name" />
+			<basic name="description" />
+			<basic name="groupId" />
+			<basic name="companyId" />
+			<basic name="userId" />
+			<basic name="createDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="modifiedDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.rivetlogic.event.model.impl.TokenModelImpl">
 		<attributes>
 			<id name="tokenId" />
@@ -89,6 +111,26 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.rivetlogic.event.model.impl.TypeModelImpl">
+		<attributes>
+			<id name="typeId" />
+			<basic name="name" />
+			<basic name="description" />
+			<basic name="groupId" />
+			<basic name="companyId" />
+			<basic name="userId" />
+			<basic name="createDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="modifiedDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
 	<entity class="com.rivetlogic.event.model.impl.EventImpl" name="Event">
 		<table name="rivetlogic_event_Event" />
 		<attributes />
@@ -101,8 +143,16 @@
 		<table name="rivetlogic_event_Participant" />
 		<attributes />
 	</entity>
+	<entity class="com.rivetlogic.event.model.impl.TargetImpl" name="Target">
+		<table name="rivetlogic_event_Target" />
+		<attributes />
+	</entity>
 	<entity class="com.rivetlogic.event.model.impl.TokenImpl" name="Token">
 		<table name="rivetlogic_event_Token" />
+		<attributes />
+	</entity>
+	<entity class="com.rivetlogic.event.model.impl.TypeImpl" name="Type">
+		<table name="rivetlogic_event_Type" />
 		<attributes />
 	</entity>
 </entity-mappings>

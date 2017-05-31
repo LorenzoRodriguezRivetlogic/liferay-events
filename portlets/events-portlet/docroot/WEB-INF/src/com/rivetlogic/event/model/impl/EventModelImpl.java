@@ -74,9 +74,11 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 			{ "eventDate", Types.TIMESTAMP },
 			{ "eventEndDate", Types.TIMESTAMP },
 			{ "privateEvent", Types.BOOLEAN },
-			{ "locationId", Types.BIGINT }
+			{ "locationId", Types.BIGINT },
+			{ "targetId", Types.BIGINT },
+			{ "typeId", Types.BIGINT }
 		};
-	public static final String TABLE_SQL_CREATE = "create table rivetlogic_event_Event (uuid_ VARCHAR(75) null,eventId LONG not null primary key,calendarBookingId LONG,calendarId LONG,groupId LONG,companyId LONG,userId LONG,name VARCHAR(400) null,location STRING null,description STRING null,eventDate DATE null,eventEndDate DATE null,privateEvent BOOLEAN,locationId LONG)";
+	public static final String TABLE_SQL_CREATE = "create table rivetlogic_event_Event (uuid_ VARCHAR(75) null,eventId LONG not null primary key,calendarBookingId LONG,calendarId LONG,groupId LONG,companyId LONG,userId LONG,name VARCHAR(400) null,location STRING null,description STRING null,eventDate DATE null,eventEndDate DATE null,privateEvent BOOLEAN,locationId LONG,targetId LONG,typeId LONG)";
 	public static final String TABLE_SQL_DROP = "drop table rivetlogic_event_Event";
 	public static final String ORDER_BY_JPQL = " ORDER BY event.eventDate ASC, event.name ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY rivetlogic_event_Event.eventDate ASC, rivetlogic_event_Event.name ASC";
@@ -151,6 +153,8 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 		attributes.put("eventEndDate", getEventEndDate());
 		attributes.put("privateEvent", getPrivateEvent());
 		attributes.put("locationId", getLocationId());
+		attributes.put("targetId", getTargetId());
+		attributes.put("typeId", getTypeId());
 
 		return attributes;
 	}
@@ -239,6 +243,18 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 		if (locationId != null) {
 			setLocationId(locationId);
+		}
+
+		Long targetId = (Long)attributes.get("targetId");
+
+		if (targetId != null) {
+			setTargetId(targetId);
+		}
+
+		Long typeId = (Long)attributes.get("typeId");
+
+		if (typeId != null) {
+			setTypeId(typeId);
 		}
 	}
 
@@ -453,6 +469,26 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 		_locationId = locationId;
 	}
 
+	@Override
+	public long getTargetId() {
+		return _targetId;
+	}
+
+	@Override
+	public void setTargetId(long targetId) {
+		_targetId = targetId;
+	}
+
+	@Override
+	public long getTypeId() {
+		return _typeId;
+	}
+
+	@Override
+	public void setTypeId(long typeId) {
+		_typeId = typeId;
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -498,6 +534,8 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 		eventImpl.setEventEndDate(getEventEndDate());
 		eventImpl.setPrivateEvent(getPrivateEvent());
 		eventImpl.setLocationId(getLocationId());
+		eventImpl.setTargetId(getTargetId());
+		eventImpl.setTypeId(getTypeId());
 
 		eventImpl.resetOriginalValues();
 
@@ -637,12 +675,16 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 		eventCacheModel.locationId = getLocationId();
 
+		eventCacheModel.targetId = getTargetId();
+
+		eventCacheModel.typeId = getTypeId();
+
 		return eventCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(29);
+		StringBundler sb = new StringBundler(33);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -672,6 +714,10 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 		sb.append(getPrivateEvent());
 		sb.append(", locationId=");
 		sb.append(getLocationId());
+		sb.append(", targetId=");
+		sb.append(getTargetId());
+		sb.append(", typeId=");
+		sb.append(getTypeId());
 		sb.append("}");
 
 		return sb.toString();
@@ -679,7 +725,7 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(46);
+		StringBundler sb = new StringBundler(52);
 
 		sb.append("<model><model-name>");
 		sb.append("com.rivetlogic.event.model.Event");
@@ -741,6 +787,14 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 			"<column><column-name>locationId</column-name><column-value><![CDATA[");
 		sb.append(getLocationId());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>targetId</column-name><column-value><![CDATA[");
+		sb.append(getTargetId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>typeId</column-name><column-value><![CDATA[");
+		sb.append(getTypeId());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -769,6 +823,8 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 	private Date _eventEndDate;
 	private boolean _privateEvent;
 	private long _locationId;
+	private long _targetId;
+	private long _typeId;
 	private long _columnBitmask;
 	private Event _escapedModel;
 }

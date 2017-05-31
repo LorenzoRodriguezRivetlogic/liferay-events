@@ -89,6 +89,8 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		attributes.put("eventEndDate", getEventEndDate());
 		attributes.put("privateEvent", getPrivateEvent());
 		attributes.put("locationId", getLocationId());
+		attributes.put("targetId", getTargetId());
+		attributes.put("typeId", getTypeId());
 
 		return attributes;
 	}
@@ -177,6 +179,18 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 		if (locationId != null) {
 			setLocationId(locationId);
+		}
+
+		Long targetId = (Long)attributes.get("targetId");
+
+		if (targetId != null) {
+			setTargetId(targetId);
+		}
+
+		Long typeId = (Long)attributes.get("typeId");
+
+		if (typeId != null) {
+			setTypeId(typeId);
 		}
 	}
 
@@ -519,6 +533,52 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 	}
 
 	@Override
+	public long getTargetId() {
+		return _targetId;
+	}
+
+	@Override
+	public void setTargetId(long targetId) {
+		_targetId = targetId;
+
+		if (_eventRemoteModel != null) {
+			try {
+				Class<?> clazz = _eventRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setTargetId", long.class);
+
+				method.invoke(_eventRemoteModel, targetId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public long getTypeId() {
+		return _typeId;
+	}
+
+	@Override
+	public void setTypeId(long typeId) {
+		_typeId = typeId;
+
+		if (_eventRemoteModel != null) {
+			try {
+				Class<?> clazz = _eventRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setTypeId", long.class);
+
+				method.invoke(_eventRemoteModel, typeId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
 	public java.util.List<com.rivetlogic.event.model.Participant> getParticipants() {
 		try {
 			String methodName = "getParticipants";
@@ -659,6 +719,8 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		clone.setEventEndDate(getEventEndDate());
 		clone.setPrivateEvent(getPrivateEvent());
 		clone.setLocationId(getLocationId());
+		clone.setTargetId(getTargetId());
+		clone.setTypeId(getTypeId());
 
 		return clone;
 	}
@@ -715,7 +777,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(29);
+		StringBundler sb = new StringBundler(33);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -745,6 +807,10 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		sb.append(getPrivateEvent());
 		sb.append(", locationId=");
 		sb.append(getLocationId());
+		sb.append(", targetId=");
+		sb.append(getTargetId());
+		sb.append(", typeId=");
+		sb.append(getTypeId());
 		sb.append("}");
 
 		return sb.toString();
@@ -752,7 +818,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(46);
+		StringBundler sb = new StringBundler(52);
 
 		sb.append("<model><model-name>");
 		sb.append("com.rivetlogic.event.model.Event");
@@ -814,6 +880,14 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 			"<column><column-name>locationId</column-name><column-value><![CDATA[");
 		sb.append(getLocationId());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>targetId</column-name><column-value><![CDATA[");
+		sb.append(getTargetId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>typeId</column-name><column-value><![CDATA[");
+		sb.append(getTypeId());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -835,6 +909,8 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 	private Date _eventEndDate;
 	private boolean _privateEvent;
 	private long _locationId;
+	private long _targetId;
+	private long _typeId;
 	private BaseModel<?> _eventRemoteModel;
 	private Class<?> _clpSerializerClass = com.rivetlogic.event.service.ClpSerializer.class;
 }

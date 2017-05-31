@@ -22,6 +22,8 @@
 		<field name="eventEndDate" type="Date" />
 		<field name="privateEvent" type="boolean" />
 		<field name="locationId" type="long" />
+		<field name="targetId" type="long" />
+		<field name="typeId" type="long" />
 	</model>
 	<model name="com.rivetlogic.event.model.Location">
 		<field name="locationId" type="long" />
@@ -45,10 +47,30 @@
 		<field name="companyName" type="String" />
 		<field name="status" type="int" />
 	</model>
+	<model name="com.rivetlogic.event.model.Target">
+		<field name="targetId" type="long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+	</model>
 	<model name="com.rivetlogic.event.model.Token">
 		<field name="uuid" type="String" />
 		<field name="tokenId" type="long" />
 		<field name="participantId" type="long" />
 		<field name="expiredDate" type="Date" />
+	</model>
+	<model name="com.rivetlogic.event.model.Type">
+		<field name="typeId" type="long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
 	</model>
 </model-hints>

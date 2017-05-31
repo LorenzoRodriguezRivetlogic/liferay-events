@@ -66,9 +66,6 @@ public class LocationLocalServiceImpl extends LocationLocalServiceBaseImpl {
 
 	    super.addLocation(location);
 
-	    // Resources
-	    resourceLocalService.addResources(location.getCompanyId(), location.getGroupId(), location.getUserId(), Location.class.getName(), location.getLocationId(), false,true, true);
-
 	    return location;
 	}
 	
@@ -118,4 +115,13 @@ public class LocationLocalServiceImpl extends LocationLocalServiceBaseImpl {
 
 	    return location;
 	}   
+	
+	public Location deleteLocation(long locationId, ServiceContext serviceContext) throws PortalException, SystemException {
+
+	    Location location = getLocation(locationId);
+
+	    location = deleteLocation(location);
+
+        return location;
+	}
 }

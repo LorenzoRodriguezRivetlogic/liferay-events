@@ -12,5 +12,9 @@ create index IX_B112358F on rivetlogic_event_Participant (uuid_);
 create index IX_40A00F39 on rivetlogic_event_Participant (uuid_, companyId);
 create unique index IX_AF250FFB on rivetlogic_event_Participant (uuid_, groupId);
 
+create index IX_3B86B5BF on rivetlogic_event_Target (groupId);
+
 create index IX_7E6C8EB3 on rivetlogic_event_Token (participantId);
 create index IX_623B6089 on rivetlogic_event_Token (uuid_);
+
+create index IX_C1EF4776 on rivetlogic_event_Type (groupId);

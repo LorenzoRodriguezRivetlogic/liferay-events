@@ -63,6 +63,8 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 		attributes.put("eventEndDate", getEventEndDate());
 		attributes.put("privateEvent", getPrivateEvent());
 		attributes.put("locationId", getLocationId());
+		attributes.put("targetId", getTargetId());
+		attributes.put("typeId", getTypeId());
 
 		return attributes;
 	}
@@ -151,6 +153,18 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 
 		if (locationId != null) {
 			setLocationId(locationId);
+		}
+
+		Long targetId = (Long)attributes.get("targetId");
+
+		if (targetId != null) {
+			setTargetId(targetId);
+		}
+
+		Long typeId = (Long)attributes.get("typeId");
+
+		if (typeId != null) {
+			setTypeId(typeId);
 		}
 	}
 
@@ -484,6 +498,46 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 	@Override
 	public void setLocationId(long locationId) {
 		_event.setLocationId(locationId);
+	}
+
+	/**
+	* Returns the target ID of this event.
+	*
+	* @return the target ID of this event
+	*/
+	@Override
+	public long getTargetId() {
+		return _event.getTargetId();
+	}
+
+	/**
+	* Sets the target ID of this event.
+	*
+	* @param targetId the target ID of this event
+	*/
+	@Override
+	public void setTargetId(long targetId) {
+		_event.setTargetId(targetId);
+	}
+
+	/**
+	* Returns the type ID of this event.
+	*
+	* @return the type ID of this event
+	*/
+	@Override
+	public long getTypeId() {
+		return _event.getTypeId();
+	}
+
+	/**
+	* Sets the type ID of this event.
+	*
+	* @param typeId the type ID of this event
+	*/
+	@Override
+	public void setTypeId(long typeId) {
+		_event.setTypeId(typeId);
 	}
 
 	@Override

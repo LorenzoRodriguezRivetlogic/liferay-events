@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -39,6 +40,7 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.rivetlogic.event.beans.ManagementPrefsBean;
 import com.rivetlogic.event.model.Event;
+import com.rivetlogic.event.model.Location;
 import com.rivetlogic.event.model.Participant;
 import com.rivetlogic.event.model.impl.EventImpl;
 import com.rivetlogic.event.model.impl.ParticipantImpl;
@@ -46,6 +48,7 @@ import com.rivetlogic.event.notification.constant.EventPortletConstants;
 import com.rivetlogic.event.notification.constant.NotificationConstants;
 import com.rivetlogic.event.notification.constant.PreferencesConstants;
 import com.rivetlogic.event.service.EventLocalServiceUtil;
+import com.rivetlogic.event.service.LocationLocalServiceUtil;
 import com.rivetlogic.event.service.ParticipantLocalServiceUtil;
 import com.rivetlogic.event.util.EventActionUtil;
 import com.rivetlogic.event.util.EventConstant;
@@ -81,6 +84,7 @@ import javax.portlet.ValidatorException;
  * @author charlesrodriguez
  * @author christopherjimenez
  * @author juancarrillo
+ * @author lorenzorodriguez
  */
 public class EventsManagementPortlet extends MVCPortlet {
     
@@ -138,7 +142,7 @@ public class EventsManagementPortlet extends MVCPortlet {
         event.setUserId(themeDisplay.getUserId());
         
         event.setName(ParamUtil.getString(upreq, EventPortletConstants.PARAMETER_NAME));
-        event.setLocation(ParamUtil.getString(upreq, EventPortletConstants.PARAMETER_LOCATION));
+        event.setLocationId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_LOCATIONS));
         event.setDescription(ParamUtil.getString(upreq, EventPortletConstants.PARAMETER_DESCRIPTION));
         event.setEventDate(newEventDate.getTime());
         event.setEventEndDate(newEventEndDate.getTime());
@@ -711,6 +715,47 @@ public class EventsManagementPortlet extends MVCPortlet {
         return useCSV;
     }
     
+    public void addLocation(ActionRequest request, ActionResponse response) {
+    	ThemeDisplay td  =(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+    	User user = td.getUser();
+    	
+    	try {
+    	
+    		ServiceContext serviceContext = ServiceContextFactory.getInstance(Location.class.getName(), request);
+    		String name = ParamUtil.getString(request, "name");
+	    
+	    	LocationLocalServiceUtil.addLocation(user.getUserId(), td.getLayout().getGroupId(), name, "", serviceContext);
+	
+	    	response.setRenderParameter(WebKeys.REDIRECT, PortalUtil.getCurrentURL(request));
+	    	response.setRenderParameter(WebKeys.MVC_PATH, WebKeys.LOCATION_POPUP);
+	    } catch (Exception e) {
+	        SessionErrors.add(request, ERROR_SAVE_LOCATION);
+            response.setRenderParameter(WebKeys.REDIRECT, PortalUtil.getCurrentURL(request));
+            response.setRenderParameter(WebKeys.MVC_PATH, WebKeys.LOCATION_POPUP);
+	    }
+    }
+    
+    public void deleteLocation (ActionRequest request, ActionResponse response) {
+
+        long locationId = ParamUtil.getLong(request, WebKeys.LOCATION_ID);
+
+        try {
+
+           ServiceContext serviceContext = ServiceContextFactory.getInstance(Location.class.getName(), request);
+
+           LocationLocalServiceUtil.deleteLocation(locationId, serviceContext);
+
+           response.setRenderParameter(WebKeys.REDIRECT, PortalUtil.getCurrentURL(request));
+           response.setRenderParameter(WebKeys.MVC_PATH, WebKeys.LOCATION_POPUP);
+        } catch (Exception e) {
+           SessionErrors.add(request, ERROR_DELETE_LOCATION);
+           response.setRenderParameter(WebKeys.REDIRECT, PortalUtil.getCurrentURL(request));
+           response.setRenderParameter(WebKeys.MVC_PATH, WebKeys.LOCATION_POPUP);
+        }
+    }
+    
+    private static final String ERROR_DELETE_LOCATION = "location-delete-error";
+    private static final String ERROR_SAVE_LOCATION = "location-save-error";
     private static final String ERROR_SAVE_EVENT = "event-save-error";
     private static final String ERROR_INVALID_CSV = "invalid-csv-file";
     private static final String ERROR_PROCESING_CSV = "error-processing-csv";

@@ -37,7 +37,7 @@ import java.util.Date;
 public class EventCacheModel implements CacheModel<Event>, Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(29);
+		StringBundler sb = new StringBundler(33);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -67,6 +67,10 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 		sb.append(privateEvent);
 		sb.append(", locationId=");
 		sb.append(locationId);
+		sb.append(", targetId=");
+		sb.append(targetId);
+		sb.append(", typeId=");
+		sb.append(typeId);
 		sb.append("}");
 
 		return sb.toString();
@@ -127,6 +131,8 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 
 		eventImpl.setPrivateEvent(privateEvent);
 		eventImpl.setLocationId(locationId);
+		eventImpl.setTargetId(targetId);
+		eventImpl.setTypeId(typeId);
 
 		eventImpl.resetOriginalValues();
 
@@ -149,6 +155,8 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 		eventEndDate = objectInput.readLong();
 		privateEvent = objectInput.readBoolean();
 		locationId = objectInput.readLong();
+		targetId = objectInput.readLong();
+		typeId = objectInput.readLong();
 	}
 
 	@Override
@@ -193,6 +201,8 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 		objectOutput.writeLong(eventEndDate);
 		objectOutput.writeBoolean(privateEvent);
 		objectOutput.writeLong(locationId);
+		objectOutput.writeLong(targetId);
+		objectOutput.writeLong(typeId);
 	}
 
 	public String uuid;
@@ -209,4 +219,6 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 	public long eventEndDate;
 	public boolean privateEvent;
 	public long locationId;
+	public long targetId;
+	public long typeId;
 }

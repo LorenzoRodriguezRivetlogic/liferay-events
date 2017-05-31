@@ -282,6 +282,34 @@ public interface EventModel extends BaseModel<Event> {
 	 */
 	public void setLocationId(long locationId);
 
+	/**
+	 * Returns the target ID of this event.
+	 *
+	 * @return the target ID of this event
+	 */
+	public long getTargetId();
+
+	/**
+	 * Sets the target ID of this event.
+	 *
+	 * @param targetId the target ID of this event
+	 */
+	public void setTargetId(long targetId);
+
+	/**
+	 * Returns the type ID of this event.
+	 *
+	 * @return the type ID of this event
+	 */
+	public long getTypeId();
+
+	/**
+	 * Sets the type ID of this event.
+	 *
+	 * @param typeId the type ID of this event
+	 */
+	public void setTypeId(long typeId);
+
 	@Override
 	public boolean isNew();
 

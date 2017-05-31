@@ -285,6 +285,41 @@ public class LocationLocalServiceUtil {
 			serviceContext);
 	}
 
+	public static java.util.List<com.rivetlogic.event.model.Location> getLocationsByGroupId(
+		long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getLocationsByGroupId(groupId);
+	}
+
+	public static java.util.List<com.rivetlogic.event.model.Location> getLocationsByGroupId(
+		long groupId, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getLocationsByGroupId(groupId, start, end);
+	}
+
+	public static int getLocationsCountByGroupId(long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getLocationsCountByGroupId(groupId);
+	}
+
+	public static com.rivetlogic.event.model.Location updateEvent(long userId,
+		long eventId, java.lang.String name, java.lang.String description,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateEvent(userId, eventId, name, description,
+			serviceContext);
+	}
+
+	public static com.rivetlogic.event.model.Location deleteLocation(
+		long locationId,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().deleteLocation(locationId, serviceContext);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

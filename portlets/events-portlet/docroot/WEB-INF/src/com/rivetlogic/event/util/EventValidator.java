@@ -52,7 +52,7 @@ public class EventValidator {
             errors.add(EVENT_DESCRIPTION_REQUIRED);
         }
         
-        if (Validator.isNull(event.getLocation())) {
+        if (Validator.isNull(event.getLocationId())) {
             errors.add(EVENT_LOCATION_REQUIRED);
         }
         
