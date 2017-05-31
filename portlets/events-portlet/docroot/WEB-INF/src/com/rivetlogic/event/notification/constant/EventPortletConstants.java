@@ -27,6 +27,8 @@ public class EventPortletConstants {
     public static final String PARAMETER_LOCATION = "location";
     public static final String PARAMETER_LOCATIONS = "locations";
     public static final String PARAMETER_DESCRIPTION = "description";
+    public static final String PARAMETER_TYPES = "types";
+    public static final String PARAMETER_TARGETS = "targets";
     public static final String PARAMETER_EVENT = "event";
     public static final String PARAMETER_EVENT_DATE = "eventDate";
     public static final String PARAMETER_EVENT_END_DATE = "eventEndDate";

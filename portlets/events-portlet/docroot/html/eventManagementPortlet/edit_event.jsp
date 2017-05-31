@@ -19,6 +19,9 @@
 */
 --%>
 
+<%@page import="com.rivetlogic.event.service.TargetLocalServiceUtil"%>
+<%@page import="com.rivetlogic.event.service.TypeLocalServiceUtil"%>
+<%@page import="com.rivetlogic.event.model.Type"%>
 <%@page import="com.rivetlogic.event.service.LocationLocalServiceUtil"%>
 <%@page import="com.liferay.portal.security.permission.ActionKeys"%>
 <%@page import="com.liferay.calendar.util.comparator.CalendarNameComparator"%>
@@ -59,8 +62,13 @@ List<com.liferay.calendar.model.Calendar> manageableCalendars = CalendarServiceU
 long calendarId = event.getCalendarId();
 	
 List<Location> locations = LocationLocalServiceUtil.getLocationsByGroupId(portletGroupId);
-
 Long locationId = event.getLocationId();
+
+List<Type> types = TypeLocalServiceUtil.getTypesByGroupId(portletGroupId);
+Long typeId = event.getTypeId();
+
+List<Target> targets = TargetLocalServiceUtil.getTargetsByGroupId(portletGroupId);
+Long targetId = event.getTargetId();
 %>
 
 <liferay-ui:error key="event-save-error" message="event-save-error" />
@@ -97,6 +105,16 @@ Long locationId = event.getLocationId();
 <portlet:renderURL var="dialogLocations" windowState="<%=LiferayWindowState.POP_UP.toString()%>">
 	<portlet:param name="mvcPath" value="/html/dialog/locations_dialog.jsp"/>
 </portlet:renderURL>
+
+<portlet:renderURL var="dialogTypes" windowState="<%=LiferayWindowState.POP_UP.toString()%>">
+	<portlet:param name="mvcPath" value="/html/dialog/type_dialog.jsp"/>
+</portlet:renderURL>
+
+<portlet:renderURL var="dialogTarget" windowState="<%=LiferayWindowState.POP_UP.toString()%>">
+	<portlet:param name="mvcPath" value="/html/dialog/target_dialog.jsp"/>
+</portlet:renderURL>
+
+<portlet:resourceURL var="resourceURL"/>
 
 <portlet:actionURL name="addEditEvent" var="addEditEventURL" >
 	<portlet:param name="<%=EventPortletConstants.PARAMETER_RESOURCE_PRIMARY_KEY %>" value="${event.eventId}" />
@@ -220,6 +238,34 @@ Long locationId = event.getLocationId();
 		</aui:fieldset>
 		
 		<aui:fieldset label="event-categorization">
+			<div>
+				<aui:select id="types" name="types" label="types" showEmptyOption="true" >
+					<% 
+					for (Type typeSel : types) {
+					%>
+						<aui:option value="<%=typeSel.getTypeId()%>"  selected="<%= typeId == typeSel.getTypeId() %>">
+							<liferay-ui:message key="<%=typeSel.getName()%>" />
+						</aui:option>
+					<% 
+					}
+					%>
+				</aui:select>
+				<aui:button name="dialog-types"  id="dialog-types" value="event-new"> </aui:button>
+			</div>
+			<div>
+				<aui:select id="targets" name="targets" label="targets" showEmptyOption="true" >
+					<% 
+					for (Target targetSel : targets) {
+					%>
+						<aui:option value="<%=targetSel.getTargetId()%>"  selected="<%= targetId == targetSel.getTargetId() %>">
+							<liferay-ui:message key="<%=targetSel.getName()%>" />
+						</aui:option>
+					<% 
+					}
+					%>
+				</aui:select>
+				<aui:button name="dialog-targets"  id="dialog-targets" value="event-new"> </aui:button>
+			</div>
 		</aui:fieldset>
 		
 		<aui:fieldset label="calendar">
@@ -352,7 +398,7 @@ AUI().use('aui-base','aui-io-plugin-deprecated','liferay-util-window','aui-dialo
 	         	cache: false,
 	        	on: {
 	            	destroy: function() { 
-	            		window.location.reload();             
+	            		reloadLocations();             
 	            	}
 	        	}
 	    	},
@@ -361,5 +407,135 @@ AUI().use('aui-base','aui-io-plugin-deprecated','liferay-util-window','aui-dialo
     		title: 'Locations'
 		});
 	});
+	
+	
+	A.one('#<portlet:namespace />dialog-types').on('click', function(event){
+		Liferay.Util.openWindow({
+	    	dialog: {
+	        	width: 400,                        
+	         	modal: true,
+	         	constrain: true,
+	         	destroyOnClose: true,
+	         	destroyOnHide: true,
+	         	cache: false,
+	        	on: {
+	            	destroy: function() { 
+	            		reloadTypes();           
+	            	}
+	        	}
+	    	},
+   			uri: '<%=dialogTypes.toString()%>',
+    		id: 'typesPopup',
+    		title: 'Types'
+		});
+	});
+	
+	A.one('#<portlet:namespace />dialog-targets').on('click', function(event){
+		Liferay.Util.openWindow({
+	    	dialog: {
+	        	width: 400,                        
+	         	modal: true,
+	         	constrain: true,
+	         	destroyOnClose: true,
+	         	destroyOnHide: true,
+	         	cache: false,
+	        	on: {
+	            	destroy: function() { 
+	            		reloadTargets();
+	            	}
+	        	}
+	    	},
+   			uri: '<%=dialogTarget.toString()%>',
+    		id: 'targetsPopup',
+    		title: 'Target'
+		});
+	});
 });
+
+function reloadLocations(){
+	AUI().use('aui-base', function(A){
+		A.io.request('<%=resourceURL.toString()%>', {
+			method: 'post',
+			data: {
+				<portlet:namespace />action: 'getLocations',
+			},
+			dataType: 'json',
+			on: {
+				success: function() {
+			     	var result = this.get('responseData');
+			     	var select = A.one('#<portlet:namespace/>locations');
+			     	removeOptions(select);
+			     	var optionT = A.Node.create('<option value=\"\"></option>');
+	     	        select.append(optionT);
+			     	for(var k in result){
+			     	    if ({}.hasOwnProperty.call(result, k)){
+			     	        var option = A.Node.create('<option value=\"'+k+'\">'+result[k]+'</option>');
+			     	        select.append(option);
+			     	    }
+			     	}    
+			    }
+			}
+		});
+	});
+}
+
+function reloadTypes(){
+	AUI().use('aui-base', function(A){
+		A.io.request('<%=resourceURL.toString()%>', {
+			method: 'post',
+			data: {
+				<portlet:namespace />action: 'getTypes',
+			},
+			dataType: 'json',
+			on: {
+				success: function() {
+			     	var result = this.get('responseData');
+			     	var select = A.one('#<portlet:namespace/>types');
+			     	removeOptions(select);
+			     	var optionT = A.Node.create('<option value=\"\"></option>');
+	     	        select.append(optionT);
+			     	for(var k in result){
+			     	    if ({}.hasOwnProperty.call(result, k)){
+			     	        var option = A.Node.create('<option value=\"'+k+'\">'+result[k]+'</option>');
+			     	        select.append(option);
+			     	    }
+			     	}    
+			    }
+			}
+		});
+	});
+}
+
+function reloadTargets(){
+	AUI().use('aui-base', function(A){
+		A.io.request('<%=resourceURL.toString()%>', {
+			method: 'post',
+			data: {
+				<portlet:namespace />action: 'getTargets',
+			},
+			dataType: 'json',
+			on: {
+				success: function() {
+			     	var result = this.get('responseData');
+			     	var select = A.one('#<portlet:namespace/>targets');
+			     	removeOptions(select);
+			     	var optionT = A.Node.create('<option value=\"\"></option>');
+	     	        select.append(optionT);
+			     	for(var k in result){
+			     	    if ({}.hasOwnProperty.call(result, k)){
+			     	        var option = A.Node.create('<option value=\"'+k+'\">'+result[k]+'</option>');
+			     	        select.append(option);
+			     	    }
+			     	}    
+			    }
+			}
+		});
+	});
+}
+
+function removeOptions(comboBox){
+	comboBox.all('option').each(function() {
+		this.remove();
+	});
+}
 </aui:script>

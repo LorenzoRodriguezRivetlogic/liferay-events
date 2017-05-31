@@ -22,8 +22,8 @@
 <%@page import="com.rivetlogic.event.service.LocationLocalServiceUtil"%>
 <%@include file="/html/init.jsp" %>
 
-<liferay-ui:error key="location-delete-error" message="event-save-error" />
-<liferay-ui:error key="location-save-error" message="event-name-required" />
+<liferay-ui:error key="location-delete-error" message="location-delete-error" />
+<liferay-ui:error key="location-save-error" message="location-save-error" />
 
 <div class="locations">
 	<liferay-ui:search-container emptyResultsMessage="locations-empty-results" delta="${prefBean.numRows}" deltaConfigurable="true">
