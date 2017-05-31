@@ -271,6 +271,48 @@ public class TypeLocalServiceUtil {
 		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
+	public static com.rivetlogic.event.model.Type addType(long userId,
+		long groupId, java.lang.String name, java.lang.String description,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .addType(userId, groupId, name, description, serviceContext);
+	}
+
+	public static java.util.List<com.rivetlogic.event.model.Type> getTypesByGroupId(
+		long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getTypesByGroupId(groupId);
+	}
+
+	public static java.util.List<com.rivetlogic.event.model.Type> getTypesByGroupId(
+		long groupId, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getTypesByGroupId(groupId, start, end);
+	}
+
+	public static int getTypesCountByGroupId(long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getTypesCountByGroupId(groupId);
+	}
+
+	public static com.rivetlogic.event.model.Type updateType(long userId,
+		long typeId, java.lang.String name, java.lang.String description,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateType(userId, typeId, name, description, serviceContext);
+	}
+
+	public static com.rivetlogic.event.model.Type deleteType(long typeId,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().deleteType(typeId, serviceContext);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

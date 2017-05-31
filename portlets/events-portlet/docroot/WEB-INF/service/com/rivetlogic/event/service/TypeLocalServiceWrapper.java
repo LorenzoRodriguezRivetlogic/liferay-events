@@ -279,6 +279,54 @@ public class TypeLocalServiceWrapper implements TypeLocalService,
 		return _typeLocalService.invokeMethod(name, parameterTypes, arguments);
 	}
 
+	@Override
+	public com.rivetlogic.event.model.Type addType(long userId, long groupId,
+		java.lang.String name, java.lang.String description,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _typeLocalService.addType(userId, groupId, name, description,
+			serviceContext);
+	}
+
+	@Override
+	public java.util.List<com.rivetlogic.event.model.Type> getTypesByGroupId(
+		long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _typeLocalService.getTypesByGroupId(groupId);
+	}
+
+	@Override
+	public java.util.List<com.rivetlogic.event.model.Type> getTypesByGroupId(
+		long groupId, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _typeLocalService.getTypesByGroupId(groupId, start, end);
+	}
+
+	@Override
+	public int getTypesCountByGroupId(long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _typeLocalService.getTypesCountByGroupId(groupId);
+	}
+
+	@Override
+	public com.rivetlogic.event.model.Type updateType(long userId, long typeId,
+		java.lang.String name, java.lang.String description,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _typeLocalService.updateType(userId, typeId, name, description,
+			serviceContext);
+	}
+
+	@Override
+	public com.rivetlogic.event.model.Type deleteType(long typeId,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _typeLocalService.deleteType(typeId, serviceContext);
+	}
+
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */

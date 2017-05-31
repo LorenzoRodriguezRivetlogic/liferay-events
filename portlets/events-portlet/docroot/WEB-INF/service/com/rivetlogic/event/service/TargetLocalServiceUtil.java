@@ -271,6 +271,49 @@ public class TargetLocalServiceUtil {
 		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
+	public static com.rivetlogic.event.model.Target addTarget(long userId,
+		long groupId, java.lang.String name, java.lang.String description,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .addTarget(userId, groupId, name, description, serviceContext);
+	}
+
+	public static java.util.List<com.rivetlogic.event.model.Target> getTargetsByGroupId(
+		long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getTargetsByGroupId(groupId);
+	}
+
+	public static java.util.List<com.rivetlogic.event.model.Target> getTargetsByGroupId(
+		long groupId, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getTargetsByGroupId(groupId, start, end);
+	}
+
+	public static int getTargetsCountByGroupId(long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getTargetsCountByGroupId(groupId);
+	}
+
+	public static com.rivetlogic.event.model.Target updateTarget(long userId,
+		long targetId, java.lang.String name, java.lang.String description,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateTarget(userId, targetId, name, description,
+			serviceContext);
+	}
+
+	public static com.rivetlogic.event.model.Target deleteTarget(
+		long targetId, com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().deleteTarget(targetId, serviceContext);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

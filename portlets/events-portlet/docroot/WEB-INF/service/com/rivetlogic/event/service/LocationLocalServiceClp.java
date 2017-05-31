@@ -133,7 +133,7 @@ public class LocationLocalServiceClp implements LocationLocalService {
 
 		_methodParameterTypes22 = new String[] { "long" };
 
-		_methodName23 = "updateEvent";
+		_methodName23 = "updateLocation";
 
 		_methodParameterTypes23 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String",
@@ -827,8 +827,8 @@ public class LocationLocalServiceClp implements LocationLocalService {
 	}
 
 	@Override
-	public com.rivetlogic.event.model.Location updateEvent(long userId,
-		long eventId, java.lang.String name, java.lang.String description,
+	public com.rivetlogic.event.model.Location updateLocation(long userId,
+		long locationId, java.lang.String name, java.lang.String description,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
@@ -840,7 +840,7 @@ public class LocationLocalServiceClp implements LocationLocalService {
 					new Object[] {
 						userId,
 						
-					eventId,
+					locationId,
 						
 					ClpSerializer.translateInput(name),
 						

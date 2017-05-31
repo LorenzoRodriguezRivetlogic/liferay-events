@@ -270,8 +270,8 @@ public interface LocationLocalService extends BaseLocalService,
 	public int getLocationsCountByGroupId(long groupId)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
-	public com.rivetlogic.event.model.Location updateEvent(long userId,
-		long eventId, java.lang.String name, java.lang.String description,
+	public com.rivetlogic.event.model.Location updateLocation(long userId,
+		long locationId, java.lang.String name, java.lang.String description,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;

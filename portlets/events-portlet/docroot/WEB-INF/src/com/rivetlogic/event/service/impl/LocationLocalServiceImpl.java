@@ -35,7 +35,7 @@ import java.util.List;
  * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
  * </p>
  *
- * @author juancarrillo
+ * @author lorenzorodriguez
  * @see com.rivetlogic.event.service.base.LocationLocalServiceBaseImpl
  * @see com.rivetlogic.event.service.LocationLocalServiceUtil
  */
@@ -51,9 +51,9 @@ public class LocationLocalServiceImpl extends LocationLocalServiceBaseImpl {
 
 	    Date now = new Date();
 
-	    long eventId = counterLocalService.increment(Location.class.getName());
+	    long locationId = counterLocalService.increment(Location.class.getName());
 
-	    Location location = locationPersistence.create(eventId);
+	    Location location = locationPersistence.create(locationId);
 
 	    location.setName(name);
 	    location.setDescription(description);
@@ -101,11 +101,11 @@ public class LocationLocalServiceImpl extends LocationLocalServiceBaseImpl {
 	    return locationPersistence.countByGroupId(groupId);
 	}
 
-	public Location updateEvent(long userId, long eventId, String name, String description, ServiceContext serviceContext) throws PortalException, SystemException {
+	public Location updateLocation(long userId, long locationId, String name, String description, ServiceContext serviceContext) throws PortalException, SystemException {
 
 		Date now = new Date();
 
-	    Location location = LocationLocalServiceUtil.fetchLocation(eventId);
+	    Location location = LocationLocalServiceUtil.fetchLocation(locationId);
 
 	    location.setModifiedDate(serviceContext.getModifiedDate(now));
 	    location.setName(name);

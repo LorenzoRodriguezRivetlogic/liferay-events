@@ -280,6 +280,54 @@ public class TargetLocalServiceWrapper implements TargetLocalService,
 		return _targetLocalService.invokeMethod(name, parameterTypes, arguments);
 	}
 
+	@Override
+	public com.rivetlogic.event.model.Target addTarget(long userId,
+		long groupId, java.lang.String name, java.lang.String description,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _targetLocalService.addTarget(userId, groupId, name,
+			description, serviceContext);
+	}
+
+	@Override
+	public java.util.List<com.rivetlogic.event.model.Target> getTargetsByGroupId(
+		long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _targetLocalService.getTargetsByGroupId(groupId);
+	}
+
+	@Override
+	public java.util.List<com.rivetlogic.event.model.Target> getTargetsByGroupId(
+		long groupId, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _targetLocalService.getTargetsByGroupId(groupId, start, end);
+	}
+
+	@Override
+	public int getTargetsCountByGroupId(long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _targetLocalService.getTargetsCountByGroupId(groupId);
+	}
+
+	@Override
+	public com.rivetlogic.event.model.Target updateTarget(long userId,
+		long targetId, java.lang.String name, java.lang.String description,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _targetLocalService.updateTarget(userId, targetId, name,
+			description, serviceContext);
+	}
+
+	@Override
+	public com.rivetlogic.event.model.Target deleteTarget(long targetId,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _targetLocalService.deleteTarget(targetId, serviceContext);
+	}
+
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */

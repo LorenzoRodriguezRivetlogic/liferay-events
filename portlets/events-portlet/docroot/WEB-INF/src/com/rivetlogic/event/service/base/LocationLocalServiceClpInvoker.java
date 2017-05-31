@@ -147,7 +147,7 @@ public class LocationLocalServiceClpInvoker {
 
 		_methodParameterTypes64 = new String[] { "long" };
 
-		_methodName65 = "updateEvent";
+		_methodName65 = "updateLocation";
 
 		_methodParameterTypes65 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String",
@@ -304,7 +304,7 @@ public class LocationLocalServiceClpInvoker {
 
 		if (_methodName65.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes65, parameterTypes)) {
-			return LocationLocalServiceUtil.updateEvent(((Long)arguments[0]).longValue(),
+			return LocationLocalServiceUtil.updateLocation(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2], (java.lang.String)arguments[3],
 				(com.liferay.portal.service.ServiceContext)arguments[4]);
