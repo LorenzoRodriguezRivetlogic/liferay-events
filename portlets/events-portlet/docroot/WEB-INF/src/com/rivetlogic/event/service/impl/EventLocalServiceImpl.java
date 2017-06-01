@@ -32,7 +32,6 @@ import com.liferay.calendar.service.CalendarBookingLocalServiceUtil;
 import com.liferay.calendar.service.CalendarBookingServiceUtil;
 import com.liferay.calendar.service.CalendarLocalServiceUtil;
 import com.liferay.calendar.service.CalendarResourceLocalServiceUtil;
-import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -43,6 +42,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PortalUtil;
@@ -95,6 +97,9 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
 		}
         event.setModelAttributes(newEvent.getModelAttributes());
         
+        Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(Event.class);
+        indexer.reindex(event);
+        
         return eventPersistence.update(event);
     }
 
@@ -111,8 +116,7 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
 		User user = null;
 		CalendarResource calendarResource = null;
 		Calendar calendar = null;
-		List<Calendar> calendars = CalendarLocalServiceUtil
-				.dynamicQuery(dynamicQuery);
+		List<Calendar> calendars = CalendarLocalServiceUtil.dynamicQuery(dynamicQuery);
 		
 		if (calendars.isEmpty()) {
 			_log.debug("No calendar found for user with ID: "
@@ -197,6 +201,14 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
 			}
     	}
     	
+    	
+        try {
+        	Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(Event.class);
+			indexer.reindex(event);
+		} catch (SearchException e) {
+			e.printStackTrace();
+		}
+        
         return eventPersistence.update(event);
     }
     
@@ -221,6 +233,13 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
 			}
 		}
     	
+		try {
+        	Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(Event.class);
+			indexer.delete(event);
+		} catch (SearchException e) {
+			e.printStackTrace();
+		}
+        
         return eventPersistence.remove(event);
         
     }
