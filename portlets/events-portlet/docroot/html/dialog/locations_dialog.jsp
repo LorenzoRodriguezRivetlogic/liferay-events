@@ -19,14 +19,20 @@
 */
 --%>
 
+<%@page import="javax.portlet.PortletURL"%>
 <%@page import="com.rivetlogic.event.service.LocationLocalServiceUtil"%>
 <%@include file="/html/init.jsp" %>
+
+<%
+	PortletURL itURL = renderResponse.createRenderURL();
+	itURL.setParameter("jspPage", "/html/dialog/locations_dialog.jsp");
+%>
 
 <liferay-ui:error key="location-delete-error" message="location-delete-error" />
 <liferay-ui:error key="location-save-error" message="location-save-error" />
 
 <div class="locations">
-	<liferay-ui:search-container emptyResultsMessage="locations-empty-results" delta="${prefBean.numRows}" deltaConfigurable="true">
+	<liferay-ui:search-container emptyResultsMessage="locations-empty-results" delta="${prefBean.numRows}" deltaConfigurable="true" iteratorURL="<%= itURL %>">
 	
 		<liferay-ui:search-container-results 
 			results="<%=LocationLocalServiceUtil.getLocationsByGroupId(portletGroupId, searchContainer.getStart(), searchContainer.getEnd())%>"

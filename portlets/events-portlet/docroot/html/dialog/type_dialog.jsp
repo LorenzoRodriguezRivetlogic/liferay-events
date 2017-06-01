@@ -19,14 +19,21 @@
 */
 --%>
 
+<%@page import="javax.portlet.PortletURL"%>
 <%@page import="com.rivetlogic.event.service.TypeLocalServiceUtil"%>
 <%@include file="/html/init.jsp" %>
+
+<%
+	PortletURL itURL = renderResponse.createRenderURL();
+	itURL.setParameter("jspPage", "/html/dialog/type_dialog.jsp");
+%>
+
 
 <liferay-ui:error key="type-delete-error" message="type-delete-error" />
 <liferay-ui:error key="type-save-error" message="type-save-error" />
 
 <div class="types">
-	<liferay-ui:search-container emptyResultsMessage="type-empty-results" delta="${prefBean.numRows}" deltaConfigurable="true">
+	<liferay-ui:search-container emptyResultsMessage="type-empty-results" delta="${prefBean.numRows}" deltaConfigurable="true" iteratorURL="<%= itURL %>">
 	
 		<liferay-ui:search-container-results 
 			results="<%=TypeLocalServiceUtil.getTypesByGroupId(portletGroupId, searchContainer.getStart(), searchContainer.getEnd())%>"

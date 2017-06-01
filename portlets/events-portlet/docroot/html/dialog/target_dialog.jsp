@@ -19,14 +19,21 @@
 */
 --%>
 
+<%@page import="javax.portlet.PortletURL"%>
 <%@page import="com.rivetlogic.event.service.TargetLocalServiceUtil"%>
 <%@include file="/html/init.jsp" %>
+
+<%
+	PortletURL itURL = renderResponse.createRenderURL();
+	itURL.setParameter("jspPage", "/html/dialog/target_dialog.jsp");
+%>
+
 
 <liferay-ui:error key="target-delete-error" message="target-delete-error" />
 <liferay-ui:error key="target-save-error" message="target-save-error" />
 
 <div class="targets">
-	<liferay-ui:search-container emptyResultsMessage="type-empty-results" delta="${prefBean.numRows}" deltaConfigurable="true">
+	<liferay-ui:search-container emptyResultsMessage="type-empty-results" delta="${prefBean.numRows}" deltaConfigurable="true" iteratorURL="<%= itURL %>">
 	
 		<liferay-ui:search-container-results 
 			results="<%=TargetLocalServiceUtil.getTargetsByGroupId(portletGroupId, searchContainer.getStart(), searchContainer.getEnd())%>"
