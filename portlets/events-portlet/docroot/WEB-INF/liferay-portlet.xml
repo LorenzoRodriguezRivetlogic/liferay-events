@@ -5,7 +5,6 @@
 	<portlet>
 		<portlet-name>events-management</portlet-name>
 		<icon>/icon.png</icon>
-		<indexer-class>com.rivetlogic.event.search.EventIndexer</indexer-class>
 		<friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
 		<friendly-url-mapping>events-management</friendly-url-mapping>
 		<friendly-url-routes>com/rivetlogic/event/routes/events-management-portlet-friendly-routes.xml</friendly-url-routes>
