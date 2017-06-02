@@ -2807,9 +2807,14 @@ public class EventPersistenceImpl extends BasePersistenceImpl<Event>
 		eventImpl.setName(event.getName());
 		eventImpl.setLocation(event.getLocation());
 		eventImpl.setDescription(event.getDescription());
+		eventImpl.setTags(event.getTags());
 		eventImpl.setEventDate(event.getEventDate());
 		eventImpl.setEventEndDate(event.getEventEndDate());
 		eventImpl.setPrivateEvent(event.isPrivateEvent());
+		eventImpl.setRegistrationRequired(event.isRegistrationRequired());
+		eventImpl.setRequiredFullName(event.isRequiredFullName());
+		eventImpl.setRequiredEmail(event.isRequiredEmail());
+		eventImpl.setRequiredPhone(event.isRequiredPhone());
 		eventImpl.setLocationId(event.getLocationId());
 		eventImpl.setTargetId(event.getTargetId());
 		eventImpl.setTypeId(event.getTypeId());

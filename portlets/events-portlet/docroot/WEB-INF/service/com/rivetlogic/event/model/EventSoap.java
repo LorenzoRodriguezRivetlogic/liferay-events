@@ -40,9 +40,14 @@ public class EventSoap implements Serializable {
 		soapModel.setName(model.getName());
 		soapModel.setLocation(model.getLocation());
 		soapModel.setDescription(model.getDescription());
+		soapModel.setTags(model.getTags());
 		soapModel.setEventDate(model.getEventDate());
 		soapModel.setEventEndDate(model.getEventEndDate());
 		soapModel.setPrivateEvent(model.getPrivateEvent());
+		soapModel.setRegistrationRequired(model.getRegistrationRequired());
+		soapModel.setRequiredFullName(model.getRequiredFullName());
+		soapModel.setRequiredEmail(model.getRequiredEmail());
+		soapModel.setRequiredPhone(model.getRequiredPhone());
 		soapModel.setLocationId(model.getLocationId());
 		soapModel.setTargetId(model.getTargetId());
 		soapModel.setTypeId(model.getTypeId());
@@ -178,6 +183,14 @@ public class EventSoap implements Serializable {
 		_description = description;
 	}
 
+	public String getTags() {
+		return _tags;
+	}
+
+	public void setTags(String tags) {
+		_tags = tags;
+	}
+
 	public Date getEventDate() {
 		return _eventDate;
 	}
@@ -204,6 +217,54 @@ public class EventSoap implements Serializable {
 
 	public void setPrivateEvent(boolean privateEvent) {
 		_privateEvent = privateEvent;
+	}
+
+	public boolean getRegistrationRequired() {
+		return _registrationRequired;
+	}
+
+	public boolean isRegistrationRequired() {
+		return _registrationRequired;
+	}
+
+	public void setRegistrationRequired(boolean registrationRequired) {
+		_registrationRequired = registrationRequired;
+	}
+
+	public boolean getRequiredFullName() {
+		return _requiredFullName;
+	}
+
+	public boolean isRequiredFullName() {
+		return _requiredFullName;
+	}
+
+	public void setRequiredFullName(boolean requiredFullName) {
+		_requiredFullName = requiredFullName;
+	}
+
+	public boolean getRequiredEmail() {
+		return _requiredEmail;
+	}
+
+	public boolean isRequiredEmail() {
+		return _requiredEmail;
+	}
+
+	public void setRequiredEmail(boolean requiredEmail) {
+		_requiredEmail = requiredEmail;
+	}
+
+	public boolean getRequiredPhone() {
+		return _requiredPhone;
+	}
+
+	public boolean isRequiredPhone() {
+		return _requiredPhone;
+	}
+
+	public void setRequiredPhone(boolean requiredPhone) {
+		_requiredPhone = requiredPhone;
 	}
 
 	public long getLocationId() {
@@ -240,9 +301,14 @@ public class EventSoap implements Serializable {
 	private String _name;
 	private String _location;
 	private String _description;
+	private String _tags;
 	private Date _eventDate;
 	private Date _eventEndDate;
 	private boolean _privateEvent;
+	private boolean _registrationRequired;
+	private boolean _requiredFullName;
+	private boolean _requiredEmail;
+	private boolean _requiredPhone;
 	private long _locationId;
 	private long _targetId;
 	private long _typeId;

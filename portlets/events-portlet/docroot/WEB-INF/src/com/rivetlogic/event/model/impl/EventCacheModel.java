@@ -37,7 +37,7 @@ import java.util.Date;
 public class EventCacheModel implements CacheModel<Event>, Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(33);
+		StringBundler sb = new StringBundler(43);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -59,12 +59,22 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 		sb.append(location);
 		sb.append(", description=");
 		sb.append(description);
+		sb.append(", tags=");
+		sb.append(tags);
 		sb.append(", eventDate=");
 		sb.append(eventDate);
 		sb.append(", eventEndDate=");
 		sb.append(eventEndDate);
 		sb.append(", privateEvent=");
 		sb.append(privateEvent);
+		sb.append(", registrationRequired=");
+		sb.append(registrationRequired);
+		sb.append(", requiredFullName=");
+		sb.append(requiredFullName);
+		sb.append(", requiredEmail=");
+		sb.append(requiredEmail);
+		sb.append(", requiredPhone=");
+		sb.append(requiredPhone);
 		sb.append(", locationId=");
 		sb.append(locationId);
 		sb.append(", targetId=");
@@ -115,6 +125,13 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 			eventImpl.setDescription(description);
 		}
 
+		if (tags == null) {
+			eventImpl.setTags(StringPool.BLANK);
+		}
+		else {
+			eventImpl.setTags(tags);
+		}
+
 		if (eventDate == Long.MIN_VALUE) {
 			eventImpl.setEventDate(null);
 		}
@@ -130,6 +147,10 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 		}
 
 		eventImpl.setPrivateEvent(privateEvent);
+		eventImpl.setRegistrationRequired(registrationRequired);
+		eventImpl.setRequiredFullName(requiredFullName);
+		eventImpl.setRequiredEmail(requiredEmail);
+		eventImpl.setRequiredPhone(requiredPhone);
 		eventImpl.setLocationId(locationId);
 		eventImpl.setTargetId(targetId);
 		eventImpl.setTypeId(typeId);
@@ -151,9 +172,14 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 		name = objectInput.readUTF();
 		location = objectInput.readUTF();
 		description = objectInput.readUTF();
+		tags = objectInput.readUTF();
 		eventDate = objectInput.readLong();
 		eventEndDate = objectInput.readLong();
 		privateEvent = objectInput.readBoolean();
+		registrationRequired = objectInput.readBoolean();
+		requiredFullName = objectInput.readBoolean();
+		requiredEmail = objectInput.readBoolean();
+		requiredPhone = objectInput.readBoolean();
 		locationId = objectInput.readLong();
 		targetId = objectInput.readLong();
 		typeId = objectInput.readLong();
@@ -197,9 +223,20 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 			objectOutput.writeUTF(description);
 		}
 
+		if (tags == null) {
+			objectOutput.writeUTF(StringPool.BLANK);
+		}
+		else {
+			objectOutput.writeUTF(tags);
+		}
+
 		objectOutput.writeLong(eventDate);
 		objectOutput.writeLong(eventEndDate);
 		objectOutput.writeBoolean(privateEvent);
+		objectOutput.writeBoolean(registrationRequired);
+		objectOutput.writeBoolean(requiredFullName);
+		objectOutput.writeBoolean(requiredEmail);
+		objectOutput.writeBoolean(requiredPhone);
 		objectOutput.writeLong(locationId);
 		objectOutput.writeLong(targetId);
 		objectOutput.writeLong(typeId);
@@ -215,9 +252,14 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 	public String name;
 	public String location;
 	public String description;
+	public String tags;
 	public long eventDate;
 	public long eventEndDate;
 	public boolean privateEvent;
+	public boolean registrationRequired;
+	public boolean requiredFullName;
+	public boolean requiredEmail;
+	public boolean requiredPhone;
 	public long locationId;
 	public long targetId;
 	public long typeId;

@@ -153,10 +153,15 @@ public class EventsManagementPortlet extends MVCPortlet {
         event.setLocationId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_LOCATIONS));
         event.setTypeId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_TYPES));
         event.setTargetId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_TARGETS));
+        event.setTags(request.getParameter(EventPortletConstants.PARAMETER_TAGS));
         event.setDescription(ParamUtil.getString(upreq, EventPortletConstants.PARAMETER_DESCRIPTION));
         event.setEventDate(newEventDate.getTime());
         event.setEventEndDate(newEventEndDate.getTime());
         event.setPrivateEvent(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_EVENT));
+        event.setRegistrationRequired(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_REGISTRATION_REQUIRED));
+        event.setRequiredFullName(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_REGISTRATION_FULL_NAME));
+        event.setRequiredEmail(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_REGISTRATION_EMAIL));
+        event.setRequiredPhone(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_REGISTRATION_TELEPHONE));
         event.setCalendarId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_CALENDAR_ID));
         
         List<String> errors = new ArrayList<String>();
@@ -345,15 +350,17 @@ public class EventsManagementPortlet extends MVCPortlet {
         
         event.setName(ParamUtil.getString(upreq, EventPortletConstants.PARAMETER_NAME));
         event.setLocationId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_LOCATIONS));
-        System.out.println(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_LOCATIONS));
         event.setTypeId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_TYPES));
-        System.out.println(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_TYPES));
         event.setTargetId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_TARGETS));
-        System.out.println(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_TARGETS));
+        event.setTags(request.getParameter(EventPortletConstants.PARAMETER_TAGS));
         event.setDescription(ParamUtil.getString(upreq, EventPortletConstants.PARAMETER_DESCRIPTION));
         event.setEventDate(newEventDate.getTime());
         event.setEventEndDate(newEventEndDate.getTime());
         event.setPrivateEvent(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_EVENT));
+        event.setRegistrationRequired(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_REGISTRATION_REQUIRED));
+        event.setRequiredFullName(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_REGISTRATION_FULL_NAME));
+        event.setRequiredEmail(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_REGISTRATION_EMAIL));
+        event.setRequiredPhone(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_REGISTRATION_TELEPHONE));
         event.setCalendarId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_CALENDAR_ID));
         
         List<String> errors = new ArrayList<String>();

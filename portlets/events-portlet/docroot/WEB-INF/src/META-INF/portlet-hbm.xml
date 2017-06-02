@@ -22,9 +22,14 @@
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="location" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="tags" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="eventDate" type="org.hibernate.type.TimestampType" />
 		<property name="eventEndDate" type="org.hibernate.type.TimestampType" />
 		<property name="privateEvent" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="registrationRequired" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="requiredFullName" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="requiredEmail" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="requiredPhone" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="locationId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="targetId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="typeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />

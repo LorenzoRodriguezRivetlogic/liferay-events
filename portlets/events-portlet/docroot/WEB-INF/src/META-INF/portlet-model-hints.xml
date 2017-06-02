@@ -18,9 +18,14 @@
 		<field name="description" type="String">
 			<hint-collection name="TEXTAREA" />
 		</field>
+		<field name="tags" type="String" />
 		<field name="eventDate" type="Date" />
 		<field name="eventEndDate" type="Date" />
 		<field name="privateEvent" type="boolean" />
+		<field name="registrationRequired" type="boolean" />
+		<field name="requiredFullName" type="boolean" />
+		<field name="requiredEmail" type="boolean" />
+		<field name="requiredPhone" type="boolean" />
 		<field name="locationId" type="long" />
 		<field name="targetId" type="long" />
 		<field name="typeId" type="long" />

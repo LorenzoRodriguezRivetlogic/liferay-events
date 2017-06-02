@@ -29,12 +29,17 @@
         <column name="name" type="String" />
         <column name="location" type="String" />
         <column name="description" type="String" />
+        <column name="tags" type="String"></column>
         <column name="eventDate" type="Date" />
         <column name="eventEndDate" type="Date" />
         <column name="privateEvent" type="boolean" />
+        <column name="registrationRequired" type="boolean"></column>
         <!--<column name="participants" type="Collection" entity="Participant" mapping-key="eventId"/>-->
 
         <!-- Order -->
+        <column name="requiredFullName" type="boolean"></column>
+        <column name="requiredEmail" type="boolean"></column>
+        <column name="requiredPhone" type="boolean"></column>
         <column name="locationId" type="long"></column>
         <column name="targetId" type="long"></column>
         <column name="typeId" type="long"></column>

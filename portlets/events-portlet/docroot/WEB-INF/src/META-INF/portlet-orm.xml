@@ -21,6 +21,7 @@
 			<basic name="name" />
 			<basic name="location" />
 			<basic name="description" />
+			<basic name="tags" />
 			<basic name="eventDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
@@ -28,6 +29,10 @@
 				<temporal>TIMESTAMP</temporal>
 			</basic>
 			<basic name="privateEvent" />
+			<basic name="registrationRequired" />
+			<basic name="requiredFullName" />
+			<basic name="requiredEmail" />
+			<basic name="requiredPhone" />
 			<basic name="locationId" />
 			<basic name="targetId" />
 			<basic name="typeId" />

@@ -220,6 +220,21 @@ public interface EventModel extends BaseModel<Event> {
 	public void setDescription(String description);
 
 	/**
+	 * Returns the tags of this event.
+	 *
+	 * @return the tags of this event
+	 */
+	@AutoEscape
+	public String getTags();
+
+	/**
+	 * Sets the tags of this event.
+	 *
+	 * @param tags the tags of this event
+	 */
+	public void setTags(String tags);
+
+	/**
 	 * Returns the event date of this event.
 	 *
 	 * @return the event date of this event
@@ -267,6 +282,90 @@ public interface EventModel extends BaseModel<Event> {
 	 * @param privateEvent the private event of this event
 	 */
 	public void setPrivateEvent(boolean privateEvent);
+
+	/**
+	 * Returns the registration required of this event.
+	 *
+	 * @return the registration required of this event
+	 */
+	public boolean getRegistrationRequired();
+
+	/**
+	 * Returns <code>true</code> if this event is registration required.
+	 *
+	 * @return <code>true</code> if this event is registration required; <code>false</code> otherwise
+	 */
+	public boolean isRegistrationRequired();
+
+	/**
+	 * Sets whether this event is registration required.
+	 *
+	 * @param registrationRequired the registration required of this event
+	 */
+	public void setRegistrationRequired(boolean registrationRequired);
+
+	/**
+	 * Returns the required full name of this event.
+	 *
+	 * @return the required full name of this event
+	 */
+	public boolean getRequiredFullName();
+
+	/**
+	 * Returns <code>true</code> if this event is required full name.
+	 *
+	 * @return <code>true</code> if this event is required full name; <code>false</code> otherwise
+	 */
+	public boolean isRequiredFullName();
+
+	/**
+	 * Sets whether this event is required full name.
+	 *
+	 * @param requiredFullName the required full name of this event
+	 */
+	public void setRequiredFullName(boolean requiredFullName);
+
+	/**
+	 * Returns the required email of this event.
+	 *
+	 * @return the required email of this event
+	 */
+	public boolean getRequiredEmail();
+
+	/**
+	 * Returns <code>true</code> if this event is required email.
+	 *
+	 * @return <code>true</code> if this event is required email; <code>false</code> otherwise
+	 */
+	public boolean isRequiredEmail();
+
+	/**
+	 * Sets whether this event is required email.
+	 *
+	 * @param requiredEmail the required email of this event
+	 */
+	public void setRequiredEmail(boolean requiredEmail);
+
+	/**
+	 * Returns the required phone of this event.
+	 *
+	 * @return the required phone of this event
+	 */
+	public boolean getRequiredPhone();
+
+	/**
+	 * Returns <code>true</code> if this event is required phone.
+	 *
+	 * @return <code>true</code> if this event is required phone; <code>false</code> otherwise
+	 */
+	public boolean isRequiredPhone();
+
+	/**
+	 * Sets whether this event is required phone.
+	 *
+	 * @param requiredPhone the required phone of this event
+	 */
+	public void setRequiredPhone(boolean requiredPhone);
 
 	/**
 	 * Returns the location ID of this event.

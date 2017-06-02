@@ -69,6 +69,8 @@ Long typeId = event.getTypeId();
 
 List<Target> targets = TargetLocalServiceUtil.getTargetsByGroupId(portletGroupId);
 Long targetId = event.getTargetId();
+
+String divStyle = event.getRegistrationRequired() ?  "block":"none";
 %>
 
 <liferay-ui:error key="event-save-error" message="event-save-error" />
@@ -266,6 +268,8 @@ Long targetId = event.getTargetId();
 				</aui:select>
 				<aui:button name="dialog-targets"  id="dialog-targets" value="event-new"> </aui:button>
 			</div>
+			
+			<liferay-ui:asset-tags-selector curTags="<%= event.getTags() %>"/>
 		</aui:fieldset>
 		
 		<aui:fieldset label="calendar">
@@ -359,6 +363,27 @@ Long targetId = event.getTargetId();
 				</c:choose>
 			</div>
 		   	<aui:input name="<%=WebKeys.PARTICIPANT_INDEXES%>" type="hidden"/>
+		</aui:fieldset>	
+		
+		<aui:fieldset label="event-registration">
+			<aui:field-wrapper>
+				<aui:input name="registrationRequired" id="registrationRequired" type="checkbox"  value="${event.registrationRequired}"></aui:input>
+			</aui:field-wrapper>
+			
+			<div id="hiddenInfo" style="display: <%= divStyle %>">
+				<span class="title-text" ><liferay-ui:message key="event-registration-information" /></span>
+				<div class="accordion-inner">
+					<aui:field-wrapper>
+						<aui:input name="<%=EventPortletConstants.PARAMETER_REGISTRATION_FULL_NAME%>" label="event-registration-full-name" type="checkbox" value="${event.requiredFullName}"/>
+					</aui:field-wrapper>
+					<aui:field-wrapper>
+						<aui:input name="<%=EventPortletConstants.PARAMETER_REGISTRATION_EMAIL%>" label="event-registration-email" type="checkbox" value="${event.requiredEmail}"/>
+					</aui:field-wrapper>
+					<aui:field-wrapper>
+						<aui:input name="<%=EventPortletConstants.PARAMETER_REGISTRATION_TELEPHONE%>" label="event-registration-telephone" type="checkbox" value="${event.requiredPhone}"/>
+					</aui:field-wrapper>
+				</div>
+			</div>
 		</aui:fieldset>	
 		
 		<aui:fieldset>
@@ -538,4 +563,18 @@ function removeOptions(comboBox){
 		this.remove();
 	});
 }
+
+AUI().ready('aui-base','event','node', function(A){
+   	if(A.one("#<portlet:namespace />registrationRequiredCheckbox")){
+		A.one('#<portlet:namespace/>registrationRequiredCheckbox').on('click',function(e){ 
+			var visible = (A.one("#<portlet:namespace/>registrationRequired").attr('value') == 'true');
+			var div = document.getElementById('hiddenInfo');
+			if (visible) {
+				div.style.display = 'block';
+			} else {
+				div.style.display = 'none';
+			}
+	    });
+	}
+});
 </aui:script>
