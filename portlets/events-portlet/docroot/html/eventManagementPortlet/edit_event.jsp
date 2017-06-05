@@ -145,7 +145,7 @@ String divStylePrivateEvent = event.getPrivateEvent()?  "block":"none";
 				<!-- aui:validator name="required"/-->
 			</aui:input>
 			<div>
-				<aui:select id="locations" name="locations" label="locations" showEmptyOption="true" >
+				<aui:select id="locations" name="locations" label="locations" showEmptyOption="true" inlineField="<%=true%>">
 					<% 
 					for (Location locationSel : locations) {
 					%>
@@ -156,7 +156,7 @@ String divStylePrivateEvent = event.getPrivateEvent()?  "block":"none";
 					}
 					%>
 				</aui:select>
-				<aui:button style="display:inline-block" name="dialog-locations"  id="dialog-locations" value="event-add-location"> </aui:button>
+				<aui:button style="display:inline-block" name="dialog-locations"  id="dialog-locations" value="event-add-location" inlineField="<%=true%>"></aui:button>
 			</div>
     	</aui:fieldset>
     	
@@ -247,7 +247,7 @@ String divStylePrivateEvent = event.getPrivateEvent()?  "block":"none";
 		
 		<aui:fieldset label="event-categorization">
 			<div>
-				<aui:select id="types" name="types" label="types" showEmptyOption="true" >
+				<aui:select id="types" name="types" label="types" showEmptyOption="true" inlineField="<%=true%>" >
 					<% 
 					for (Type typeSel : types) {
 					%>
@@ -258,10 +258,10 @@ String divStylePrivateEvent = event.getPrivateEvent()?  "block":"none";
 					}
 					%>
 				</aui:select>
-				<aui:button name="dialog-types"  id="dialog-types" value="event-new"> </aui:button>
+				<aui:button name="dialog-types"  id="dialog-types" value="event-new" inlineField="<%=true%>"> </aui:button>
 			</div>
 			<div>
-				<aui:select id="targets" name="targets" label="targets" showEmptyOption="true" >
+				<aui:select id="targets" name="targets" label="targets" showEmptyOption="true" inlineField="<%=true%>">
 					<% 
 					for (Target targetSel : targets) {
 					%>
@@ -272,7 +272,7 @@ String divStylePrivateEvent = event.getPrivateEvent()?  "block":"none";
 					}
 					%>
 				</aui:select>
-				<aui:button name="dialog-targets"  id="dialog-targets" value="event-new"> </aui:button>
+				<aui:button name="dialog-targets"  id="dialog-targets" value="event-new" inlineField="<%=true%>"> </aui:button>
 			</div>
 			
 			<liferay-ui:asset-tags-selector curTags="<%= event.getTags() %>"/>
