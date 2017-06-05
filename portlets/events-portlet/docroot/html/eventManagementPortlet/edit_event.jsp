@@ -71,6 +71,7 @@ List<Target> targets = TargetLocalServiceUtil.getTargetsByGroupId(portletGroupId
 Long targetId = event.getTargetId();
 
 String divStyle = event.getRegistrationRequired() ?  "block":"none";
+String divStylePrivateEvent = event.getPrivateEvent()?  "block":"none";
 %>
 
 <liferay-ui:error key="event-save-error" message="event-save-error" />
@@ -291,84 +292,86 @@ String divStyle = event.getRegistrationRequired() ?  "block":"none";
 			</aui:select>
 		</aui:fieldset>
 		
-		<aui:fieldset label="label-participants">
-			<div id="${pns}upload">
-		    	<aui:fieldset>
-		        	<p><liferay-ui:message key="message-upload-participants"/></p>
-		            <div>
-		            	<aui:input type="file" name="<%=EventPortletConstants.PARAMETER_FILE%>" value="upload-file">
-			            	<aui:validator name="acceptFiles">'.csv'</aui:validator>
-		            	</aui:input>
-		            </div>
-		    	</aui:fieldset>
-			</div>
-		</aui:fieldset>
-		
-		<c:if test="<%=event != null%>">
-		
-			<liferay-ui:search-container 
-					emptyResultsMessage="participant-empty-results" delta="${prefBean.numRows}" deltaConfigurable="true">
-					<liferay-ui:search-container-results 
-						results="<%=ParticipantLocalServiceUtil.getParticipants(event.getEventId())%>"
-						total="<%=ParticipantLocalServiceUtil.getParticipantsCount(event.getEventId())%>"
-					/>
-				<liferay-ui:search-container-row 
-					className="com.rivetlogic.event.model.Participant" 
-					keyProperty="participantId" modelVar="participant">
-					<%
-						String statusLabel = LanguageUtil.get(pageContext, "participant-status-"+participant.getStatus());
-					%>
-					<liferay-ui:search-container-column-text name="participant-status" value="<%=statusLabel %>" />
-					<liferay-ui:search-container-column-text name="participant-name" property="fullName" />
-					<liferay-ui:search-container-column-text name="participant-email" property="email" />
-					<liferay-ui:search-container-column-jsp path="/html/eventManagementPortlet/include/edit-event-actions.jsp"/>
-				</liferay-ui:search-container-row>
-		
-				<liferay-ui:search-iterator />
-		
-			</liferay-ui:search-container>
-			
-		</c:if>
-		
-		<aui:fieldset id="add-participants">
-			<div class="participant-info">
-				<div class="div-table-row">
-					<div class="div-table-col">
-			    		<liferay-ui:message key="participant-fullname"/>
-					</div>
-					<div class="div-table-col">
-					    <liferay-ui:message key="participant-email"/>
-					</div>
+		<div id="hiddenParticipants" style="display: <%= divStylePrivateEvent %>">
+			<aui:fieldset label="label-participants">
+				<div id="${pns}upload">
+			    	<aui:fieldset>
+			        	<p><liferay-ui:message key="message-upload-participants"/></p>
+			            <div>
+			            	<aui:input type="file" name="<%=EventPortletConstants.PARAMETER_FILE%>" value="upload-file">
+				            	<aui:validator name="acceptFiles">'.csv'</aui:validator>
+			            	</aui:input>
+			            </div>
+			    	</aui:fieldset>
 				</div>
-				<c:set var="paramFullName" value="<%=EventPortletConstants.PARAMETER_PARTICIPANT_FULL_NAME%>" />
-				<c:set var="paramEmail" value="<%=EventPortletConstants.PARAMETER_PARTICIPANT_EMAIL%>" />
-				<c:choose>
-					<c:when test="${not empty participants}">
-						<c:forEach items="${participants}" var="participant" varStatus="loop">
+			</aui:fieldset>
+			
+			<c:if test="<%=event != null%>">
+			
+				<liferay-ui:search-container 
+						emptyResultsMessage="participant-empty-results" delta="${prefBean.numRows}" deltaConfigurable="true">
+						<liferay-ui:search-container-results 
+							results="<%=ParticipantLocalServiceUtil.getParticipants(event.getEventId())%>"
+							total="<%=ParticipantLocalServiceUtil.getParticipantsCount(event.getEventId())%>"
+						/>
+					<liferay-ui:search-container-row 
+						className="com.rivetlogic.event.model.Participant" 
+						keyProperty="participantId" modelVar="participant">
+						<%
+							String statusLabel = LanguageUtil.get(pageContext, "participant-status-"+participant.getStatus());
+						%>
+						<liferay-ui:search-container-column-text name="participant-status" value="<%=statusLabel %>" />
+						<liferay-ui:search-container-column-text name="participant-name" property="fullName" />
+						<liferay-ui:search-container-column-text name="participant-email" property="email" />
+						<liferay-ui:search-container-column-jsp path="/html/eventManagementPortlet/include/edit-event-actions.jsp"/>
+					</liferay-ui:search-container-row>
+			
+					<liferay-ui:search-iterator />
+			
+				</liferay-ui:search-container>
+				
+			</c:if>
+			
+			<aui:fieldset id="add-participants">
+				<div class="participant-info">
+					<div class="div-table-row">
+						<div class="div-table-col">
+				    		<liferay-ui:message key="participant-fullname"/>
+						</div>
+						<div class="div-table-col">
+						    <liferay-ui:message key="participant-email"/>
+						</div>
+					</div>
+					<c:set var="paramFullName" value="<%=EventPortletConstants.PARAMETER_PARTICIPANT_FULL_NAME%>" />
+					<c:set var="paramEmail" value="<%=EventPortletConstants.PARAMETER_PARTICIPANT_EMAIL%>" />
+					<c:choose>
+						<c:when test="${not empty participants}">
+							<c:forEach items="${participants}" var="participant" varStatus="loop">
+								<div class="lfr-form-row" >
+							    	<div class="row-fields">
+							    		<aui:input name="${paramFullName}${loop.count}" label="" value="${participant.fullName}" type="text" inlineField="<%= true %>"/>
+							    		<aui:input name="${paramEmail}${loop.count}" label="" value="${participant.email}" type="text" inlineField="<%= true %>">
+							    			<aui:validator name="email"/>
+							    		</aui:input>
+							    	</div>
+							    </div>
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
 							<div class="lfr-form-row" >
 						    	<div class="row-fields">
-						    		<aui:input name="${paramFullName}${loop.count}" label="" value="${participant.fullName}" type="text" inlineField="<%= true %>"/>
-						    		<aui:input name="${paramEmail}${loop.count}" label="" value="${participant.email}" type="text" inlineField="<%= true %>">
+						    		<aui:input name="${paramFullName}1" label="" type="text" inlineField="<%= true %>"/>
+						    		<aui:input name="${paramEmail}1" label="" type="text" inlineField="<%= true %>">
 						    			<aui:validator name="email"/>
 						    		</aui:input>
 						    	</div>
 						    </div>
-						</c:forEach>
-					</c:when>
-					<c:otherwise>
-						<div class="lfr-form-row" >
-					    	<div class="row-fields">
-					    		<aui:input name="${paramFullName}1" label="" type="text" inlineField="<%= true %>"/>
-					    		<aui:input name="${paramEmail}1" label="" type="text" inlineField="<%= true %>">
-					    			<aui:validator name="email"/>
-					    		</aui:input>
-					    	</div>
-					    </div>
-					</c:otherwise>
-				</c:choose>
-			</div>
-		   	<aui:input name="<%=WebKeys.PARTICIPANT_INDEXES%>" type="hidden"/>
-		</aui:fieldset>	
+						</c:otherwise>
+					</c:choose>
+				</div>
+			   	<aui:input name="<%=WebKeys.PARTICIPANT_INDEXES%>" type="hidden"/>
+			</aui:fieldset>	
+		</div>	
 		
 		<aui:fieldset label="event-registration">
 			<aui:field-wrapper>
@@ -578,8 +581,30 @@ AUI().ready('aui-base','event','node', function(A){
 				div.style.display = 'block';
 			} else {
 				div.style.display = 'none';
+				var checkboxFullname = A.one("#<portlet:namespace />registrationFullNameCheckbox");
+				var checkboxEmail = A.one("#<portlet:namespace />registrationEmailCheckbox");
+				var checkboxTelephone = A.one("#<portlet:namespace />registrationTelephoneCheckbox");
+				checkboxFullname.set('checked', false);
+				checkboxEmail.set('checked', false);
+				checkboxTelephone.set('checked', false);
+				Liferay.Util.updateCheckboxValue(checkboxFullname);
+				Liferay.Util.updateCheckboxValue(checkboxEmail);
+				Liferay.Util.updateCheckboxValue(checkboxTelephone);
 			}
 	    });
 	}
+   	
+   	if(A.one("#<portlet:namespace />eventCheckbox")){
+		A.one('#<portlet:namespace/>eventCheckbox').on('click',function(e){ 
+			var visible = (A.one("#<portlet:namespace/>event").attr('value') == 'true');
+			console.log(visible);
+			var div = document.getElementById('hiddenParticipants');
+			if (visible) {
+				div.style.display = 'block';
+			} else {
+				div.style.display = 'none';
+			}
+		});
+   	}
 });
 </aui:script>
