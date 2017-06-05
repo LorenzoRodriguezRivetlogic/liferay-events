@@ -24,6 +24,8 @@ import com.liferay.portlet.expando.model.ExpandoBridge;
 
 import java.io.Serializable;
 
+import java.sql.Blob;
+
 import java.util.Date;
 
 /**
@@ -366,6 +368,20 @@ public interface EventModel extends BaseModel<Event> {
 	 * @param requiredPhone the required phone of this event
 	 */
 	public void setRequiredPhone(boolean requiredPhone);
+
+	/**
+	 * Returns the image of this event.
+	 *
+	 * @return the image of this event
+	 */
+	public Blob getImage();
+
+	/**
+	 * Sets the image of this event.
+	 *
+	 * @param image the image of this event
+	 */
+	public void setImage(Blob image);
 
 	/**
 	 * Returns the location ID of this event.

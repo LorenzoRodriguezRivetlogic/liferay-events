@@ -50,6 +50,7 @@ public class EventPortletConstants {
     public static final String PARAMETER_REGISTRATION_FULL_NAME = "registrationFullName";
     public static final String PARAMETER_REGISTRATION_EMAIL = "registrationEmail";
     public static final String PARAMETER_REGISTRATION_TELEPHONE = "registrationTelephone";
+    public static final String PARAMETER_PHOTO = "photo";
     public static final String PARAMETER_TOKEN = "token";
     public static final String START_END_DATES_SEPARATOR = " - ";
     public static final int INVALID_ID = -1;

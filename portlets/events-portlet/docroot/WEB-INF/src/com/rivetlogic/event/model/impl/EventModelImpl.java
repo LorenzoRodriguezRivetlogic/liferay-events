@@ -30,10 +30,13 @@ import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import com.rivetlogic.event.model.Event;
+import com.rivetlogic.event.model.EventImageBlobModel;
 import com.rivetlogic.event.model.EventModel;
+import com.rivetlogic.event.service.EventLocalServiceUtil;
 
 import java.io.Serializable;
 
+import java.sql.Blob;
 import java.sql.Types;
 
 import java.util.Date;
@@ -79,11 +82,12 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 			{ "requiredFullName", Types.BOOLEAN },
 			{ "requiredEmail", Types.BOOLEAN },
 			{ "requiredPhone", Types.BOOLEAN },
+			{ "image", Types.BLOB },
 			{ "locationId", Types.BIGINT },
 			{ "targetId", Types.BIGINT },
 			{ "typeId", Types.BIGINT }
 		};
-	public static final String TABLE_SQL_CREATE = "create table rivetlogic_event_Event (uuid_ VARCHAR(75) null,eventId LONG not null primary key,calendarBookingId LONG,calendarId LONG,groupId LONG,companyId LONG,userId LONG,name VARCHAR(400) null,location STRING null,description STRING null,tags VARCHAR(75) null,eventDate DATE null,eventEndDate DATE null,privateEvent BOOLEAN,registrationRequired BOOLEAN,requiredFullName BOOLEAN,requiredEmail BOOLEAN,requiredPhone BOOLEAN,locationId LONG,targetId LONG,typeId LONG)";
+	public static final String TABLE_SQL_CREATE = "create table rivetlogic_event_Event (uuid_ VARCHAR(75) null,eventId LONG not null primary key,calendarBookingId LONG,calendarId LONG,groupId LONG,companyId LONG,userId LONG,name VARCHAR(400) null,location STRING null,description STRING null,tags VARCHAR(75) null,eventDate DATE null,eventEndDate DATE null,privateEvent BOOLEAN,registrationRequired BOOLEAN,requiredFullName BOOLEAN,requiredEmail BOOLEAN,requiredPhone BOOLEAN,image BLOB,locationId LONG,targetId LONG,typeId LONG)";
 	public static final String TABLE_SQL_DROP = "drop table rivetlogic_event_Event";
 	public static final String ORDER_BY_JPQL = " ORDER BY event.eventDate ASC, event.name ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY rivetlogic_event_Event.eventDate ASC, rivetlogic_event_Event.name ASC";
@@ -162,6 +166,7 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 		attributes.put("requiredFullName", getRequiredFullName());
 		attributes.put("requiredEmail", getRequiredEmail());
 		attributes.put("requiredPhone", getRequiredPhone());
+		attributes.put("image", getImage());
 		attributes.put("locationId", getLocationId());
 		attributes.put("targetId", getTargetId());
 		attributes.put("typeId", getTypeId());
@@ -278,6 +283,12 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 		if (requiredPhone != null) {
 			setRequiredPhone(requiredPhone);
+		}
+
+		Blob image = (Blob)attributes.get("image");
+
+		if (image != null) {
+			setImage(image);
 		}
 
 		Long locationId = (Long)attributes.get("locationId");
@@ -576,6 +587,35 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 	}
 
 	@Override
+	public Blob getImage() {
+		if (_imageBlobModel == null) {
+			try {
+				_imageBlobModel = EventLocalServiceUtil.getImageBlobModel(getPrimaryKey());
+			}
+			catch (Exception e) {
+			}
+		}
+
+		Blob blob = null;
+
+		if (_imageBlobModel != null) {
+			blob = _imageBlobModel.getImageBlob();
+		}
+
+		return blob;
+	}
+
+	@Override
+	public void setImage(Blob image) {
+		if (_imageBlobModel == null) {
+			_imageBlobModel = new EventImageBlobModel(getPrimaryKey(), image);
+		}
+		else {
+			_imageBlobModel.setImageBlob(image);
+		}
+	}
+
+	@Override
 	public long getLocationId() {
 		return _locationId;
 	}
@@ -723,6 +763,8 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 		eventModelImpl._setOriginalCompanyId = false;
 
+		eventModelImpl._imageBlobModel = null;
+
 		eventModelImpl._columnBitmask = 0;
 	}
 
@@ -821,7 +863,7 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(45);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -872,7 +914,7 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(67);
+		StringBundler sb = new StringBundler(70);
 
 		sb.append("<model><model-name>");
 		sb.append("com.rivetlogic.event.model.Event");
@@ -994,6 +1036,7 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 	private boolean _requiredFullName;
 	private boolean _requiredEmail;
 	private boolean _requiredPhone;
+	private EventImageBlobModel _imageBlobModel;
 	private long _locationId;
 	private long _targetId;
 	private long _typeId;

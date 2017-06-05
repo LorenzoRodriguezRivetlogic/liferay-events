@@ -307,6 +307,12 @@ public class EventLocalServiceUtil {
 		return getService().updateEvent(event);
 	}
 
+	public static com.rivetlogic.event.model.EventImageBlobModel getImageBlobModel(
+		java.io.Serializable primaryKey)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getImageBlobModel(primaryKey);
+	}
+
 	/**
 	* Returns the Spring bean ID for this bean.
 	*

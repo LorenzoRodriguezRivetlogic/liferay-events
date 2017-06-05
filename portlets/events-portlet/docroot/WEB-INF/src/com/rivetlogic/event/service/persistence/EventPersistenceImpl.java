@@ -2691,8 +2691,12 @@ public class EventPersistenceImpl extends BasePersistenceImpl<Event>
 				event.setNew(false);
 			}
 			else {
-				session.merge(event);
+				session.evict(event);
+				session.saveOrUpdate(event);
 			}
+
+			session.flush();
+			session.clear();
 		}
 		catch (Exception e) {
 			throw processException(e);
@@ -2784,6 +2788,8 @@ public class EventPersistenceImpl extends BasePersistenceImpl<Event>
 		clearUniqueFindersCache(event);
 		cacheUniqueFindersCache(event);
 
+		event.resetOriginalValues();
+
 		return event;
 	}
 
@@ -2815,6 +2821,7 @@ public class EventPersistenceImpl extends BasePersistenceImpl<Event>
 		eventImpl.setRequiredFullName(event.isRequiredFullName());
 		eventImpl.setRequiredEmail(event.isRequiredEmail());
 		eventImpl.setRequiredPhone(event.isRequiredPhone());
+		eventImpl.setImage(event.getImage());
 		eventImpl.setLocationId(event.getLocationId());
 		eventImpl.setTargetId(event.getTargetId());
 		eventImpl.setTypeId(event.getTypeId());

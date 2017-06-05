@@ -17,6 +17,7 @@ create table rivetlogic_event_Event (
 	requiredFullName BOOLEAN,
 	requiredEmail BOOLEAN,
 	requiredPhone BOOLEAN,
+	image BLOB,
 	locationId LONG,
 	targetId LONG,
 	typeId LONG

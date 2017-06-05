@@ -30,6 +30,8 @@ import java.io.Serializable;
 
 import java.lang.reflect.Method;
 
+import java.sql.Blob;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -93,6 +95,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		attributes.put("requiredFullName", getRequiredFullName());
 		attributes.put("requiredEmail", getRequiredEmail());
 		attributes.put("requiredPhone", getRequiredPhone());
+		attributes.put("image", getImage());
 		attributes.put("locationId", getLocationId());
 		attributes.put("targetId", getTargetId());
 		attributes.put("typeId", getTypeId());
@@ -209,6 +212,12 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 		if (requiredPhone != null) {
 			setRequiredPhone(requiredPhone);
+		}
+
+		Blob image = (Blob)attributes.get("image");
+
+		if (image != null) {
+			setImage(image);
 		}
 
 		Long locationId = (Long)attributes.get("locationId");
@@ -685,6 +694,29 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 	}
 
 	@Override
+	public Blob getImage() {
+		return _image;
+	}
+
+	@Override
+	public void setImage(Blob image) {
+		_image = image;
+
+		if (_eventRemoteModel != null) {
+			try {
+				Class<?> clazz = _eventRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setImage", Blob.class);
+
+				method.invoke(_eventRemoteModel, image);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
 	public long getLocationId() {
 		return _locationId;
 	}
@@ -898,6 +930,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		clone.setRequiredFullName(getRequiredFullName());
 		clone.setRequiredEmail(getRequiredEmail());
 		clone.setRequiredPhone(getRequiredPhone());
+		clone.setImage(getImage());
 		clone.setLocationId(getLocationId());
 		clone.setTargetId(getTargetId());
 		clone.setTypeId(getTypeId());
@@ -957,7 +990,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(45);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -995,6 +1028,8 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		sb.append(getRequiredEmail());
 		sb.append(", requiredPhone=");
 		sb.append(getRequiredPhone());
+		sb.append(", image=");
+		sb.append(getImage());
 		sb.append(", locationId=");
 		sb.append(getLocationId());
 		sb.append(", targetId=");
@@ -1008,7 +1043,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(67);
+		StringBundler sb = new StringBundler(70);
 
 		sb.append("<model><model-name>");
 		sb.append("com.rivetlogic.event.model.Event");
@@ -1087,6 +1122,10 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		sb.append(getRequiredPhone());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>image</column-name><column-value><![CDATA[");
+		sb.append(getImage());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>locationId</column-name><column-value><![CDATA[");
 		sb.append(getLocationId());
 		sb.append("]]></column-value></column>");
@@ -1123,6 +1162,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 	private boolean _requiredFullName;
 	private boolean _requiredEmail;
 	private boolean _requiredPhone;
+	private Blob _image;
 	private long _locationId;
 	private long _targetId;
 	private long _typeId;

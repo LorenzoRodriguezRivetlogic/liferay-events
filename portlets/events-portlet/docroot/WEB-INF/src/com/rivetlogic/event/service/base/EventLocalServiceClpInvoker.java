@@ -118,67 +118,71 @@ public class EventLocalServiceClpInvoker {
 				"com.rivetlogic.event.model.Event"
 			};
 
-		_methodName56 = "getBeanIdentifier";
+		_methodName20 = "getImageBlobModel";
 
-		_methodParameterTypes56 = new String[] {  };
+		_methodParameterTypes20 = new String[] { "java.io.Serializable" };
 
-		_methodName57 = "setBeanIdentifier";
+		_methodName57 = "getBeanIdentifier";
 
-		_methodParameterTypes57 = new String[] { "java.lang.String" };
+		_methodParameterTypes57 = new String[] {  };
 
-		_methodName62 = "addEvent";
+		_methodName58 = "setBeanIdentifier";
 
-		_methodParameterTypes62 = new String[] {
+		_methodParameterTypes58 = new String[] { "java.lang.String" };
+
+		_methodName63 = "addEvent";
+
+		_methodParameterTypes63 = new String[] {
 				"com.rivetlogic.event.model.Event",
 				"com.liferay.portal.service.ServiceContext"
 			};
 
-		_methodName63 = "getUserCalendar";
+		_methodName64 = "getUserCalendar";
 
-		_methodParameterTypes63 = new String[] {
+		_methodParameterTypes64 = new String[] {
 				"long", "com.liferay.portal.service.ServiceContext"
 			};
 
-		_methodName65 = "updateEvent";
-
-		_methodParameterTypes65 = new String[] {
-				"com.rivetlogic.event.model.Event",
-				"com.liferay.portal.service.ServiceContext"
-			};
-
-		_methodName66 = "deleteEvent";
+		_methodName66 = "updateEvent";
 
 		_methodParameterTypes66 = new String[] {
-				"com.rivetlogic.event.model.Event"
+				"com.rivetlogic.event.model.Event",
+				"com.liferay.portal.service.ServiceContext"
 			};
 
 		_methodName67 = "deleteEvent";
 
-		_methodParameterTypes67 = new String[] { "long" };
+		_methodParameterTypes67 = new String[] {
+				"com.rivetlogic.event.model.Event"
+			};
 
-		_methodName70 = "getPastEvents";
+		_methodName68 = "deleteEvent";
 
-		_methodParameterTypes70 = new String[] { "int", "int", "long" };
+		_methodParameterTypes68 = new String[] { "long" };
 
-		_methodName71 = "getPastEventsCount";
+		_methodName71 = "getPastEvents";
 
-		_methodParameterTypes71 = new String[] { "long" };
+		_methodParameterTypes71 = new String[] { "int", "int", "long" };
 
-		_methodName74 = "getUpcomingEvents";
+		_methodName72 = "getPastEventsCount";
 
-		_methodParameterTypes74 = new String[] { "int", "int", "long" };
+		_methodParameterTypes72 = new String[] { "long" };
 
-		_methodName75 = "getUpcomingEventsCount";
+		_methodName75 = "getUpcomingEvents";
 
-		_methodParameterTypes75 = new String[] { "long" };
+		_methodParameterTypes75 = new String[] { "int", "int", "long" };
 
-		_methodName77 = "getPublicEvents";
+		_methodName76 = "getUpcomingEventsCount";
 
-		_methodParameterTypes77 = new String[] { "int", "int" };
+		_methodParameterTypes76 = new String[] { "long" };
 
-		_methodName78 = "getPublicEventsCount";
+		_methodName78 = "getPublicEvents";
 
-		_methodParameterTypes78 = new String[] {  };
+		_methodParameterTypes78 = new String[] { "int", "int" };
+
+		_methodName79 = "getPublicEventsCount";
+
+		_methodParameterTypes79 = new String[] {  };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -294,78 +298,83 @@ public class EventLocalServiceClpInvoker {
 			return EventLocalServiceUtil.updateEvent((com.rivetlogic.event.model.Event)arguments[0]);
 		}
 
-		if (_methodName56.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes56, parameterTypes)) {
-			return EventLocalServiceUtil.getBeanIdentifier();
+		if (_methodName20.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes20, parameterTypes)) {
+			return EventLocalServiceUtil.getImageBlobModel((java.io.Serializable)arguments[0]);
 		}
 
 		if (_methodName57.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes57, parameterTypes)) {
+			return EventLocalServiceUtil.getBeanIdentifier();
+		}
+
+		if (_methodName58.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes58, parameterTypes)) {
 			EventLocalServiceUtil.setBeanIdentifier((java.lang.String)arguments[0]);
 
 			return null;
 		}
 
-		if (_methodName62.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes62, parameterTypes)) {
+		if (_methodName63.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes63, parameterTypes)) {
 			return EventLocalServiceUtil.addEvent((com.rivetlogic.event.model.Event)arguments[0],
 				(com.liferay.portal.service.ServiceContext)arguments[1]);
 		}
 
-		if (_methodName63.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes63, parameterTypes)) {
+		if (_methodName64.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes64, parameterTypes)) {
 			return EventLocalServiceUtil.getUserCalendar(((Long)arguments[0]).longValue(),
-				(com.liferay.portal.service.ServiceContext)arguments[1]);
-		}
-
-		if (_methodName65.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes65, parameterTypes)) {
-			return EventLocalServiceUtil.updateEvent((com.rivetlogic.event.model.Event)arguments[0],
 				(com.liferay.portal.service.ServiceContext)arguments[1]);
 		}
 
 		if (_methodName66.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes66, parameterTypes)) {
-			return EventLocalServiceUtil.deleteEvent((com.rivetlogic.event.model.Event)arguments[0]);
+			return EventLocalServiceUtil.updateEvent((com.rivetlogic.event.model.Event)arguments[0],
+				(com.liferay.portal.service.ServiceContext)arguments[1]);
 		}
 
 		if (_methodName67.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes67, parameterTypes)) {
+			return EventLocalServiceUtil.deleteEvent((com.rivetlogic.event.model.Event)arguments[0]);
+		}
+
+		if (_methodName68.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes68, parameterTypes)) {
 			return EventLocalServiceUtil.deleteEvent(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName70.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes70, parameterTypes)) {
+		if (_methodName71.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes71, parameterTypes)) {
 			return EventLocalServiceUtil.getPastEvents(((Integer)arguments[0]).intValue(),
 				((Integer)arguments[1]).intValue(),
 				((Long)arguments[2]).longValue());
 		}
 
-		if (_methodName71.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes71, parameterTypes)) {
+		if (_methodName72.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes72, parameterTypes)) {
 			return EventLocalServiceUtil.getPastEventsCount(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName74.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes74, parameterTypes)) {
+		if (_methodName75.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes75, parameterTypes)) {
 			return EventLocalServiceUtil.getUpcomingEvents(((Integer)arguments[0]).intValue(),
 				((Integer)arguments[1]).intValue(),
 				((Long)arguments[2]).longValue());
 		}
 
-		if (_methodName75.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes75, parameterTypes)) {
+		if (_methodName76.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes76, parameterTypes)) {
 			return EventLocalServiceUtil.getUpcomingEventsCount(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName77.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes77, parameterTypes)) {
-			return EventLocalServiceUtil.getPublicEvents(((Integer)arguments[0]).intValue(),
-				((Integer)arguments[1]).intValue());
 		}
 
 		if (_methodName78.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes78, parameterTypes)) {
+			return EventLocalServiceUtil.getPublicEvents(((Integer)arguments[0]).intValue(),
+				((Integer)arguments[1]).intValue());
+		}
+
+		if (_methodName79.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes79, parameterTypes)) {
 			return EventLocalServiceUtil.getPublicEventsCount();
 		}
 
@@ -412,30 +421,32 @@ public class EventLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName56;
-	private String[] _methodParameterTypes56;
+	private String _methodName20;
+	private String[] _methodParameterTypes20;
 	private String _methodName57;
 	private String[] _methodParameterTypes57;
-	private String _methodName62;
-	private String[] _methodParameterTypes62;
+	private String _methodName58;
+	private String[] _methodParameterTypes58;
 	private String _methodName63;
 	private String[] _methodParameterTypes63;
-	private String _methodName65;
-	private String[] _methodParameterTypes65;
+	private String _methodName64;
+	private String[] _methodParameterTypes64;
 	private String _methodName66;
 	private String[] _methodParameterTypes66;
 	private String _methodName67;
 	private String[] _methodParameterTypes67;
-	private String _methodName70;
-	private String[] _methodParameterTypes70;
+	private String _methodName68;
+	private String[] _methodParameterTypes68;
 	private String _methodName71;
 	private String[] _methodParameterTypes71;
-	private String _methodName74;
-	private String[] _methodParameterTypes74;
+	private String _methodName72;
+	private String[] _methodParameterTypes72;
 	private String _methodName75;
 	private String[] _methodParameterTypes75;
-	private String _methodName77;
-	private String[] _methodParameterTypes77;
+	private String _methodName76;
+	private String[] _methodParameterTypes76;
 	private String _methodName78;
 	private String[] _methodParameterTypes78;
+	private String _methodName79;
+	private String[] _methodParameterTypes79;
 }

@@ -287,6 +287,11 @@ public interface EventLocalService extends BaseLocalService,
 		com.rivetlogic.event.model.Event event)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public com.rivetlogic.event.model.EventImageBlobModel getImageBlobModel(
+		java.io.Serializable primaryKey)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
 	/**
 	* Returns the Spring bean ID for this bean.
 	*

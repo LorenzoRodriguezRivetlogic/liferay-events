@@ -33,6 +33,7 @@
 			<basic name="requiredFullName" />
 			<basic name="requiredEmail" />
 			<basic name="requiredPhone" />
+			<basic name="image" />
 			<basic name="locationId" />
 			<basic name="targetId" />
 			<basic name="typeId" />

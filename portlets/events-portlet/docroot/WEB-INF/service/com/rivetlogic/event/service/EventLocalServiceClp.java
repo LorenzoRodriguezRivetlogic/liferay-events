@@ -118,57 +118,61 @@ public class EventLocalServiceClp implements EventLocalService {
 				"com.rivetlogic.event.model.Event"
 			};
 
-		_methodName20 = "getBeanIdentifier";
+		_methodName20 = "getImageBlobModel";
 
-		_methodParameterTypes20 = new String[] {  };
+		_methodParameterTypes20 = new String[] { "java.io.Serializable" };
 
-		_methodName21 = "setBeanIdentifier";
+		_methodName21 = "getBeanIdentifier";
 
-		_methodParameterTypes21 = new String[] { "java.lang.String" };
+		_methodParameterTypes21 = new String[] {  };
 
-		_methodName23 = "addEvent";
+		_methodName22 = "setBeanIdentifier";
 
-		_methodParameterTypes23 = new String[] {
+		_methodParameterTypes22 = new String[] { "java.lang.String" };
+
+		_methodName24 = "addEvent";
+
+		_methodParameterTypes24 = new String[] {
 				"com.rivetlogic.event.model.Event",
 				"com.liferay.portal.service.ServiceContext"
 			};
 
-		_methodName24 = "getUserCalendar";
+		_methodName25 = "getUserCalendar";
 
-		_methodParameterTypes24 = new String[] {
+		_methodParameterTypes25 = new String[] {
 				"long", "com.liferay.portal.service.ServiceContext"
 			};
 
-		_methodName25 = "updateEvent";
+		_methodName26 = "updateEvent";
 
-		_methodParameterTypes25 = new String[] {
+		_methodParameterTypes26 = new String[] {
 				"com.rivetlogic.event.model.Event",
 				"com.liferay.portal.service.ServiceContext"
 			};
 
-		_methodName26 = "getPastEvents";
+		_methodName27 = "getPastEvents";
 
-		_methodParameterTypes26 = new String[] { "int", "int", "long" };
+		_methodParameterTypes27 = new String[] { "int", "int", "long" };
 
-		_methodName27 = "getPastEventsCount";
+		_methodName28 = "getPastEventsCount";
 
-		_methodParameterTypes27 = new String[] { "long" };
+		_methodParameterTypes28 = new String[] { "long" };
 
-		_methodName28 = "getUpcomingEvents";
+		_methodName29 = "getUpcomingEvents";
 
-		_methodParameterTypes28 = new String[] { "int", "int", "long" };
+		_methodParameterTypes29 = new String[] { "int", "int", "long" };
 
-		_methodName29 = "getUpcomingEventsCount";
+		_methodName30 = "getUpcomingEventsCount";
 
-		_methodParameterTypes29 = new String[] { "long" };
+		_methodParameterTypes30 = new String[] { "long" };
 
-		_methodName30 = "getPublicEvents";
+		_methodName31 = "getPublicEvents";
 
-		_methodParameterTypes30 = new String[] { "int", "int" };
+		_methodParameterTypes31 = new String[] { "int", "int" };
 
-		_methodName31 = "getPublicEventsCount";
+		_methodName32 = "getPublicEventsCount";
 
-		_methodParameterTypes31 = new String[] {  };
+		_methodParameterTypes32 = new String[] {  };
 	}
 
 	@Override
@@ -798,12 +802,42 @@ public class EventLocalServiceClp implements EventLocalService {
 	}
 
 	@Override
-	public java.lang.String getBeanIdentifier() {
+	public com.rivetlogic.event.model.EventImageBlobModel getImageBlobModel(
+		java.io.Serializable primaryKey)
+		throws com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName20,
-					_methodParameterTypes20, new Object[] {  });
+					_methodParameterTypes20,
+					new Object[] { ClpSerializer.translateInput(primaryKey) });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.rivetlogic.event.model.EventImageBlobModel)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.lang.String getBeanIdentifier() {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName21,
+					_methodParameterTypes21, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -823,8 +857,8 @@ public class EventLocalServiceClp implements EventLocalService {
 	@Override
 	public void setBeanIdentifier(java.lang.String beanIdentifier) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName21,
-				_methodParameterTypes21,
+			_invokableLocalService.invokeMethod(_methodName22,
+				_methodParameterTypes22,
 				new Object[] { ClpSerializer.translateInput(beanIdentifier) });
 		}
 		catch (Throwable t) {
@@ -856,8 +890,8 @@ public class EventLocalServiceClp implements EventLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName23,
-					_methodParameterTypes23,
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24,
 					new Object[] {
 						ClpSerializer.translateInput(newEvent),
 						
@@ -895,8 +929,8 @@ public class EventLocalServiceClp implements EventLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName24,
-					_methodParameterTypes24,
+			returnObj = _invokableLocalService.invokeMethod(_methodName25,
+					_methodParameterTypes25,
 					new Object[] {
 						userId,
 						
@@ -934,8 +968,8 @@ public class EventLocalServiceClp implements EventLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName25,
-					_methodParameterTypes25,
+			returnObj = _invokableLocalService.invokeMethod(_methodName26,
+					_methodParameterTypes26,
 					new Object[] {
 						ClpSerializer.translateInput(event),
 						
@@ -967,8 +1001,8 @@ public class EventLocalServiceClp implements EventLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName26,
-					_methodParameterTypes26, new Object[] { start, end, userId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName27,
+					_methodParameterTypes27, new Object[] { start, end, userId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -990,8 +1024,8 @@ public class EventLocalServiceClp implements EventLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName27,
-					_methodParameterTypes27, new Object[] { userId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName28,
+					_methodParameterTypes28, new Object[] { userId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1014,8 +1048,8 @@ public class EventLocalServiceClp implements EventLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName28,
-					_methodParameterTypes28, new Object[] { start, end, userId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName29,
+					_methodParameterTypes29, new Object[] { start, end, userId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1037,8 +1071,8 @@ public class EventLocalServiceClp implements EventLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName29,
-					_methodParameterTypes29, new Object[] { userId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName30,
+					_methodParameterTypes30, new Object[] { userId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1061,8 +1095,8 @@ public class EventLocalServiceClp implements EventLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName30,
-					_methodParameterTypes30, new Object[] { start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName31,
+					_methodParameterTypes31, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1084,8 +1118,8 @@ public class EventLocalServiceClp implements EventLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName31,
-					_methodParameterTypes31, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName32,
+					_methodParameterTypes32, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1147,8 +1181,8 @@ public class EventLocalServiceClp implements EventLocalService {
 	private String[] _methodParameterTypes20;
 	private String _methodName21;
 	private String[] _methodParameterTypes21;
-	private String _methodName23;
-	private String[] _methodParameterTypes23;
+	private String _methodName22;
+	private String[] _methodParameterTypes22;
 	private String _methodName24;
 	private String[] _methodParameterTypes24;
 	private String _methodName25;
@@ -1165,4 +1199,6 @@ public class EventLocalServiceClp implements EventLocalService {
 	private String[] _methodParameterTypes30;
 	private String _methodName31;
 	private String[] _methodParameterTypes31;
+	private String _methodName32;
+	private String[] _methodParameterTypes32;
 }

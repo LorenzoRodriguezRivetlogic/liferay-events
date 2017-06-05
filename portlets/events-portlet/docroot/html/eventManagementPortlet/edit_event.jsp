@@ -239,6 +239,11 @@ String divStyle = event.getRegistrationRequired() ?  "block":"none";
 			</aui:field-wrapper>
 		</aui:fieldset>
 		
+		<aui:fieldset label="event-image">
+			<p><liferay-ui:message key="event-photo-info"/></p>
+			<aui:input  name="photo" value="" type="file" label="event-upload-file"/>
+		</aui:fieldset>
+		
 		<aui:fieldset label="event-categorization">
 			<div>
 				<aui:select id="types" name="types" label="types" showEmptyOption="true" >

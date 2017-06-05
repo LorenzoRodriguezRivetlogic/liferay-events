@@ -317,6 +317,13 @@ public class EventLocalServiceWrapper implements EventLocalService,
 		return _eventLocalService.updateEvent(event);
 	}
 
+	@Override
+	public com.rivetlogic.event.model.EventImageBlobModel getImageBlobModel(
+		java.io.Serializable primaryKey)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _eventLocalService.getImageBlobModel(primaryKey);
+	}
+
 	/**
 	* Returns the Spring bean ID for this bean.
 	*

@@ -16,6 +16,8 @@ package com.rivetlogic.event.model;
 
 import java.io.Serializable;
 
+import java.sql.Blob;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -48,6 +50,7 @@ public class EventSoap implements Serializable {
 		soapModel.setRequiredFullName(model.getRequiredFullName());
 		soapModel.setRequiredEmail(model.getRequiredEmail());
 		soapModel.setRequiredPhone(model.getRequiredPhone());
+		soapModel.setImage(model.getImage());
 		soapModel.setLocationId(model.getLocationId());
 		soapModel.setTargetId(model.getTargetId());
 		soapModel.setTypeId(model.getTypeId());
@@ -267,6 +270,14 @@ public class EventSoap implements Serializable {
 		_requiredPhone = requiredPhone;
 	}
 
+	public Blob getImage() {
+		return _image;
+	}
+
+	public void setImage(Blob image) {
+		_image = image;
+	}
+
 	public long getLocationId() {
 		return _locationId;
 	}
@@ -309,6 +320,7 @@ public class EventSoap implements Serializable {
 	private boolean _requiredFullName;
 	private boolean _requiredEmail;
 	private boolean _requiredPhone;
+	private Blob _image;
 	private long _locationId;
 	private long _targetId;
 	private long _typeId;

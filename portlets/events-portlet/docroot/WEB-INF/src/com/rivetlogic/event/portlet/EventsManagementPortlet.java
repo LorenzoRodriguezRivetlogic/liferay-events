@@ -19,6 +19,7 @@
 
 package com.rivetlogic.event.portlet;
 
+import com.liferay.portal.kernel.dao.jdbc.OutputBlob;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -62,6 +63,9 @@ import com.rivetlogic.event.util.WebKeys;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -155,6 +159,15 @@ public class EventsManagementPortlet extends MVCPortlet {
         event.setTargetId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_TARGETS));
         event.setTags(request.getParameter(EventPortletConstants.PARAMETER_TAGS));
         event.setDescription(ParamUtil.getString(upreq, EventPortletConstants.PARAMETER_DESCRIPTION));
+        
+        try {
+        	File photoImage = upreq.getFile(EventPortletConstants.PARAMETER_PHOTO);
+            InputStream fis =new FileInputStream(photoImage);
+            OutputBlob dataOutputBlob = new OutputBlob(fis, photoImage.length());
+            event.setImage(dataOutputBlob);
+        } catch (FileNotFoundException e) {
+        }
+        
         event.setEventDate(newEventDate.getTime());
         event.setEventEndDate(newEventEndDate.getTime());
         event.setPrivateEvent(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_EVENT));
@@ -354,6 +367,15 @@ public class EventsManagementPortlet extends MVCPortlet {
         event.setTargetId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_TARGETS));
         event.setTags(request.getParameter(EventPortletConstants.PARAMETER_TAGS));
         event.setDescription(ParamUtil.getString(upreq, EventPortletConstants.PARAMETER_DESCRIPTION));
+        
+        try {
+        	File photoImage = upreq.getFile(EventPortletConstants.PARAMETER_PHOTO);
+            InputStream fis =new FileInputStream(photoImage);
+            OutputBlob dataOutputBlob = new OutputBlob(fis, photoImage.length());
+            event.setImage(dataOutputBlob);
+        } catch (FileNotFoundException e) {
+        }
+
         event.setEventDate(newEventDate.getTime());
         event.setEventEndDate(newEventEndDate.getTime());
         event.setPrivateEvent(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_EVENT));

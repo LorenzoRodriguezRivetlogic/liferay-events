@@ -26,6 +26,7 @@
 		<field name="requiredFullName" type="boolean" />
 		<field name="requiredEmail" type="boolean" />
 		<field name="requiredPhone" type="boolean" />
+		<field name="image" type="Blob" />
 		<field name="locationId" type="long" />
 		<field name="targetId" type="long" />
 		<field name="typeId" type="long" />

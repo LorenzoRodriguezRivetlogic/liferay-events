@@ -17,6 +17,8 @@ package com.rivetlogic.event.model;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
 
+import java.sql.Blob;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,6 +69,7 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 		attributes.put("requiredFullName", getRequiredFullName());
 		attributes.put("requiredEmail", getRequiredEmail());
 		attributes.put("requiredPhone", getRequiredPhone());
+		attributes.put("image", getImage());
 		attributes.put("locationId", getLocationId());
 		attributes.put("targetId", getTargetId());
 		attributes.put("typeId", getTypeId());
@@ -183,6 +186,12 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 
 		if (requiredPhone != null) {
 			setRequiredPhone(requiredPhone);
+		}
+
+		Blob image = (Blob)attributes.get("image");
+
+		if (image != null) {
+			setImage(image);
 		}
 
 		Long locationId = (Long)attributes.get("locationId");
@@ -654,6 +663,26 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 	@Override
 	public void setRequiredPhone(boolean requiredPhone) {
 		_event.setRequiredPhone(requiredPhone);
+	}
+
+	/**
+	* Returns the image of this event.
+	*
+	* @return the image of this event
+	*/
+	@Override
+	public java.sql.Blob getImage() {
+		return _event.getImage();
+	}
+
+	/**
+	* Sets the image of this event.
+	*
+	* @param image the image of this event
+	*/
+	@Override
+	public void setImage(java.sql.Blob image) {
+		_event.setImage(image);
 	}
 
 	/**

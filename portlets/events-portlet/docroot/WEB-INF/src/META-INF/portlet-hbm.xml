@@ -30,9 +30,18 @@
 		<property name="requiredFullName" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="requiredEmail" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="requiredPhone" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<one-to-one name="imageBlobModel" access="com.liferay.portal.dao.orm.hibernate.PrivatePropertyAccessor" class="com.rivetlogic.event.model.EventImageBlobModel" cascade="save-update" outer-join="false" constrained="true" />
 		<property name="locationId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="targetId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="typeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="com.rivetlogic.event.model.EventImageBlobModel" table="rivetlogic_event_Event" lazy="true">
+		<id name="eventId" column="eventId">
+			<generator class="foreign">
+				<param name="property">com.rivetlogic.event.model.impl.EventImpl</param>
+			</generator>
+		</id>
+		<property column="image" name="imageBlob" type="blob" />
 	</class>
 	<class name="com.rivetlogic.event.model.impl.LocationImpl" table="rivetlogic_event_Location">
 		<cache usage="read-write" />
