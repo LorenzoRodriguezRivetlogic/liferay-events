@@ -52,6 +52,8 @@ import com.rivetlogic.event.util.EventValidator;
 import com.rivetlogic.event.util.WebKeys;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,13 +64,15 @@ import javax.portlet.PortletRequest;
 import javax.portlet.ReadOnlyException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 import javax.portlet.ValidatorException;
-import javax.servlet.jsp.JspPage;
 
 /**
  * @author charlesrodriguez
  * @author christopherjimenez
  * @author juancarrillo
+ * @author lorenzorodriguez
  */
 public class EventPortlet extends MVCPortlet {
     
@@ -292,6 +296,26 @@ public class EventPortlet extends MVCPortlet {
                 _log.error(e);
             }
         }
+    }
+    
+    @Override
+    public void serveResource(ResourceRequest resourceRequest, ResourceResponse resourceResponse) 
+    		throws  IOException, PortletException {
+
+		try {
+			long eventId=ParamUtil.getLong(resourceRequest,"eventId");
+			Event event=  EventLocalServiceUtil.getEvent(eventId);
+			if(event != null){
+				Blob image = event.getImage();
+				byte[ ] imgData = image.getBytes(1,(int)image.length());
+				resourceResponse.setContentType("image/jpg");
+				OutputStream o = resourceResponse.getPortletOutputStream();
+				o.write(imgData);
+				o.flush();
+				o.close();
+			}    
+		} catch (Exception e) {
+		}
     }
     
     private static final Log _log = LogFactoryUtil.getLog(EventPortlet.class);

@@ -18,7 +18,6 @@
 * Boston, MA 02110-1301, USA. 
 */
 --%>
-
 <%@include file="/html/init.jsp" %>
 
 <liferay-ui:success key="participant-registration-success" message="participant-registration-success" />
@@ -45,16 +44,9 @@
 			<portlet:param name="<%=WebKeys.MVC_PATH %>" value="/html/eventportlet/view_event.jsp" />
 			<portlet:param name="<%=EventPortletConstants.PARAMETER_RESOURCE_PRIMARY_KEY %>" value="<%=String.valueOf(event.getPrimaryKey())%>" />
 		</portlet:renderURL>
-		<liferay-ui:search-container-column-text name="event-name" property="name" href="${rowURL}" />
-		<liferay-ui:search-container-column-text name="event-date" buffer="buffer">
-			<%
-				buffer.append(NotificationConstants.SDF.format(event.getEventDate()));
-				if(Validator.isNotNull(event.getEventEndDate())) {
-					buffer.append(EventPortletConstants.START_END_DATES_SEPARATOR).append(NotificationConstants.SDF.format(event.getEventEndDate()));
-				}
-			 %>
-		</liferay-ui:search-container-column-text>
-		<liferay-ui:search-container-column-jsp path="/html/eventportlet/include/view_actions.jsp"/>
+		
+		<liferay-ui:search-container-column-jsp path="/html/eventportlet/include/row-date.jsp"/>
+		<liferay-ui:search-container-column-jsp path="/html/eventportlet/include/row-info.jsp"/>
 	</liferay-ui:search-container-row>
 	
 	<liferay-ui:search-iterator />

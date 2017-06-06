@@ -70,3 +70,21 @@
 span.event-message{
 	font-size:17px;
 }
+
+.eventportlet-portlet .lfr-search-container table {
+	border: 0px;
+}
+
+.eventportlet-portlet .lfr-search-container table tbody tr:HOVER>td {
+	background-color: white !important;
+}
+
+.eventportlet-portlet .lfr-search-container thead th {
+	border: 0px;
+	background-color: white !important;
+}
+
+.eventportlet-portlet .lfr-search-container tbody td {
+	border: 0px;
+	background-color: white;
+}

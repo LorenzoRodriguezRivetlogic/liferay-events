@@ -68,6 +68,14 @@ public class NotificationConstants {
 			FastDateFormatFactoryUtil
 				.getSimpleDateFormat("MMM d, yyyy hh:mm a");
 	
+	public static Format SDFWD = 
+			FastDateFormatFactoryUtil
+				.getSimpleDateFormat("MMM d, yyyy");
+	
+	public static Format SDFH = 
+			FastDateFormatFactoryUtil
+				.getSimpleDateFormat("hh:mm a");
+	
 	public static Format CDF = 
 			FastDateFormatFactoryUtil
 				.getSimpleDateFormat("EEE MMM d, yyyy hh:mm a");

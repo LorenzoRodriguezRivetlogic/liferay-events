@@ -28,6 +28,7 @@
 <%@ page import="java.text.Format" %>
 <%@ page import="java.util.Calendar" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Date" %>
 
 <%@ page import="javax.portlet.PortletPreferences" %>
 
@@ -41,6 +42,7 @@
 <%@ page import="com.liferay.portal.kernel.log.Log" %>
 <%@ page import="com.liferay.portal.kernel.util.CalendarFactoryUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.FastDateFormatFactoryUtil" %>
+<%@ page import="com.liferay.portal.kernel.util.DateUtil"%>
 <%@ page import="com.liferay.portal.theme.ThemeDisplay" %>
 <%@ page import="com.liferay.portal.util.PortalUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.UnicodeFormatter" %>
@@ -56,14 +58,15 @@
 <%@ page import="com.rivetlogic.event.model.Target" %>
 <%@ page import="com.rivetlogic.event.service.EventLocalServiceUtil" %>
 <%@ page import="com.rivetlogic.event.service.ParticipantLocalServiceUtil" %>
+<%@ page import="com.rivetlogic.event.service.LocationLocalServiceUtil"%>
 <%@ page import="com.rivetlogic.event.util.EventConstant" %>
+<%@ page import="com.rivetlogic.event.util.TimeIgnoringComparator" %>
 <%@ page import="com.rivetlogic.event.notification.constant.NotificationConstants" %>
 <%@ page import="com.rivetlogic.event.notification.constant.PreferencesConstants" %>
 <%@ page import="com.rivetlogic.event.notification.constant.EmailTemplateVariables" %>
 <%@ page import="com.rivetlogic.event.beans.EventsPrefsBean" %>
 <%@ page import="com.rivetlogic.event.beans.ManagementPrefsBean" %>
 <%@ page import="com.rivetlogic.event.notification.constant.EventPortletConstants" %>
-
 
 <portlet:defineObjects />
 <liferay-theme:defineObjects />
