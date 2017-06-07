@@ -18,16 +18,6 @@
 * Boston, MA 02110-1301, USA. 
 */
 --%>
-
-<%@page import="com.rivetlogic.event.service.TargetLocalServiceUtil"%>
-<%@page import="com.rivetlogic.event.service.TypeLocalServiceUtil"%>
-<%@page import="com.rivetlogic.event.model.Type"%>
-<%@page import="com.rivetlogic.event.service.LocationLocalServiceUtil"%>
-<%@page import="com.liferay.portal.security.permission.ActionKeys"%>
-<%@page import="com.liferay.calendar.util.comparator.CalendarNameComparator"%>
-<%@page import="com.liferay.portal.kernel.dao.orm.QueryUtil"%>
-<%@page import="com.liferay.calendar.service.CalendarServiceUtil"%>
-<%@page import="com.liferay.calendar.service.CalendarBookingLocalServiceUtil"%>
 <%@include file="/html/init.jsp" %>
 
 <%

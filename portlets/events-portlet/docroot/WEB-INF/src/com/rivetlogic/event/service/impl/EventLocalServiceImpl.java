@@ -32,10 +32,10 @@ import com.liferay.calendar.service.CalendarBookingLocalServiceUtil;
 import com.liferay.calendar.service.CalendarBookingServiceUtil;
 import com.liferay.calendar.service.CalendarLocalServiceUtil;
 import com.liferay.calendar.service.CalendarResourceLocalServiceUtil;
-import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.Junction;
 import com.liferay.portal.kernel.dao.orm.Order;
 import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
@@ -66,6 +66,7 @@ import com.rivetlogic.event.service.base.EventLocalServiceBaseImpl;
  * </p>
  * 
  * @author juancarrillo
+ * @author lorenzorodriguez
  * @see com.rivetlogic.event.service.base.EventLocalServiceBaseImpl
  * @see com.rivetlogic.event.service.EventLocalServiceUtil
  */
@@ -98,6 +99,7 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         return eventPersistence.update(event);
     }
 
+	@SuppressWarnings("unchecked")
 	public Calendar getUserCalendar(long userId,
 			ServiceContext serviceContext) throws SystemException,
 			PortalException {
@@ -322,19 +324,57 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         return result;
     }
     
-    private DynamicQuery getPublicUpcomingEventsDynamicQuery(boolean useOrder, long userId) {
+    @SuppressWarnings("unused")
+	private DynamicQuery getPublicUpcomingEventsDynamicQuery(boolean useOrder, long userId) {
         DynamicQuery dynamicQuery = getUpcomingEventsDynamicQuery(useOrder, userId);
         Criterion criterion = RestrictionsFactoryUtil.eq(EVENT_PRIVATE_COLUMN, false);
         dynamicQuery.add(criterion);
         return dynamicQuery;
     }
     
+    private DynamicQuery getPublicUpcomingFilteredEventsDynamicQuery(boolean useOrder, long userId, Long locationId, Long typeId, Long targetId, String searchText, String searchTag) {
+        DynamicQuery dynamicQuery = getUpcomingEventsDynamicQuery(useOrder, userId);
+        
+        Criterion criterion = RestrictionsFactoryUtil.eq(EVENT_PRIVATE_COLUMN, false);
+        
+        Junction junction = RestrictionsFactoryUtil.conjunction();
+        junction.add(criterion);
+        
+        if (locationId != null && locationId.longValue() != 0) {
+        	Criterion criterionLocation = RestrictionsFactoryUtil.eq(EVENT_LOCATION_COLUMN, locationId);
+        	junction.add(criterionLocation);
+        }
+        
+        if (typeId != null && typeId.longValue() != 0) {
+        	Criterion criterionType = RestrictionsFactoryUtil.eq(EVENT_TYPE_COLUMN, typeId);
+        	junction.add(criterionType);
+        }
+        
+        if (targetId != null && targetId.longValue() != 0) {
+        	Criterion criterionTarget = RestrictionsFactoryUtil.eq(EVENT_TARGET_COLUMN, targetId);
+        	junction.add(criterionTarget);
+        }
+        
+        if (searchText != null && !searchText.equals("")) {
+        	Criterion criterionText = RestrictionsFactoryUtil.like(EVENT_NAME_COLUMN, new StringBuilder("%").append(searchText).append("%").toString());
+        	junction.add(criterionText);
+        }
+        
+        if (searchTag != null && !searchTag.equals("")) {
+        	Criterion criterionTag = RestrictionsFactoryUtil.like(EVENT_TAG_COLUMN, new StringBuilder("%").append(searchTag).append("%").toString());
+        	junction.add(criterionTag);
+        }
+        
+        dynamicQuery.add(junction);
+        return dynamicQuery;
+    }
+    
     @SuppressWarnings("unchecked")
-    public List<Event> getPublicEvents(int start, int end) {
+    public List<Event> getPublicEvents(int start, int end, Long locationId, Long typeId, Long targetId, String searchText, String searchTag) {
         
         List<Event> publicEvents = new ArrayList<Event>();
         
-        DynamicQuery dynamicQuery = getPublicUpcomingEventsDynamicQuery(true, 0);
+        DynamicQuery dynamicQuery = getPublicUpcomingFilteredEventsDynamicQuery(true, 0, locationId, typeId, targetId, searchText, searchTag);
         
         try {
             publicEvents = (List<Event>) eventPersistence.findWithDynamicQuery(dynamicQuery, start, end);
@@ -345,10 +385,10 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         return publicEvents;
     }
     
-    public int getPublicEventsCount() {
+    public int getPublicEventsCount(Long locationId, Long typeId, Long targetId, String searchText, String searchTag) {
         
         int result = 0;
-        DynamicQuery dynamicQuery = getPublicUpcomingEventsDynamicQuery(false, 0);
+        DynamicQuery dynamicQuery = getPublicUpcomingFilteredEventsDynamicQuery(false, 0, locationId, typeId, targetId, searchText, searchTag);
         try {
             result = (int) eventPersistence.countWithDynamicQuery(dynamicQuery);
         } catch (SystemException e) {
@@ -359,6 +399,11 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
     
     private static final String EVENT_DATE_COLUMN = "eventDate";
     private static final String EVENT_PRIVATE_COLUMN = "privateEvent";
+    private static final String EVENT_LOCATION_COLUMN = "locationId";
+    private static final String EVENT_TARGET_COLUMN = "targetId";
+    private static final String EVENT_TYPE_COLUMN = "typeId";
+    private static final String EVENT_TAG_COLUMN = "tags";
+    private static final String EVENT_NAME_COLUMN = "name";
     private static final String EVENT_USER_ID = "userId";
     private static Log _log = LogFactoryUtil.getLog(EventLocalServiceImpl.class);
 }

@@ -168,11 +168,17 @@ public class EventLocalServiceClp implements EventLocalService {
 
 		_methodName31 = "getPublicEvents";
 
-		_methodParameterTypes31 = new String[] { "int", "int" };
+		_methodParameterTypes31 = new String[] {
+				"int", "int", "java.lang.Long", "java.lang.Long",
+				"java.lang.Long", "java.lang.String", "java.lang.String"
+			};
 
 		_methodName32 = "getPublicEventsCount";
 
-		_methodParameterTypes32 = new String[] {  };
+		_methodParameterTypes32 = new String[] {
+				"java.lang.Long", "java.lang.Long", "java.lang.Long",
+				"java.lang.String", "java.lang.String"
+			};
 	}
 
 	@Override
@@ -1091,12 +1097,29 @@ public class EventLocalServiceClp implements EventLocalService {
 
 	@Override
 	public java.util.List<com.rivetlogic.event.model.Event> getPublicEvents(
-		int start, int end) {
+		int start, int end, java.lang.Long locationId, java.lang.Long typeId,
+		java.lang.Long targetId, java.lang.String searchText,
+		java.lang.String searchTag) {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName31,
-					_methodParameterTypes31, new Object[] { start, end });
+					_methodParameterTypes31,
+					new Object[] {
+						start,
+						
+					end,
+						
+					ClpSerializer.translateInput(locationId),
+						
+					ClpSerializer.translateInput(typeId),
+						
+					ClpSerializer.translateInput(targetId),
+						
+					ClpSerializer.translateInput(searchText),
+						
+					ClpSerializer.translateInput(searchTag)
+					});
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1114,12 +1137,25 @@ public class EventLocalServiceClp implements EventLocalService {
 	}
 
 	@Override
-	public int getPublicEventsCount() {
+	public int getPublicEventsCount(java.lang.Long locationId,
+		java.lang.Long typeId, java.lang.Long targetId,
+		java.lang.String searchText, java.lang.String searchTag) {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName32,
-					_methodParameterTypes32, new Object[] {  });
+					_methodParameterTypes32,
+					new Object[] {
+						ClpSerializer.translateInput(locationId),
+						
+					ClpSerializer.translateInput(typeId),
+						
+					ClpSerializer.translateInput(targetId),
+						
+					ClpSerializer.translateInput(searchText),
+						
+					ClpSerializer.translateInput(searchTag)
+					});
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);

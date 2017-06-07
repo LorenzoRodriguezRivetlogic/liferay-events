@@ -378,12 +378,20 @@ public class EventLocalServiceUtil {
 	}
 
 	public static java.util.List<com.rivetlogic.event.model.Event> getPublicEvents(
-		int start, int end) {
-		return getService().getPublicEvents(start, end);
+		int start, int end, java.lang.Long locationId, java.lang.Long typeId,
+		java.lang.Long targetId, java.lang.String searchText,
+		java.lang.String searchTag) {
+		return getService()
+				   .getPublicEvents(start, end, locationId, typeId, targetId,
+			searchText, searchTag);
 	}
 
-	public static int getPublicEventsCount() {
-		return getService().getPublicEventsCount();
+	public static int getPublicEventsCount(java.lang.Long locationId,
+		java.lang.Long typeId, java.lang.Long targetId,
+		java.lang.String searchText, java.lang.String searchTag) {
+		return getService()
+				   .getPublicEventsCount(locationId, typeId, targetId,
+			searchText, searchTag);
 	}
 
 	public static void clearService() {

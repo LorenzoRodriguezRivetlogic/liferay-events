@@ -32,6 +32,10 @@
 
 <%@ page import="javax.portlet.PortletPreferences" %>
 
+<%@ page import="com.liferay.calendar.util.comparator.CalendarNameComparator"%>
+<%@ page import="com.liferay.portal.kernel.dao.orm.QueryUtil"%>
+<%@ page import="com.liferay.calendar.service.CalendarServiceUtil"%>
+<%@ page import="com.liferay.calendar.service.CalendarBookingLocalServiceUtil"%>
 <%@ page import="com.liferay.portal.kernel.language.LanguageUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.GetterUtil" %>
 <%@ page import="com.liferay.portal.kernel.bean.BeanParamUtil" %>
@@ -49,15 +53,19 @@
 <%@ page import="com.liferay.portal.kernel.util.Validator" %>
 <%@ page import="com.liferay.portal.kernel.dao.search.ResultRow" %>
 <%@ page import="com.liferay.portal.kernel.portlet.LiferayWindowState"%>
+<%@ page import="com.liferay.portal.security.permission.ActionKeys"%>
 
 <%@ page import="com.rivetlogic.event.util.WebKeys" %>
 <%@ page import="com.rivetlogic.event.model.Event" %>
 <%@ page import="com.rivetlogic.event.model.Location" %>
 <%@ page import="com.rivetlogic.event.model.Participant" %>
-<%@ page import="com.rivetlogic.event.model.Type" %>
+<%@ page import="com.rivetlogic.event.model.Type"%>
 <%@ page import="com.rivetlogic.event.model.Target" %>
 <%@ page import="com.rivetlogic.event.service.EventLocalServiceUtil" %>
 <%@ page import="com.rivetlogic.event.service.ParticipantLocalServiceUtil" %>
+<%@ page import="com.rivetlogic.event.service.LocationLocalServiceUtil"%>
+<%@ page import="com.rivetlogic.event.service.TargetLocalServiceUtil"%>
+<%@ page import="com.rivetlogic.event.service.TypeLocalServiceUtil"%>
 <%@ page import="com.rivetlogic.event.service.LocationLocalServiceUtil"%>
 <%@ page import="com.rivetlogic.event.util.EventConstant" %>
 <%@ page import="com.rivetlogic.event.util.TimeIgnoringComparator" %>

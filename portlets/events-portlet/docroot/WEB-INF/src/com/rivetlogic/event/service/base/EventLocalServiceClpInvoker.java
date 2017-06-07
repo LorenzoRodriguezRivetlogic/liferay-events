@@ -176,13 +176,19 @@ public class EventLocalServiceClpInvoker {
 
 		_methodParameterTypes76 = new String[] { "long" };
 
-		_methodName78 = "getPublicEvents";
+		_methodName79 = "getPublicEvents";
 
-		_methodParameterTypes78 = new String[] { "int", "int" };
+		_methodParameterTypes79 = new String[] {
+				"int", "int", "java.lang.Long", "java.lang.Long",
+				"java.lang.Long", "java.lang.String", "java.lang.String"
+			};
 
-		_methodName79 = "getPublicEventsCount";
+		_methodName80 = "getPublicEventsCount";
 
-		_methodParameterTypes79 = new String[] {  };
+		_methodParameterTypes80 = new String[] {
+				"java.lang.Long", "java.lang.Long", "java.lang.Long",
+				"java.lang.String", "java.lang.String"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -367,15 +373,20 @@ public class EventLocalServiceClpInvoker {
 			return EventLocalServiceUtil.getUpcomingEventsCount(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName78.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes78, parameterTypes)) {
-			return EventLocalServiceUtil.getPublicEvents(((Integer)arguments[0]).intValue(),
-				((Integer)arguments[1]).intValue());
-		}
-
 		if (_methodName79.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes79, parameterTypes)) {
-			return EventLocalServiceUtil.getPublicEventsCount();
+			return EventLocalServiceUtil.getPublicEvents(((Integer)arguments[0]).intValue(),
+				((Integer)arguments[1]).intValue(),
+				(java.lang.Long)arguments[2], (java.lang.Long)arguments[3],
+				(java.lang.Long)arguments[4], (java.lang.String)arguments[5],
+				(java.lang.String)arguments[6]);
+		}
+
+		if (_methodName80.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes80, parameterTypes)) {
+			return EventLocalServiceUtil.getPublicEventsCount((java.lang.Long)arguments[0],
+				(java.lang.Long)arguments[1], (java.lang.Long)arguments[2],
+				(java.lang.String)arguments[3], (java.lang.String)arguments[4]);
 		}
 
 		throw new UnsupportedOperationException();
@@ -445,8 +456,8 @@ public class EventLocalServiceClpInvoker {
 	private String[] _methodParameterTypes75;
 	private String _methodName76;
 	private String[] _methodParameterTypes76;
-	private String _methodName78;
-	private String[] _methodParameterTypes78;
 	private String _methodName79;
 	private String[] _methodParameterTypes79;
+	private String _methodName80;
+	private String[] _methodParameterTypes80;
 }

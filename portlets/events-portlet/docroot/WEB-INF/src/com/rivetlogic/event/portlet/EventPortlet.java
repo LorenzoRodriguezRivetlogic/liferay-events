@@ -24,8 +24,10 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
+import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.Layout;
@@ -59,6 +61,7 @@ import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletConfig;
 import javax.portlet.PortletException;
 import javax.portlet.PortletRequest;
 import javax.portlet.ReadOnlyException;
@@ -298,6 +301,20 @@ public class EventPortlet extends MVCPortlet {
         }
     }
     
+    public void searchEvents(ActionRequest request, ActionResponse response) throws IOException {
+    	String searchText = ParamUtil.getString(request, WebKeys.SEARCH_TEXT);
+		Long locationId = ParamUtil.getLong(request, WebKeys.LOCATION);
+		Long typeId = ParamUtil.getLong(request, WebKeys.TYPE);
+		Long targetId = ParamUtil.getLong(request, WebKeys.TARGET);
+
+		response.setRenderParameter(WebKeys.SEARCH_TEXT, searchText);
+	    response.setRenderParameter(WebKeys.LOCATION, String.valueOf(locationId));
+	    response.setRenderParameter(WebKeys.TYPE, String.valueOf(typeId));
+	    response.setRenderParameter(WebKeys.TARGET, String.valueOf(targetId));
+	    
+	    disableNotifications(request);
+    }
+    
     @Override
     public void serveResource(ResourceRequest resourceRequest, ResourceResponse resourceResponse) 
     		throws  IOException, PortletException {
@@ -318,6 +335,12 @@ public class EventPortlet extends MVCPortlet {
 		}
     }
     
+    private void disableNotifications(ActionRequest request) {
+		PortletConfig portletConfig = (PortletConfig) request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
+        LiferayPortletConfig liferayPortletConfig = (LiferayPortletConfig) portletConfig;
+        SessionMessages.add(request, liferayPortletConfig.getPortletId() + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_SUCCESS_MESSAGE);
+	}
+   
     private static final Log _log = LogFactoryUtil.getLog(EventPortlet.class);
     
     private static final String ERROR_SAVING_PARTICIPANT = "participant-save-error";

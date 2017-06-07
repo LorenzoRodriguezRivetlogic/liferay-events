@@ -344,8 +344,12 @@ public interface EventLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.rivetlogic.event.model.Event> getPublicEvents(
-		int start, int end);
+		int start, int end, java.lang.Long locationId, java.lang.Long typeId,
+		java.lang.Long targetId, java.lang.String searchText,
+		java.lang.String searchTag);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getPublicEventsCount();
+	public int getPublicEventsCount(java.lang.Long locationId,
+		java.lang.Long typeId, java.lang.Long targetId,
+		java.lang.String searchText, java.lang.String searchTag);
 }

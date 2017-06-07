@@ -24,14 +24,70 @@
 <liferay-ui:success key="participant-registration-email" message="participant-registration-email" />
 <liferay-ui:error message="participant-already-registered" key="participant-already-registered"/>
 
+<%
+String searchText = ParamUtil.getString(request, WebKeys.SEARCH_TEXT);
+String searchTag = ParamUtil.getString(request, WebKeys.SEARCH_TAG);
+Long locationId = ParamUtil.getLong(request, WebKeys.LOCATION);
+Long typeId = ParamUtil.getLong(request, WebKeys.TYPE);
+Long targetId = ParamUtil.getLong(request, WebKeys.TARGET);
+
+List<Location> locations = LocationLocalServiceUtil.getLocationsByGroupId(portletGroupId);
+List<Type> types = TypeLocalServiceUtil.getTypesByGroupId(portletGroupId);
+List<Target> targets = TargetLocalServiceUtil.getTargetsByGroupId(portletGroupId);
+%>
+
+<portlet:actionURL name="searchEvents" var="searchEventsURL">
+</portlet:actionURL>
+
 <liferay-ui:header title="event-upcoming-events"/>
+
+<aui:form action="<%= searchEventsURL %>" method="post" name="fm">
+	<aui:button-row>
+		<aui:select id="locations" name="locations" label="locations" showEmptyOption="true" inlineField="<%=true%>" >
+			<% 
+			for (Location locationSel : locations) {
+			%>
+				<aui:option value="<%=locationSel.getLocationId()%>"  selected="<%= locationId == locationSel.getLocationId() %>">
+				<liferay-ui:message key="<%=locationSel.getName()%>" />
+				</aui:option>
+			<% 
+			}
+			%>
+		</aui:select>
+		<aui:select id="types" name="types" label="types" showEmptyOption="true" inlineField="<%=true%>" >
+			<% 
+			for (Type typeSel : types) {
+			%>
+				<aui:option value="<%=typeSel.getTypeId()%>"  selected="<%= typeId == typeSel.getTypeId() %>">
+				<liferay-ui:message key="<%=typeSel.getName()%>" />
+				</aui:option>
+			<% 
+			}
+			%>
+		</aui:select>
+		<aui:select id="targets" name="targets" label="targets" showEmptyOption="true" inlineField="<%=true%>">
+			<% 
+			for (Target targetSel : targets) {
+			%>
+				<aui:option value="<%=targetSel.getTargetId()%>"  selected="<%= targetId == targetSel.getTargetId() %>">
+				<liferay-ui:message key="<%=targetSel.getName()%>" />
+				</aui:option>
+			<% 
+			}
+			%>
+		</aui:select>
+		<aui:input name="searchText" label="search-text" type="text" inlineField="<%=true%>" >
+		</aui:input>
+		<aui:button name="searchButton" type="submit" cssClass="event-button" value="search-label"  inlineField="<%=true%>" />
+	</aui:button-row>
+</aui:form> 
 
 <liferay-ui:search-container 
 	emptyResultsMessage="event-empty-results" delta="${prefBean.numRows}" deltaConfigurable="true">
 	<liferay-ui:search-container-results>
 		<%
-		total = EventLocalServiceUtil.getPublicEventsCount();
-		results = EventLocalServiceUtil.getPublicEvents(searchContainer.getStart(), searchContainer.getEnd());
+		total = EventLocalServiceUtil.getPublicEventsCount(locationId, typeId, targetId, searchText, searchTag);
+		results = EventLocalServiceUtil.getPublicEvents(searchContainer.getStart(), searchContainer.getEnd(), locationId, typeId, targetId, searchText, searchTag);
 		pageContext.setAttribute("results", results);
 		pageContext.setAttribute("total", total);
 		%>

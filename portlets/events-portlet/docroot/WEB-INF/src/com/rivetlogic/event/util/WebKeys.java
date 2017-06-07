@@ -76,4 +76,14 @@ public class WebKeys implements com.liferay.portal.kernel.util.WebKeys {
     public static final String GET_TARGETS = "getTargets";
     
     public static final String GET_IMAGE = "getImage";
+    
+    public static final String LOCATION = "locations";
+    
+    public static final String TYPE = "types";
+    
+    public static final String TARGET = "targets";
+    
+    public static final String SEARCH_TEXT = "searchText";
+    
+    public static final String SEARCH_TAG = "searchTag";
 }
