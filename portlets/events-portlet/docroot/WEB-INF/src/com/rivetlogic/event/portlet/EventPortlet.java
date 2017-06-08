@@ -19,6 +19,7 @@
 
 package com.rivetlogic.event.portlet;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -124,7 +125,7 @@ public class EventPortlet extends MVCPortlet {
         include(jspPage, request, response);
     }
     
-    public void registerUserToEvent(ActionRequest request, ActionResponse response) throws IOException {
+    public void registerUserToEvent(ActionRequest request, ActionResponse response) throws IOException, PortalException, SystemException {
         Participant participant = EventActionUtil.getParticipantFromRequest(request);
         
         List<String> errors = new ArrayList<String>();
@@ -133,7 +134,9 @@ public class EventPortlet extends MVCPortlet {
         
         String redirect = ParamUtil.getString(request, WebKeys.REDIRECT);
         
-        if (EventValidator.validateRegisteredParticipant(participant, null, errors, repeatedEmails, invalidEmails)) {
+        Event event = EventLocalServiceUtil.getEvent(participant.getEventId());
+        
+        if (EventValidator.validateRegisteredParticipant(participant, null, errors, repeatedEmails, invalidEmails, event)) {
             saveParticipant(request, response, participant, redirect);
             
         } else {

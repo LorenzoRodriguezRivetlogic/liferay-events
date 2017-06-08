@@ -31,7 +31,6 @@
 			<basic name="privateEvent" />
 			<basic name="registrationRequired" />
 			<basic name="requiredFullName" />
-			<basic name="requiredEmail" />
 			<basic name="requiredPhone" />
 			<basic name="image" />
 			<basic name="locationId" />

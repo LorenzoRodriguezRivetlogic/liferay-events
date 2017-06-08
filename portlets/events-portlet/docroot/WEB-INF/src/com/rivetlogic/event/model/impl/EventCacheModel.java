@@ -37,7 +37,7 @@ import java.util.Date;
 public class EventCacheModel implements CacheModel<Event>, Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(41);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -71,8 +71,6 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 		sb.append(registrationRequired);
 		sb.append(", requiredFullName=");
 		sb.append(requiredFullName);
-		sb.append(", requiredEmail=");
-		sb.append(requiredEmail);
 		sb.append(", requiredPhone=");
 		sb.append(requiredPhone);
 		sb.append(", locationId=");
@@ -149,7 +147,6 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 		eventImpl.setPrivateEvent(privateEvent);
 		eventImpl.setRegistrationRequired(registrationRequired);
 		eventImpl.setRequiredFullName(requiredFullName);
-		eventImpl.setRequiredEmail(requiredEmail);
 		eventImpl.setRequiredPhone(requiredPhone);
 		eventImpl.setLocationId(locationId);
 		eventImpl.setTargetId(targetId);
@@ -178,7 +175,6 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 		privateEvent = objectInput.readBoolean();
 		registrationRequired = objectInput.readBoolean();
 		requiredFullName = objectInput.readBoolean();
-		requiredEmail = objectInput.readBoolean();
 		requiredPhone = objectInput.readBoolean();
 		locationId = objectInput.readLong();
 		targetId = objectInput.readLong();
@@ -235,7 +231,6 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 		objectOutput.writeBoolean(privateEvent);
 		objectOutput.writeBoolean(registrationRequired);
 		objectOutput.writeBoolean(requiredFullName);
-		objectOutput.writeBoolean(requiredEmail);
 		objectOutput.writeBoolean(requiredPhone);
 		objectOutput.writeLong(locationId);
 		objectOutput.writeLong(targetId);
@@ -258,7 +253,6 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 	public boolean privateEvent;
 	public boolean registrationRequired;
 	public boolean requiredFullName;
-	public boolean requiredEmail;
 	public boolean requiredPhone;
 	public long locationId;
 	public long targetId;

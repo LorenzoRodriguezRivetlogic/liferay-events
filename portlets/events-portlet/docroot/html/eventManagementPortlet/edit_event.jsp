@@ -371,13 +371,10 @@ String divStylePrivateEvent = event.getPrivateEvent()?  "block":"none";
 			<div id="hiddenInfo" style="display: <%= divStyle %>">
 				<span class="title-text" ><liferay-ui:message key="event-registration-information" /></span>
 				<div class="accordion-inner">
-					<aui:field-wrapper>
+					<aui:field-wrapper inlineField="<%=true%>">
 						<aui:input name="<%=EventPortletConstants.PARAMETER_REGISTRATION_FULL_NAME%>" label="event-registration-full-name" type="checkbox" value="${event.requiredFullName}"/>
 					</aui:field-wrapper>
-					<aui:field-wrapper>
-						<aui:input name="<%=EventPortletConstants.PARAMETER_REGISTRATION_EMAIL%>" label="event-registration-email" type="checkbox" value="${event.requiredEmail}"/>
-					</aui:field-wrapper>
-					<aui:field-wrapper>
+					<aui:field-wrapper inlineField="<%=true%>">
 						<aui:input name="<%=EventPortletConstants.PARAMETER_REGISTRATION_TELEPHONE%>" label="event-registration-telephone" type="checkbox" value="${event.requiredPhone}"/>
 					</aui:field-wrapper>
 				</div>

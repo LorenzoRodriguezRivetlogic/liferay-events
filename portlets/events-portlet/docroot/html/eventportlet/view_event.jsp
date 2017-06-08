@@ -135,36 +135,53 @@ if (Validator.isNotNull(event)){
 		</tr>
 	</table>
 
-	<liferay-ui:header title="event-register"/>
-	
-	<aui:form name="register_event_fm" action="${registerUserToEventUrl}" method="post">
+	<%
+	if (event.getRegistrationRequired()) {
+	%>
+		<liferay-ui:header title="event-register"/>
 		
-		<aui:fieldset>
-			<aui:input name="<%=EventPortletConstants.PARAMETER_FULL_NAME%>" label="event-fullname" value="${participant.fullName}" type="text">
-				<aui:validator name="required"/>
-			</aui:input>
-			<aui:input name="<%=EventPortletConstants.PARAMETER_EMAIL%>" label="event-email" value="${participant.email}" type="text">
-				<aui:validator name="required"/>
-				<aui:validator name="email"/>
-			</aui:input>
-			<aui:input name="<%=EventPortletConstants.PARAMETER_COMPANY_NAME%>" label="event-company-name" value="${participant.companyName}" type="text">
-				<aui:validator name="required"/>
-			</aui:input>
-			<aui:input name="<%=EventPortletConstants.PARAMETER_PHONE_NUMBER%>" label="event-phone-number" value="${participant.phoneNumber}" type="text">
-				<aui:validator name="required"/>
-			</aui:input>
-			<aui:button-row>
-				<aui:button name="registerEvent" label="event-register" type="submit" value='<%=LanguageUtil.get(pageContext, "event-register") %>'/>
-				<aui:button name="cancel" type="cancel" onClick="${backURL}"/>
-			</aui:button-row>
+		<aui:form name="register_event_fm" action="${registerUserToEventUrl}" method="post">
 			
-		</aui:fieldset>
-	</aui:form>
+			<aui:fieldset>
+				
+				<% 
+				if (event.getRequiredFullName()) {
+				%>
+					<aui:input name="<%=EventPortletConstants.PARAMETER_FULL_NAME%>" label="event-fullname" value="${participant.fullName}" type="text">
+						<aui:validator name="required"/>
+					</aui:input>
+				<% 
+				}
+				%>
+				
+				<aui:input name="<%=EventPortletConstants.PARAMETER_EMAIL%>" label="event-email" value="${participant.email}" type="text">
+					<aui:validator name="required"/>
+					<aui:validator name="email"/>
+				</aui:input>
+				<% 
+
+				if (event.getRequiredPhone()) {
+				%>
+					<aui:input name="<%=EventPortletConstants.PARAMETER_PHONE_NUMBER%>" label="event-phone-number" value="${participant.phoneNumber}" type="text">
+						<aui:validator name="required"/>
+					</aui:input>
+				<% 
+				}
+				%>
+				<aui:button-row>
+					<aui:button name="registerEvent" label="event-register" type="submit" value='<%=LanguageUtil.get(pageContext, "event-register") %>'/>
+					<aui:button name="cancel" type="cancel" onClick="${backURL}"/>
+				</aui:button-row>
+				
+			</aui:fieldset>
+		</aui:form>
+	<%
+	}
+	%>
 </div>
 
 <%
-}
-else{
+} else {
 %>
     <liferay-ui:error key="no-such-event" message='<%=LanguageUtil.format(pageContext, "no-such-event", String.valueOf(resourcePrimKey)) %>' />
     <liferay-ui:error key="event-must-be-public" message="event-must-be-public" />

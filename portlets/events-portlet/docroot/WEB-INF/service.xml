@@ -38,7 +38,6 @@
 
         <!-- Order -->
         <column name="requiredFullName" type="boolean"></column>
-        <column name="requiredEmail" type="boolean"></column>
         <column name="requiredPhone" type="boolean"></column>
         <column name="image" type="Blob" />
         <column name="locationId" type="long"></column>

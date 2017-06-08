@@ -48,7 +48,6 @@ public class EventSoap implements Serializable {
 		soapModel.setPrivateEvent(model.getPrivateEvent());
 		soapModel.setRegistrationRequired(model.getRegistrationRequired());
 		soapModel.setRequiredFullName(model.getRequiredFullName());
-		soapModel.setRequiredEmail(model.getRequiredEmail());
 		soapModel.setRequiredPhone(model.getRequiredPhone());
 		soapModel.setImage(model.getImage());
 		soapModel.setLocationId(model.getLocationId());
@@ -246,18 +245,6 @@ public class EventSoap implements Serializable {
 		_requiredFullName = requiredFullName;
 	}
 
-	public boolean getRequiredEmail() {
-		return _requiredEmail;
-	}
-
-	public boolean isRequiredEmail() {
-		return _requiredEmail;
-	}
-
-	public void setRequiredEmail(boolean requiredEmail) {
-		_requiredEmail = requiredEmail;
-	}
-
 	public boolean getRequiredPhone() {
 		return _requiredPhone;
 	}
@@ -318,7 +305,6 @@ public class EventSoap implements Serializable {
 	private boolean _privateEvent;
 	private boolean _registrationRequired;
 	private boolean _requiredFullName;
-	private boolean _requiredEmail;
 	private boolean _requiredPhone;
 	private Blob _image;
 	private long _locationId;

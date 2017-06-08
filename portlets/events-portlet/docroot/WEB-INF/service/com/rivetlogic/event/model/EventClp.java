@@ -93,7 +93,6 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		attributes.put("privateEvent", getPrivateEvent());
 		attributes.put("registrationRequired", getRegistrationRequired());
 		attributes.put("requiredFullName", getRequiredFullName());
-		attributes.put("requiredEmail", getRequiredEmail());
 		attributes.put("requiredPhone", getRequiredPhone());
 		attributes.put("image", getImage());
 		attributes.put("locationId", getLocationId());
@@ -200,12 +199,6 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 		if (requiredFullName != null) {
 			setRequiredFullName(requiredFullName);
-		}
-
-		Boolean requiredEmail = (Boolean)attributes.get("requiredEmail");
-
-		if (requiredEmail != null) {
-			setRequiredEmail(requiredEmail);
 		}
 
 		Boolean requiredPhone = (Boolean)attributes.get("requiredPhone");
@@ -636,35 +629,6 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 	}
 
 	@Override
-	public boolean getRequiredEmail() {
-		return _requiredEmail;
-	}
-
-	@Override
-	public boolean isRequiredEmail() {
-		return _requiredEmail;
-	}
-
-	@Override
-	public void setRequiredEmail(boolean requiredEmail) {
-		_requiredEmail = requiredEmail;
-
-		if (_eventRemoteModel != null) {
-			try {
-				Class<?> clazz = _eventRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setRequiredEmail",
-						boolean.class);
-
-				method.invoke(_eventRemoteModel, requiredEmail);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
 	public boolean getRequiredPhone() {
 		return _requiredPhone;
 	}
@@ -928,7 +892,6 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		clone.setPrivateEvent(getPrivateEvent());
 		clone.setRegistrationRequired(getRegistrationRequired());
 		clone.setRequiredFullName(getRequiredFullName());
-		clone.setRequiredEmail(getRequiredEmail());
 		clone.setRequiredPhone(getRequiredPhone());
 		clone.setImage(getImage());
 		clone.setLocationId(getLocationId());
@@ -990,7 +953,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(45);
+		StringBundler sb = new StringBundler(43);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -1024,8 +987,6 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		sb.append(getRegistrationRequired());
 		sb.append(", requiredFullName=");
 		sb.append(getRequiredFullName());
-		sb.append(", requiredEmail=");
-		sb.append(getRequiredEmail());
 		sb.append(", requiredPhone=");
 		sb.append(getRequiredPhone());
 		sb.append(", image=");
@@ -1043,7 +1004,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(70);
+		StringBundler sb = new StringBundler(67);
 
 		sb.append("<model><model-name>");
 		sb.append("com.rivetlogic.event.model.Event");
@@ -1114,10 +1075,6 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		sb.append(getRequiredFullName());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>requiredEmail</column-name><column-value><![CDATA[");
-		sb.append(getRequiredEmail());
-		sb.append("]]></column-value></column>");
-		sb.append(
 			"<column><column-name>requiredPhone</column-name><column-value><![CDATA[");
 		sb.append(getRequiredPhone());
 		sb.append("]]></column-value></column>");
@@ -1160,7 +1117,6 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 	private boolean _privateEvent;
 	private boolean _registrationRequired;
 	private boolean _requiredFullName;
-	private boolean _requiredEmail;
 	private boolean _requiredPhone;
 	private Blob _image;
 	private long _locationId;

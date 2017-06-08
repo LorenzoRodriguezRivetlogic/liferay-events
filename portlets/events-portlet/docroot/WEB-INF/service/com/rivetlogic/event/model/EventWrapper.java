@@ -67,7 +67,6 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 		attributes.put("privateEvent", getPrivateEvent());
 		attributes.put("registrationRequired", getRegistrationRequired());
 		attributes.put("requiredFullName", getRequiredFullName());
-		attributes.put("requiredEmail", getRequiredEmail());
 		attributes.put("requiredPhone", getRequiredPhone());
 		attributes.put("image", getImage());
 		attributes.put("locationId", getLocationId());
@@ -174,12 +173,6 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 
 		if (requiredFullName != null) {
 			setRequiredFullName(requiredFullName);
-		}
-
-		Boolean requiredEmail = (Boolean)attributes.get("requiredEmail");
-
-		if (requiredEmail != null) {
-			setRequiredEmail(requiredEmail);
 		}
 
 		Boolean requiredPhone = (Boolean)attributes.get("requiredPhone");
@@ -603,36 +596,6 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 	@Override
 	public void setRequiredFullName(boolean requiredFullName) {
 		_event.setRequiredFullName(requiredFullName);
-	}
-
-	/**
-	* Returns the required email of this event.
-	*
-	* @return the required email of this event
-	*/
-	@Override
-	public boolean getRequiredEmail() {
-		return _event.getRequiredEmail();
-	}
-
-	/**
-	* Returns <code>true</code> if this event is required email.
-	*
-	* @return <code>true</code> if this event is required email; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isRequiredEmail() {
-		return _event.isRequiredEmail();
-	}
-
-	/**
-	* Sets whether this event is required email.
-	*
-	* @param requiredEmail the required email of this event
-	*/
-	@Override
-	public void setRequiredEmail(boolean requiredEmail) {
-		_event.setRequiredEmail(requiredEmail);
 	}
 
 	/**

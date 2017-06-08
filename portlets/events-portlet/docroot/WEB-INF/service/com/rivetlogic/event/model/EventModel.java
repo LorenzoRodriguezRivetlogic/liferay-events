@@ -328,27 +328,6 @@ public interface EventModel extends BaseModel<Event> {
 	public void setRequiredFullName(boolean requiredFullName);
 
 	/**
-	 * Returns the required email of this event.
-	 *
-	 * @return the required email of this event
-	 */
-	public boolean getRequiredEmail();
-
-	/**
-	 * Returns <code>true</code> if this event is required email.
-	 *
-	 * @return <code>true</code> if this event is required email; <code>false</code> otherwise
-	 */
-	public boolean isRequiredEmail();
-
-	/**
-	 * Sets whether this event is required email.
-	 *
-	 * @param requiredEmail the required email of this event
-	 */
-	public void setRequiredEmail(boolean requiredEmail);
-
-	/**
 	 * Returns the required phone of this event.
 	 *
 	 * @return the required phone of this event

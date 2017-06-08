@@ -48,7 +48,6 @@ public class EventPortletConstants {
     public static final String PARAMETER_CALENDAR_ID = "calendarId";
     public static final String PARAMETER_REGISTRATION_REQUIRED = "registrationRequired";
     public static final String PARAMETER_REGISTRATION_FULL_NAME = "registrationFullName";
-    public static final String PARAMETER_REGISTRATION_EMAIL = "registrationEmail";
     public static final String PARAMETER_REGISTRATION_TELEPHONE = "registrationTelephone";
     public static final String PARAMETER_PHOTO = "photo";
     public static final String PARAMETER_TOKEN = "token";

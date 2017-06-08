@@ -15,7 +15,6 @@ create table rivetlogic_event_Event (
 	privateEvent BOOLEAN,
 	registrationRequired BOOLEAN,
 	requiredFullName BOOLEAN,
-	requiredEmail BOOLEAN,
 	requiredPhone BOOLEAN,
 	image BLOB,
 	locationId LONG,

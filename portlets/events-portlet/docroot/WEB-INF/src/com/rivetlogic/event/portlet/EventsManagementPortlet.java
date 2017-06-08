@@ -173,7 +173,6 @@ public class EventsManagementPortlet extends MVCPortlet {
         event.setPrivateEvent(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_EVENT));
         event.setRegistrationRequired(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_REGISTRATION_REQUIRED));
         event.setRequiredFullName(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_REGISTRATION_FULL_NAME));
-        event.setRequiredEmail(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_REGISTRATION_EMAIL));
         event.setRequiredPhone(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_REGISTRATION_TELEPHONE));
         event.setCalendarId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_CALENDAR_ID));
         
@@ -381,7 +380,6 @@ public class EventsManagementPortlet extends MVCPortlet {
         event.setPrivateEvent(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_EVENT));
         event.setRegistrationRequired(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_REGISTRATION_REQUIRED));
         event.setRequiredFullName(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_REGISTRATION_FULL_NAME));
-        event.setRequiredEmail(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_REGISTRATION_EMAIL));
         event.setRequiredPhone(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_REGISTRATION_TELEPHONE));
         event.setCalendarId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_CALENDAR_ID));
         
