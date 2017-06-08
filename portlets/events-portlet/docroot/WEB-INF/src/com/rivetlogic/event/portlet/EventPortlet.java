@@ -54,14 +54,12 @@ import com.rivetlogic.event.util.EventConstant;
 import com.rivetlogic.event.util.EventValidator;
 import com.rivetlogic.event.util.WebKeys;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.portlet.ActionRequest;
@@ -76,15 +74,13 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.portlet.ValidatorException;
 
-import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
-import net.fortuna.ical4j.model.Component;
 import net.fortuna.ical4j.model.Date;
-import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.component.VEvent;
-import net.fortuna.ical4j.model.parameter.Value;
+import net.fortuna.ical4j.model.parameter.Role;
+import net.fortuna.ical4j.model.property.Attendee;
 import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.ProdId;
 import net.fortuna.ical4j.model.property.Version;
@@ -408,16 +404,18 @@ public class EventPortlet extends MVCPortlet {
 		calendar.getProperties().add(Version.VERSION_2_0);
 		calendar.getProperties().add(CalScale.GREGORIAN);
 		
-		java.util.Calendar cal = java.util.Calendar.getInstance();
-		cal.set(java.util.Calendar.MONTH, java.util.Calendar.DECEMBER);
-		cal.set(java.util.Calendar.DAY_OF_MONTH, 25);
+		VEvent vEvent = new VEvent(new Date(event.getEventDate()), new Date(event.getEventEndDate()), event.getName());
 
-		VEvent christmas = new VEvent(new Date(cal.getTime()), "Christmas Day");
-		  
-		UidGenerator uidGenerator = new UidGenerator("1");
-		christmas.getProperties().add(uidGenerator.generateUid());
+		UidGenerator uidGenerator = new UidGenerator("uidGen");
+		vEvent.getProperties().add(uidGenerator.generateUid());
+		
+		for (Participant participant : event.getParticipants()) {
+			Attendee par = new Attendee(URI.create("mailto:"+participant.getEmail()));
+			par.getParameters().add(Role.REQ_PARTICIPANT);
+			vEvent.getProperties().add(par);
+		}
 
-		calendar.getComponents().add(christmas);
+		calendar.getComponents().add(vEvent);
 		  
 		return calendar;
     }
