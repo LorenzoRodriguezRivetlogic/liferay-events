@@ -47,6 +47,7 @@
 <%@ page import="com.liferay.portal.kernel.util.CalendarFactoryUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.FastDateFormatFactoryUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.DateUtil"%>
+<%@ page import="com.liferay.portal.kernel.util.StringUtil"%>
 <%@ page import="com.liferay.portal.theme.ThemeDisplay" %>
 <%@ page import="com.liferay.portal.util.PortalUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.UnicodeFormatter" %>
@@ -54,6 +55,8 @@
 <%@ page import="com.liferay.portal.kernel.dao.search.ResultRow" %>
 <%@ page import="com.liferay.portal.kernel.portlet.LiferayWindowState"%>
 <%@ page import="com.liferay.portal.security.permission.ActionKeys"%>
+<%@ page import="com.liferay.portal.model.Phone"%>
+<%@ page import="com.liferay.portal.model.User"%>
 
 <%@ page import="com.rivetlogic.event.util.WebKeys" %>
 <%@ page import="com.rivetlogic.event.model.Event" %>
@@ -61,6 +64,7 @@
 <%@ page import="com.rivetlogic.event.model.Participant" %>
 <%@ page import="com.rivetlogic.event.model.Type"%>
 <%@ page import="com.rivetlogic.event.model.Target" %>
+<%@ page import="com.rivetlogic.event.model.impl.ParticipantImpl"%>
 <%@ page import="com.rivetlogic.event.service.EventLocalServiceUtil" %>
 <%@ page import="com.rivetlogic.event.service.ParticipantLocalServiceUtil" %>
 <%@ page import="com.rivetlogic.event.service.LocationLocalServiceUtil"%>

@@ -26,7 +26,7 @@
 
 <%
 String searchText = ParamUtil.getString(request, WebKeys.SEARCH_TEXT);
-String searchTag = ParamUtil.getString(request, WebKeys.SEARCH_TAG);
+String searchTag = request.getParameter(WebKeys.SEARCH_TAG);
 Long locationId = ParamUtil.getLong(request, WebKeys.LOCATION);
 Long typeId = ParamUtil.getLong(request, WebKeys.TYPE);
 Long targetId = ParamUtil.getLong(request, WebKeys.TARGET);
@@ -81,6 +81,10 @@ List<Target> targets = TargetLocalServiceUtil.getTargetsByGroupId(portletGroupId
 		<aui:button name="searchButton" type="submit" cssClass="event-button" value="search-label"  inlineField="<%=true%>" />
 	</aui:button-row>
 </aui:form> 
+
+<% if (searchTag != null) { %>
+	<liferay-ui:message key="show-items-tag" arguments="<%= searchTag %>"/>
+<% } %>
 
 <liferay-ui:search-container 
 	emptyResultsMessage="event-empty-results" delta="${prefBean.numRows}" deltaConfigurable="true">

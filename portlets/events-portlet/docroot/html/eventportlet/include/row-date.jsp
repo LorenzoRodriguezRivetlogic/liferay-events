@@ -43,10 +43,10 @@
 
 <% if (isSameDate) { %>
 	<p><%= NotificationConstants.SDFWD.format(event.getEventDate()) %></p>
-	<p><%= NotificationConstants.SDFH.format(event.getEventDate()) %> - <%= NotificationConstants.SDFH.format(event.getEventEndDate()) %><p>
+	<p><%= NotificationConstants.SDFH.format(event.getEventDate()) %> - <%= NotificationConstants.SDFH.format(event.getEventEndDate()) %></p>
 <% } else { %>
 	<p><%= NotificationConstants.SDF.format(event.getEventDate()) %> -</p>
-	<p><%= NotificationConstants.SDF.format(event.getEventEndDate()) %><p>
+	<p><%= NotificationConstants.SDF.format(event.getEventEndDate()) %></p>
 <% } %>
 <p><%= location.getName() %><p>
 

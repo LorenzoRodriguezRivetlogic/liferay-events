@@ -18,19 +18,30 @@
 * Boston, MA 02110-1301, USA. 
 */
 --%>
-
-<%@page import="com.liferay.portal.kernel.util.StringUtil"%>
-<%@page import="com.liferay.portal.model.Phone"%>
-<%@page import="com.rivetlogic.event.model.impl.ParticipantImpl"%>
-<%@page import="com.liferay.portal.model.User"%>
+<%@page import="com.liferay.portal.kernel.portlet.LiferayPortletMode"%>
+<%@page import="java.util.StringTokenizer"%>
 <%@include file="/html/init.jsp" %>
 
 <%
 long resourcePrimKey = ParamUtil.getLong(request, EventPortletConstants.PARAMETER_RESOURCE_PRIMARY_KEY);
 Event event = (Event) renderRequest.getAttribute(WebKeys.EVENT_ENTRY);
 
-
 if (Validator.isNotNull(event)){
+	Date date = event.getEventDate();
+	Date endDate = event.getEventEndDate();
+	
+	Calendar cal1 = Calendar.getInstance();
+	Calendar cal2 = Calendar.getInstance();
+	cal1.setTime(date);
+	cal2.setTime(endDate);
+	
+	boolean isSameDate = false;
+	int compare = TimeIgnoringComparator.compare(cal1, cal2);
+	if (compare == 0) {
+		isSameDate = true;
+	}
+	
+	Location location = LocationLocalServiceUtil.getLocation(event.getLocationId());
 %>
 
 <liferay-ui:error key="participant-fullname-required" message="participant-fullname-required" />
@@ -58,12 +69,72 @@ if (Validator.isNotNull(event)){
 	<portlet:param name="<%=WebKeys.REDIRECT%>" value="${backURL}"/>
 </portlet:actionURL>
 
+<portlet:resourceURL  var="imageResourceURL">
+	<portlet:param name="eventId" value="<%= String.valueOf(event.getEventId()) %>"/>
+</portlet:resourceURL>
+
+
 <div class="view-event">
 
 	<liferay-ui:header backURL="${backURL}" title="event-information"/>
 	
-	<%@include file="/html/eventportlet/include/event-summary.jspf" %>
-	
+	<table>
+		<col width="40%">
+  		<col width="30%">
+  		<col width="30%">
+		<tr>
+			<td rowspan="6">
+				<img width="320" height="213" src="<%=imageResourceURL.toString()%>" alt="no Image"/>
+			</td>
+			<td>
+				<h2><%= event.getName() %></h2>
+			</td>
+			<td>
+				<liferay-ui:icon-menu>
+					<liferay-ui:icon image="date" message="add-to-your-calendar"  url="#"/>
+				</liferay-ui:icon-menu>	
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<% if (isSameDate) { %>
+					<h4><%= NotificationConstants.SDFWD.format(event.getEventDate()) %></h4>
+					<h4><%= NotificationConstants.SDFH.format(event.getEventDate()) %> - <%= NotificationConstants.SDFH.format(event.getEventEndDate()) %></h4>
+				<% } else { %>
+					<h4><%= NotificationConstants.SDF.format(event.getEventDate()) %> - </h4>
+					<h4><%= NotificationConstants.SDF.format(event.getEventEndDate()) %></h4>
+				<% } %>
+				<h4><%= location.getName() %></h4>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td rowspan="3" colspan="2"><%= event.getDescription() %></td>
+		</tr>
+		<tr>
+		</tr>
+		<tr>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<b><liferay-ui:message key="tags-label" />:</b>
+				<%
+					StringTokenizer st = new StringTokenizer(event.getTags(),",");  
+					while (st.hasMoreTokens()) { 
+						String token = st.nextToken();
+				%>	
+						<portlet:renderURL var="tagUrl" windowState="<%= LiferayWindowState.NORMAL.toString() %>">
+							<portlet:param name="<%=WebKeys.SEARCH_TAG %>" value="<%= token %>"/>
+						</portlet:renderURL>
+						<a href="<%= tagUrl.toString() %>"><%= token %></a>  
+				<%
+					}   
+				%>
+				
+			</td>
+		</tr>
+	</table>
+
 	<liferay-ui:header title="event-register"/>
 	
 	<aui:form name="register_event_fm" action="${registerUserToEventUrl}" method="post">
