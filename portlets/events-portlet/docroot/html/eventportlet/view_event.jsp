@@ -70,9 +70,15 @@ if (Validator.isNotNull(event)){
 </portlet:actionURL>
 
 <portlet:resourceURL  var="imageResourceURL">
+	<portlet:param name="action" value="image"/>
 	<portlet:param name="eventId" value="<%= String.valueOf(event.getEventId()) %>"/>
 </portlet:resourceURL>
 
+<portlet:resourceURL  var="icsResourceURL">
+	<portlet:param name="action" value="ics"/>
+	<portlet:param name="eventId" value="<%= String.valueOf(event.getEventId()) %>"/>
+	<portlet:param name="resourceId" value="<%= event.getName() %>"/>
+</portlet:resourceURL>
 
 <div class="view-event">
 
@@ -91,7 +97,7 @@ if (Validator.isNotNull(event)){
 			</td>
 			<td>
 				<liferay-ui:icon-menu>
-					<liferay-ui:icon image="date" message="add-to-your-calendar"  url="#"/>
+					<liferay-ui:icon image="date" message="add-to-your-calendar"  url="<%= icsResourceURL.toString() %>"/>
 				</liferay-ui:icon-menu>	
 			</td>
 		</tr>
@@ -106,7 +112,10 @@ if (Validator.isNotNull(event)){
 				<% } %>
 				<h4><%= location.getName() %></h4>
 			</td>
-			<td></td>
+			<td>
+				<liferay-ui:message key="share-with-friends" />
+				<liferay-ui:social-bookmarks title="test" url="#" />
+			</td>
 		</tr>
 		<tr>
 			<td rowspan="3" colspan="2"><%= event.getDescription() %></td>

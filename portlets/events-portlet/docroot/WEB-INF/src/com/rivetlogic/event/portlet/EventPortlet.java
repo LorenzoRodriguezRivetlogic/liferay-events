@@ -54,10 +54,14 @@ import com.rivetlogic.event.util.EventConstant;
 import com.rivetlogic.event.util.EventValidator;
 import com.rivetlogic.event.util.WebKeys;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.portlet.ActionRequest;
@@ -71,6 +75,21 @@ import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.portlet.ValidatorException;
+
+import net.fortuna.ical4j.data.CalendarBuilder;
+import net.fortuna.ical4j.data.CalendarOutputter;
+import net.fortuna.ical4j.data.ParserException;
+import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.Component;
+import net.fortuna.ical4j.model.Date;
+import net.fortuna.ical4j.model.Property;
+import net.fortuna.ical4j.model.component.VEvent;
+import net.fortuna.ical4j.model.parameter.Value;
+import net.fortuna.ical4j.model.property.CalScale;
+import net.fortuna.ical4j.model.property.ProdId;
+import net.fortuna.ical4j.model.property.Version;
+import net.fortuna.ical4j.util.UidGenerator;
+import net.fortuna.ical4j.validate.ValidationException;
 
 /**
  * @author charlesrodriguez
@@ -323,19 +342,84 @@ public class EventPortlet extends MVCPortlet {
     		throws  IOException, PortletException {
 
 		try {
-			long eventId=ParamUtil.getLong(resourceRequest,"eventId");
-			Event event=  EventLocalServiceUtil.getEvent(eventId);
-			if(event != null){
-				Blob image = event.getImage();
-				byte[ ] imgData = image.getBytes(1,(int)image.length());
-				resourceResponse.setContentType("image/jpg");
-				OutputStream o = resourceResponse.getPortletOutputStream();
-				o.write(imgData);
-				o.flush();
-				o.close();
-			}    
+			String  action  =ParamUtil.getString(resourceRequest,WebKeys.RESOURCE_ACTION);
+			
+			System.out.println();
+			
+			if(action.equals(WebKeys.ACTION_IMAGE)) {
+				getResourceImage(resourceRequest, resourceResponse);
+			}
+			
+			if(action.equals(WebKeys.ACTION_ICS)) {
+				getResourceIcs(resourceRequest, resourceResponse);
+			}
+			
+			  
 		} catch (Exception e) {
 		}
+    }
+    
+    private void getResourceImage (ResourceRequest resourceRequest, ResourceResponse resourceResponse) 
+    		throws PortalException, SystemException, SQLException, IOException {
+    	
+    	long eventId=ParamUtil.getLong(resourceRequest,"eventId");
+		Event event=  EventLocalServiceUtil.getEvent(eventId);
+		if(event != null){
+			Blob image = event.getImage();
+			byte[ ] imgData = image.getBytes(1,(int)image.length());
+			resourceResponse.setContentType("image/jpg");
+			OutputStream o = resourceResponse.getPortletOutputStream();
+			o.write(imgData);
+			o.flush();
+			o.close();
+		}  
+    }
+    
+    private void getResourceIcs (ResourceRequest resourceRequest, ResourceResponse resourceResponse) 
+    		throws PortalException, SystemException, SQLException, IOException {
+    	
+    	try {
+    		
+	    	long eventId=ParamUtil.getLong(resourceRequest,"eventId");
+			Event event=  EventLocalServiceUtil.getEvent(eventId);
+			if(event != null){
+				Calendar cal = createIcsEvent(event);
+				
+				resourceResponse.setContentType("text/calendar");
+				OutputStream o = resourceResponse.getPortletOutputStream();
+				
+				CalendarOutputter outputter = new CalendarOutputter(true);
+				outputter.output(cal, o);
+				
+				o.flush();
+				o.close();
+			}  
+		
+    	} catch (ValidationException e) {
+			e.printStackTrace();
+		} catch (ParserException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    private Calendar createIcsEvent (Event event) throws ValidationException, IOException, ParserException {
+    	Calendar calendar = new Calendar();
+    	calendar.getProperties().add(new ProdId("-//Ben Fortuna//iCal4j 1.0//EN"));
+		calendar.getProperties().add(Version.VERSION_2_0);
+		calendar.getProperties().add(CalScale.GREGORIAN);
+		
+		java.util.Calendar cal = java.util.Calendar.getInstance();
+		cal.set(java.util.Calendar.MONTH, java.util.Calendar.DECEMBER);
+		cal.set(java.util.Calendar.DAY_OF_MONTH, 25);
+
+		VEvent christmas = new VEvent(new Date(cal.getTime()), "Christmas Day");
+		  
+		UidGenerator uidGenerator = new UidGenerator("1");
+		christmas.getProperties().add(uidGenerator.generateUid());
+
+		calendar.getComponents().add(christmas);
+		  
+		return calendar;
     }
     
     private void disableNotifications(ActionRequest request) {

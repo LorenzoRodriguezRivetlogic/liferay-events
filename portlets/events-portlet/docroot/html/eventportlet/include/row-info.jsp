@@ -32,6 +32,7 @@
 </portlet:renderURL>
 
 <portlet:resourceURL  var="imageResourceURL">
+	<portlet:param name="action" value="image"/>
 	<portlet:param name="eventId" value="<%= eventId %>"/>
 </portlet:resourceURL>
 
