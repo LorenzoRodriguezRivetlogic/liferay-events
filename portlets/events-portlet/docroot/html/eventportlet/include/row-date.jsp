@@ -38,7 +38,14 @@
 		isSameDate = true;
 	}
 	
-	Location location = LocationLocalServiceUtil.getLocation(event.getLocationId());
+	String locationName = "";
+	try {
+		Location location = LocationLocalServiceUtil.getLocation(event.getLocationId());
+		locationName = location.getName();
+	} catch (Exception ex) {
+		locationName = "";
+	}
+	
 %>
 
 <% if (isSameDate) { %>
@@ -48,5 +55,5 @@
 	<p><%= NotificationConstants.SDF.format(event.getEventDate()) %> -</p>
 	<p><%= NotificationConstants.SDF.format(event.getEventEndDate()) %></p>
 <% } %>
-<p><%= location.getName() %><p>
+<p><%= locationName %><p>
 

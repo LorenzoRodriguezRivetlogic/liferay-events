@@ -42,7 +42,13 @@ if (Validator.isNotNull(event)){
 		isSameDate = true;
 	}
 	
-	Location location = LocationLocalServiceUtil.getLocation(event.getLocationId());
+	String locationName = "";
+	try {
+		Location location = LocationLocalServiceUtil.getLocation(event.getLocationId());
+		locationName = location.getName();
+	} catch (Exception ex) {
+		locationName = "";
+	}
 	
 	String currPageSocialLink = PortalUtil.getCanonicalURL((PortalUtil.getCurrentURL(request)), themeDisplay, layout);
 %>
@@ -113,7 +119,7 @@ if (Validator.isNotNull(event)){
 							<h4><%= NotificationConstants.SDF.format(event.getEventDate()) %> - </h4>
 							<h4><%= NotificationConstants.SDF.format(event.getEventEndDate()) %></h4>
 						<% } %>
-						<h4><%= location.getName() %></h4>
+						<h4><%= locationName %></h4>
 					</div>
 					<div class="span6">
 						<liferay-ui:message key="share-with-friends" /><br />
