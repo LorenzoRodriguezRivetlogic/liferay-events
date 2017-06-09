@@ -232,7 +232,9 @@ String divStylePrivateEvent = event.getPrivateEvent()?  "block":"none";
 		
 		<aui:fieldset label="event-image">
 			<p><liferay-ui:message key="event-photo-info"/></p>
-			<aui:input  name="photo" value="" type="file" label="event-upload-file"/>
+			<aui:input  name="photo" value="" type="file" label="event-upload-file">
+				<aui:validator name="required"/>
+			</aui:input>
 		</aui:fieldset>
 		
 		<aui:fieldset label="event-categorization">

@@ -31,6 +31,7 @@ public class EventValidator {
     private static final String EVENT_NAME_REQUIRED = "event-name-required";
     private static final String EVENT_DESCRIPTION_REQUIRED = "event-description-required";
     private static final String EVENT_LOCATION_REQUIRED = "event-location-required";
+    private static final String EVENT_IMAGE_REQUIRED = "event-image-required";
     private static final String EVENT_DATETIME_REQUIRED = "event-date-time-required";
     private static final String PARTICIPANT_FULL_NAME_REQUIRED = "participant-fullname-required";
     private static final String PARTICIPANT_PHONE_REQUIRED = "participant-phone-required";
@@ -53,6 +54,10 @@ public class EventValidator {
         
         if (Validator.isNull(event.getLocationId())) {
             errors.add(EVENT_LOCATION_REQUIRED);
+        }
+
+        if (Validator.isNull(event.getImage())) {
+        	errors.add(EVENT_IMAGE_REQUIRED);
         }
         
         if (Validator.isNull(event.getEventDate())) {
