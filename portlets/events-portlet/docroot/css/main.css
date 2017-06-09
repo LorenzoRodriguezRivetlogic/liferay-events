@@ -88,3 +88,12 @@ span.event-message{
 	border: 0px;
 	background-color: white;
 }
+
+.event-info {
+	padding: 10px;
+	margin: 25px;
+}
+
+.event-detail {
+	padding: 10px;
+}

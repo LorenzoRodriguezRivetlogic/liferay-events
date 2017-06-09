@@ -18,6 +18,7 @@
 * Boston, MA 02110-1301, USA. 
 */
 --%>
+<%@page import="com.rivetlogic.event.util.Utils"%>
 <%@page import="com.liferay.portal.kernel.portlet.LiferayPortletMode"%>
 <%@page import="java.util.StringTokenizer"%>
 <%@include file="/html/init.jsp" %>
@@ -42,6 +43,8 @@ if (Validator.isNotNull(event)){
 	}
 	
 	Location location = LocationLocalServiceUtil.getLocation(event.getLocationId());
+	
+	String currPageSocialLink = PortalUtil.getCanonicalURL((PortalUtil.getCurrentURL(request)), themeDisplay, layout);
 %>
 
 <liferay-ui:error key="participant-fullname-required" message="participant-fullname-required" />
@@ -84,65 +87,74 @@ if (Validator.isNotNull(event)){
 
 	<liferay-ui:header backURL="${backURL}" title="event-information"/>
 	
-	<table>
-		<col width="40%">
-  		<col width="30%">
-  		<col width="30%">
-		<tr>
-			<td rowspan="6">
-				<img width="320" height="213" src="<%=imageResourceURL.toString()%>" alt="no Image"/>
-			</td>
-			<td>
-				<h2><%= event.getName() %></h2>
-			</td>
-			<td>
-				<liferay-ui:icon-menu>
-					<liferay-ui:icon image="date" message="add-to-your-calendar"  url="<%= icsResourceURL.toString() %>"/>
-				</liferay-ui:icon-menu>	
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<% if (isSameDate) { %>
-					<h4><%= NotificationConstants.SDFWD.format(event.getEventDate()) %></h4>
-					<h4><%= NotificationConstants.SDFH.format(event.getEventDate()) %> - <%= NotificationConstants.SDFH.format(event.getEventEndDate()) %></h4>
-				<% } else { %>
-					<h4><%= NotificationConstants.SDF.format(event.getEventDate()) %> - </h4>
-					<h4><%= NotificationConstants.SDF.format(event.getEventEndDate()) %></h4>
-				<% } %>
-				<h4><%= location.getName() %></h4>
-			</td>
-			<td>
-				<liferay-ui:message key="share-with-friends" />
-				<liferay-ui:social-bookmarks title="test" url="#" />
-			</td>
-		</tr>
-		<tr>
-			<td rowspan="3" colspan="2"><%= event.getDescription() %></td>
-		</tr>
-		<tr>
-		</tr>
-		<tr>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<b><liferay-ui:message key="tags-label" />:</b>
-				<%
-					StringTokenizer st = new StringTokenizer(event.getTags(),",");  
-					while (st.hasMoreTokens()) { 
-						String token = st.nextToken();
-				%>	
-						<portlet:renderURL var="tagUrl" windowState="<%= LiferayWindowState.NORMAL.toString() %>">
-							<portlet:param name="<%=WebKeys.SEARCH_TAG %>" value="<%= token %>"/>
-						</portlet:renderURL>
-						<a href="<%= tagUrl.toString() %>"><%= token %></a>  
-				<%
-					}   
-				%>
-				
-			</td>
-		</tr>
-	</table>
+	<div class="container-fluid event-info">
+		<div class="row">
+			<div class="span5">
+				<img width="100%" src="<%=imageResourceURL.toString()%>" alt="no Image"/>
+			</div>
+			<div class="span7 event-detail" >
+				<div class="row">
+					<div class="span6">
+						<h2><%= event.getName() %></h2>
+					</div>
+					<div class="span6">
+						<a href="<%= icsResourceURL.toString() %>">
+							<i class="icon-calendar"></i>
+							<liferay-ui:message key="add-to-your-calendar" />
+						</a>  
+					</div>
+				</div>
+				<div class="row">
+					<div class="span6">
+						<% if (isSameDate) { %>
+							<h4><%= NotificationConstants.SDFWD.format(event.getEventDate()) %></h4>
+							<h4><%= NotificationConstants.SDFH.format(event.getEventDate()) %> - <%= NotificationConstants.SDFH.format(event.getEventEndDate()) %></h4>
+						<% } else { %>
+							<h4><%= NotificationConstants.SDF.format(event.getEventDate()) %> - </h4>
+							<h4><%= NotificationConstants.SDF.format(event.getEventEndDate()) %></h4>
+						<% } %>
+						<h4><%= location.getName() %></h4>
+					</div>
+					<div class="span6">
+						<liferay-ui:message key="share-with-friends" /><br />
+						<a href="<%= Utils.generateMailtoLink(event, currPageSocialLink) %>">
+							<i class="icon-envelope"></i>
+						</a>
+						<a href="https://www.facebook.com/sharer/sharer.php?u=<%=  currPageSocialLink%>">
+							<i class="icon-facebook-sign"></i>
+						</a>
+						<a href="http://www.twitter.com/share?url=<%= currPageSocialLink %>&text=<%= Utils.replaceSpace(event.getName()) %>" 
+							onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=600');return false;">
+							
+							<i class="icon-twitter-sign"></i>
+						</a>
+					</div>
+				</div>
+				<div class="row">
+					<div class="span12">
+						<%= event.getDescription() %>
+					</div>
+				</div>
+				<div class="row">
+					<div class="span12">
+						<b><liferay-ui:message key="tags-label" />:</b>
+						<%
+							StringTokenizer st = new StringTokenizer(event.getTags(),",");  
+							while (st.hasMoreTokens()) { 
+								String token = st.nextToken();
+						%>	
+								<portlet:renderURL var="tagUrl" windowState="<%= LiferayWindowState.NORMAL.toString() %>">
+									<portlet:param name="<%=WebKeys.SEARCH_TAG %>" value="<%= token %>"/>
+								</portlet:renderURL>
+								<a href="<%= tagUrl.toString() %>"><%= token %></a>  
+						<%
+							}   
+						%>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<%
 	if (event.getRegistrationRequired()) {
