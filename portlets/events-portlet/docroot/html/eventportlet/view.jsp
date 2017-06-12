@@ -39,6 +39,9 @@ List<Target> targets = TargetLocalServiceUtil.getTargetsByGroupId(portletGroupId
 <portlet:actionURL name="searchEvents" var="searchEventsURL">
 </portlet:actionURL>
 
+<portlet:renderURL var="tagUrl" windowState="<%= LiferayWindowState.NORMAL.toString() %>">
+</portlet:renderURL>
+
 <liferay-ui:header title="event-upcoming-events"/>
 
 <aui:form action="<%= searchEventsURL %>" method="post" name="fm">
@@ -84,6 +87,8 @@ List<Target> targets = TargetLocalServiceUtil.getTargetsByGroupId(portletGroupId
 
 <% if (searchTag != null) { %>
 	<liferay-ui:message key="show-items-tag" arguments="<%= searchTag %>"/>
+	
+	<a href="<%= tagUrl.toString() %>"><liferay-ui:message key="show-all"/></a>  
 <% } %>
 
 <liferay-ui:search-container 
