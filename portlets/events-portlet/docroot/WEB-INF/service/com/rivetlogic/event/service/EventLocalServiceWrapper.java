@@ -401,18 +401,17 @@ public class EventLocalServiceWrapper implements EventLocalService,
 	@Override
 	public java.util.List<com.rivetlogic.event.model.Event> getPublicEvents(
 		int start, int end, java.lang.Long locationId, java.lang.Long typeId,
-		java.lang.Long targetId, java.lang.String searchText,
-		java.lang.String searchTag) {
+		java.lang.Long targetId, java.lang.String searchText) {
 		return _eventLocalService.getPublicEvents(start, end, locationId,
-			typeId, targetId, searchText, searchTag);
+			typeId, targetId, searchText);
 	}
 
 	@Override
 	public int getPublicEventsCount(java.lang.Long locationId,
 		java.lang.Long typeId, java.lang.Long targetId,
-		java.lang.String searchText, java.lang.String searchTag) {
+		java.lang.String searchText) {
 		return _eventLocalService.getPublicEventsCount(locationId, typeId,
-			targetId, searchText, searchTag);
+			targetId, searchText);
 	}
 
 	/**

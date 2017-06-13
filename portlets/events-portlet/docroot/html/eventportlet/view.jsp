@@ -34,6 +34,10 @@ Long targetId = ParamUtil.getLong(request, WebKeys.TARGET);
 List<Location> locations = LocationLocalServiceUtil.getLocationsByGroupId(portletGroupId);
 List<Type> types = TypeLocalServiceUtil.getTypesByGroupId(portletGroupId);
 List<Target> targets = TargetLocalServiceUtil.getTargetsByGroupId(portletGroupId);
+
+if (searchTag != null) {
+	searchText = searchTag;
+}
 %>
 
 <portlet:actionURL name="searchEvents" var="searchEventsURL">
@@ -79,24 +83,18 @@ List<Target> targets = TargetLocalServiceUtil.getTargetsByGroupId(portletGroupId
 			}
 			%>
 		</aui:select>
-		<aui:input name="searchText" label="search-text" type="text" inlineField="<%=true%>" >
+		<aui:input name="searchText" label="search-text" type="text" inlineField="<%=true%>" value="<%= searchText %>" >
 		</aui:input>
 		<aui:button name="searchButton" type="submit" cssClass="event-button" value="search-label"  inlineField="<%=true%>" />
 	</aui:button-row>
 </aui:form> 
 
-<% if (searchTag != null) { %>
-	<liferay-ui:message key="show-items-tag" arguments="<%= searchTag %>"/>
-	
-	<a href="<%= tagUrl.toString() %>"><liferay-ui:message key="show-all"/></a>  
-<% } %>
-
 <liferay-ui:search-container 
 	emptyResultsMessage="event-empty-results" delta="${prefBean.numRows}" deltaConfigurable="true">
 	<liferay-ui:search-container-results>
 		<%
-		total = EventLocalServiceUtil.getPublicEventsCount(locationId, typeId, targetId, searchText, searchTag);
-		results = EventLocalServiceUtil.getPublicEvents(searchContainer.getStart(), searchContainer.getEnd(), locationId, typeId, targetId, searchText, searchTag);
+		total = EventLocalServiceUtil.getPublicEventsCount(locationId, typeId, targetId, searchText);
+		results = EventLocalServiceUtil.getPublicEvents(searchContainer.getStart(), searchContainer.getEnd(), locationId, typeId, targetId, searchText);
 		pageContext.setAttribute("results", results);
 		pageContext.setAttribute("total", total);
 		%>

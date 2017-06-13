@@ -170,14 +170,14 @@ public class EventLocalServiceClp implements EventLocalService {
 
 		_methodParameterTypes31 = new String[] {
 				"int", "int", "java.lang.Long", "java.lang.Long",
-				"java.lang.Long", "java.lang.String", "java.lang.String"
+				"java.lang.Long", "java.lang.String"
 			};
 
 		_methodName32 = "getPublicEventsCount";
 
 		_methodParameterTypes32 = new String[] {
 				"java.lang.Long", "java.lang.Long", "java.lang.Long",
-				"java.lang.String", "java.lang.String"
+				"java.lang.String"
 			};
 	}
 
@@ -1098,8 +1098,7 @@ public class EventLocalServiceClp implements EventLocalService {
 	@Override
 	public java.util.List<com.rivetlogic.event.model.Event> getPublicEvents(
 		int start, int end, java.lang.Long locationId, java.lang.Long typeId,
-		java.lang.Long targetId, java.lang.String searchText,
-		java.lang.String searchTag) {
+		java.lang.Long targetId, java.lang.String searchText) {
 		Object returnObj = null;
 
 		try {
@@ -1116,9 +1115,7 @@ public class EventLocalServiceClp implements EventLocalService {
 						
 					ClpSerializer.translateInput(targetId),
 						
-					ClpSerializer.translateInput(searchText),
-						
-					ClpSerializer.translateInput(searchTag)
+					ClpSerializer.translateInput(searchText)
 					});
 		}
 		catch (Throwable t) {
@@ -1139,7 +1136,7 @@ public class EventLocalServiceClp implements EventLocalService {
 	@Override
 	public int getPublicEventsCount(java.lang.Long locationId,
 		java.lang.Long typeId, java.lang.Long targetId,
-		java.lang.String searchText, java.lang.String searchTag) {
+		java.lang.String searchText) {
 		Object returnObj = null;
 
 		try {
@@ -1152,9 +1149,7 @@ public class EventLocalServiceClp implements EventLocalService {
 						
 					ClpSerializer.translateInput(targetId),
 						
-					ClpSerializer.translateInput(searchText),
-						
-					ClpSerializer.translateInput(searchTag)
+					ClpSerializer.translateInput(searchText)
 					});
 		}
 		catch (Throwable t) {

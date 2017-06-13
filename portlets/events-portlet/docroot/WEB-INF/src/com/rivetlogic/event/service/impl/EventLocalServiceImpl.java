@@ -332,7 +332,7 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         return dynamicQuery;
     }
     
-    private DynamicQuery getPublicUpcomingFilteredEventsDynamicQuery(boolean useOrder, long userId, Long locationId, Long typeId, Long targetId, String searchText, String searchTag) {
+    private DynamicQuery getPublicUpcomingFilteredEventsDynamicQuery(boolean useOrder, long userId, Long locationId, Long typeId, Long targetId, String searchText) {
         DynamicQuery dynamicQuery = getUpcomingEventsDynamicQuery(useOrder, userId);
         
         Criterion criterion = RestrictionsFactoryUtil.eq(EVENT_PRIVATE_COLUMN, false);
@@ -357,24 +357,22 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         
         if (searchText != null && !searchText.equals("")) {
         	Criterion criterionText = RestrictionsFactoryUtil.like(EVENT_NAME_COLUMN, new StringBuilder("%").append(searchText).append("%").toString());
+        	criterion = RestrictionsFactoryUtil.or(criterionText, RestrictionsFactoryUtil.like(EVENT_TAG_COLUMN, new StringBuilder("%").append(searchText).append("%").toString()));
+        	
         	junction.add(criterionText);
         }
         
-        if (searchTag != null && !searchTag.equals("")) {
-        	Criterion criterionTag = RestrictionsFactoryUtil.like(EVENT_TAG_COLUMN, new StringBuilder("%").append(searchTag).append("%").toString());
-        	junction.add(criterionTag);
-        }
         
         dynamicQuery.add(junction);
         return dynamicQuery;
     }
     
     @SuppressWarnings("unchecked")
-    public List<Event> getPublicEvents(int start, int end, Long locationId, Long typeId, Long targetId, String searchText, String searchTag) {
+    public List<Event> getPublicEvents(int start, int end, Long locationId, Long typeId, Long targetId, String searchText) {
         
         List<Event> publicEvents = new ArrayList<Event>();
         
-        DynamicQuery dynamicQuery = getPublicUpcomingFilteredEventsDynamicQuery(true, 0, locationId, typeId, targetId, searchText, searchTag);
+        DynamicQuery dynamicQuery = getPublicUpcomingFilteredEventsDynamicQuery(true, 0, locationId, typeId, targetId, searchText);
         
         try {
             publicEvents = (List<Event>) eventPersistence.findWithDynamicQuery(dynamicQuery, start, end);
@@ -385,10 +383,10 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         return publicEvents;
     }
     
-    public int getPublicEventsCount(Long locationId, Long typeId, Long targetId, String searchText, String searchTag) {
+    public int getPublicEventsCount(Long locationId, Long typeId, Long targetId, String searchText) {
         
         int result = 0;
-        DynamicQuery dynamicQuery = getPublicUpcomingFilteredEventsDynamicQuery(false, 0, locationId, typeId, targetId, searchText, searchTag);
+        DynamicQuery dynamicQuery = getPublicUpcomingFilteredEventsDynamicQuery(false, 0, locationId, typeId, targetId, searchText);
         try {
             result = (int) eventPersistence.countWithDynamicQuery(dynamicQuery);
         } catch (SystemException e) {

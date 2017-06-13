@@ -180,14 +180,14 @@ public class EventLocalServiceClpInvoker {
 
 		_methodParameterTypes79 = new String[] {
 				"int", "int", "java.lang.Long", "java.lang.Long",
-				"java.lang.Long", "java.lang.String", "java.lang.String"
+				"java.lang.Long", "java.lang.String"
 			};
 
 		_methodName80 = "getPublicEventsCount";
 
 		_methodParameterTypes80 = new String[] {
 				"java.lang.Long", "java.lang.Long", "java.lang.Long",
-				"java.lang.String", "java.lang.String"
+				"java.lang.String"
 			};
 	}
 
@@ -378,15 +378,14 @@ public class EventLocalServiceClpInvoker {
 			return EventLocalServiceUtil.getPublicEvents(((Integer)arguments[0]).intValue(),
 				((Integer)arguments[1]).intValue(),
 				(java.lang.Long)arguments[2], (java.lang.Long)arguments[3],
-				(java.lang.Long)arguments[4], (java.lang.String)arguments[5],
-				(java.lang.String)arguments[6]);
+				(java.lang.Long)arguments[4], (java.lang.String)arguments[5]);
 		}
 
 		if (_methodName80.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes80, parameterTypes)) {
 			return EventLocalServiceUtil.getPublicEventsCount((java.lang.Long)arguments[0],
 				(java.lang.Long)arguments[1], (java.lang.Long)arguments[2],
-				(java.lang.String)arguments[3], (java.lang.String)arguments[4]);
+				(java.lang.String)arguments[3]);
 		}
 
 		throw new UnsupportedOperationException();

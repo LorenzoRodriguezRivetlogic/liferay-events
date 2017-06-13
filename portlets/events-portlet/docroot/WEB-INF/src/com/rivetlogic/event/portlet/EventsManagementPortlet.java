@@ -180,7 +180,10 @@ public class EventsManagementPortlet extends MVCPortlet {
         EventValidator.validateEvent(event, errors);
         EventActionUtil.setErrors(errors, request);
         
-        List<Participant> participants = createParticipants(request, upreq, themeDisplay, event);
+        List<Participant> participants = new ArrayList<Participant>();
+        if(event.getPrivateEvent()) {
+        	participants = createParticipants(request, upreq, themeDisplay, event);
+        }
         
         if (SessionErrors.isEmpty(request)) {
             saveNewEvent(request, themeDisplay, event, participants);
