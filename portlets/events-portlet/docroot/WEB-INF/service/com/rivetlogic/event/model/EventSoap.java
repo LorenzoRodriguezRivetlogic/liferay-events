@@ -49,6 +49,7 @@ public class EventSoap implements Serializable {
 		soapModel.setRegistrationRequired(model.getRegistrationRequired());
 		soapModel.setRequiredFullName(model.getRequiredFullName());
 		soapModel.setRequiredPhone(model.getRequiredPhone());
+		soapModel.setRecurrent(model.getRecurrent());
 		soapModel.setImage(model.getImage());
 		soapModel.setLocationId(model.getLocationId());
 		soapModel.setTargetId(model.getTargetId());
@@ -257,6 +258,18 @@ public class EventSoap implements Serializable {
 		_requiredPhone = requiredPhone;
 	}
 
+	public boolean getRecurrent() {
+		return _recurrent;
+	}
+
+	public boolean isRecurrent() {
+		return _recurrent;
+	}
+
+	public void setRecurrent(boolean recurrent) {
+		_recurrent = recurrent;
+	}
+
 	public Blob getImage() {
 		return _image;
 	}
@@ -306,6 +319,7 @@ public class EventSoap implements Serializable {
 	private boolean _registrationRequired;
 	private boolean _requiredFullName;
 	private boolean _requiredPhone;
+	private boolean _recurrent;
 	private Blob _image;
 	private long _locationId;
 	private long _targetId;

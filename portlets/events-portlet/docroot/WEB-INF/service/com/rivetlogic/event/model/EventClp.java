@@ -94,6 +94,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		attributes.put("registrationRequired", getRegistrationRequired());
 		attributes.put("requiredFullName", getRequiredFullName());
 		attributes.put("requiredPhone", getRequiredPhone());
+		attributes.put("recurrent", getRecurrent());
 		attributes.put("image", getImage());
 		attributes.put("locationId", getLocationId());
 		attributes.put("targetId", getTargetId());
@@ -205,6 +206,12 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 		if (requiredPhone != null) {
 			setRequiredPhone(requiredPhone);
+		}
+
+		Boolean recurrent = (Boolean)attributes.get("recurrent");
+
+		if (recurrent != null) {
+			setRecurrent(recurrent);
 		}
 
 		Blob image = (Blob)attributes.get("image");
@@ -658,6 +665,34 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 	}
 
 	@Override
+	public boolean getRecurrent() {
+		return _recurrent;
+	}
+
+	@Override
+	public boolean isRecurrent() {
+		return _recurrent;
+	}
+
+	@Override
+	public void setRecurrent(boolean recurrent) {
+		_recurrent = recurrent;
+
+		if (_eventRemoteModel != null) {
+			try {
+				Class<?> clazz = _eventRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setRecurrent", boolean.class);
+
+				method.invoke(_eventRemoteModel, recurrent);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
 	public Blob getImage() {
 		return _image;
 	}
@@ -893,6 +928,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		clone.setRegistrationRequired(getRegistrationRequired());
 		clone.setRequiredFullName(getRequiredFullName());
 		clone.setRequiredPhone(getRequiredPhone());
+		clone.setRecurrent(getRecurrent());
 		clone.setImage(getImage());
 		clone.setLocationId(getLocationId());
 		clone.setTargetId(getTargetId());
@@ -953,7 +989,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(45);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -989,6 +1025,8 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		sb.append(getRequiredFullName());
 		sb.append(", requiredPhone=");
 		sb.append(getRequiredPhone());
+		sb.append(", recurrent=");
+		sb.append(getRecurrent());
 		sb.append(", image=");
 		sb.append(getImage());
 		sb.append(", locationId=");
@@ -1004,7 +1042,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(67);
+		StringBundler sb = new StringBundler(70);
 
 		sb.append("<model><model-name>");
 		sb.append("com.rivetlogic.event.model.Event");
@@ -1079,6 +1117,10 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		sb.append(getRequiredPhone());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>recurrent</column-name><column-value><![CDATA[");
+		sb.append(getRecurrent());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>image</column-name><column-value><![CDATA[");
 		sb.append(getImage());
 		sb.append("]]></column-value></column>");
@@ -1118,6 +1160,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 	private boolean _registrationRequired;
 	private boolean _requiredFullName;
 	private boolean _requiredPhone;
+	private boolean _recurrent;
 	private Blob _image;
 	private long _locationId;
 	private long _targetId;

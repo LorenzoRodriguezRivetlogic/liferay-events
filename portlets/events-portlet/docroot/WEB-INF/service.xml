@@ -39,6 +39,7 @@
         <!-- Order -->
         <column name="requiredFullName" type="boolean"></column>
         <column name="requiredPhone" type="boolean"></column>
+        <column name="recurrent" type="boolean"></column>
         <column name="image" type="Blob" />
         <column name="locationId" type="long"></column>
         <column name="targetId" type="long"></column>

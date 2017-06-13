@@ -68,6 +68,7 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 		attributes.put("registrationRequired", getRegistrationRequired());
 		attributes.put("requiredFullName", getRequiredFullName());
 		attributes.put("requiredPhone", getRequiredPhone());
+		attributes.put("recurrent", getRecurrent());
 		attributes.put("image", getImage());
 		attributes.put("locationId", getLocationId());
 		attributes.put("targetId", getTargetId());
@@ -179,6 +180,12 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 
 		if (requiredPhone != null) {
 			setRequiredPhone(requiredPhone);
+		}
+
+		Boolean recurrent = (Boolean)attributes.get("recurrent");
+
+		if (recurrent != null) {
+			setRecurrent(recurrent);
 		}
 
 		Blob image = (Blob)attributes.get("image");
@@ -626,6 +633,36 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 	@Override
 	public void setRequiredPhone(boolean requiredPhone) {
 		_event.setRequiredPhone(requiredPhone);
+	}
+
+	/**
+	* Returns the recurrent of this event.
+	*
+	* @return the recurrent of this event
+	*/
+	@Override
+	public boolean getRecurrent() {
+		return _event.getRecurrent();
+	}
+
+	/**
+	* Returns <code>true</code> if this event is recurrent.
+	*
+	* @return <code>true</code> if this event is recurrent; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isRecurrent() {
+		return _event.isRecurrent();
+	}
+
+	/**
+	* Sets whether this event is recurrent.
+	*
+	* @param recurrent the recurrent of this event
+	*/
+	@Override
+	public void setRecurrent(boolean recurrent) {
+		_event.setRecurrent(recurrent);
 	}
 
 	/**

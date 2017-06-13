@@ -25,6 +25,7 @@
 		<field name="registrationRequired" type="boolean" />
 		<field name="requiredFullName" type="boolean" />
 		<field name="requiredPhone" type="boolean" />
+		<field name="recurrent" type="boolean" />
 		<field name="image" type="Blob" />
 		<field name="locationId" type="long" />
 		<field name="targetId" type="long" />

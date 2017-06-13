@@ -37,7 +37,7 @@ import java.util.Date;
 public class EventCacheModel implements CacheModel<Event>, Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(41);
+		StringBundler sb = new StringBundler(43);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -73,6 +73,8 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 		sb.append(requiredFullName);
 		sb.append(", requiredPhone=");
 		sb.append(requiredPhone);
+		sb.append(", recurrent=");
+		sb.append(recurrent);
 		sb.append(", locationId=");
 		sb.append(locationId);
 		sb.append(", targetId=");
@@ -148,6 +150,7 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 		eventImpl.setRegistrationRequired(registrationRequired);
 		eventImpl.setRequiredFullName(requiredFullName);
 		eventImpl.setRequiredPhone(requiredPhone);
+		eventImpl.setRecurrent(recurrent);
 		eventImpl.setLocationId(locationId);
 		eventImpl.setTargetId(targetId);
 		eventImpl.setTypeId(typeId);
@@ -176,6 +179,7 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 		registrationRequired = objectInput.readBoolean();
 		requiredFullName = objectInput.readBoolean();
 		requiredPhone = objectInput.readBoolean();
+		recurrent = objectInput.readBoolean();
 		locationId = objectInput.readLong();
 		targetId = objectInput.readLong();
 		typeId = objectInput.readLong();
@@ -232,6 +236,7 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 		objectOutput.writeBoolean(registrationRequired);
 		objectOutput.writeBoolean(requiredFullName);
 		objectOutput.writeBoolean(requiredPhone);
+		objectOutput.writeBoolean(recurrent);
 		objectOutput.writeLong(locationId);
 		objectOutput.writeLong(targetId);
 		objectOutput.writeLong(typeId);
@@ -254,6 +259,7 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 	public boolean registrationRequired;
 	public boolean requiredFullName;
 	public boolean requiredPhone;
+	public boolean recurrent;
 	public long locationId;
 	public long targetId;
 	public long typeId;

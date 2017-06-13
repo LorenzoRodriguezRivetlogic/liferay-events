@@ -129,6 +129,8 @@ String divStyleNoRecurrency = true ?  "block":"none";
 
 	<aui:form name="fm_edit_event" action="${addEditEventURL}" method="POST" enctype="multipart/form-data">
 		
+		<aui:input name="recurrent" label="event-recurrent" value="${event.privateEvent}"/>
+			
 		<aui:fieldset label="event-information">
 			<aui:field-wrapper>
 				<aui:input name="<%=EventPortletConstants.PARAMETER_EVENT%>" label="event-private-question" type="checkbox" value="${event.privateEvent}"/>
@@ -185,9 +187,7 @@ String divStyleNoRecurrency = true ?  "block":"none";
 						</c:otherwise>
 					</c:choose>
 				</span>
-				<aui:button value="event-multiple-dates-make-recurring" cssClass="event-button" inlineField="<%=true%>" >
-					
-				</aui:button>
+				<aui:button name="makeRecurrent" value="event-multiple-dates-make-recurring" cssClass="event-button" inlineField="<%=true%>" />
 	
 			</aui:fieldset>
 	    	
@@ -290,7 +290,7 @@ String divStyleNoRecurrency = true ?  "block":"none";
 	        	<aui:fieldset>
 					<aui:button-row>
 						<aui:button name="saveRecurrency" type="submit" cssClass="event-button" value="save"  />
-						<aui:button type="cancelRecurrency" value="Cancel" cssClass="event-button"  />
+						<aui:button name="makeNoRecurrent" value="Cancel" cssClass="event-button"  />
 		    		</aui:button-row>
 				</aui:fieldset>	
 	    	</aui:fieldset>
@@ -670,5 +670,25 @@ AUI().ready('aui-base','event','node', function(A){
 			}
 		});
    	}
+   	
+   	A.one('#<portlet:namespace />makeRecurrent').on('click', function(event){
+   		var inputRecurrent = A.one("#<portlet:namespace />recurrent");
+   		inputRecurrent.set('value', true);
+   		var divNoRecurr = document.getElementById('noRecurrencyDiv');
+   		var divRecurr = document.getElementById('recurrencyDiv');
+   		divRecurr.style.display = 'block';
+   		divNoRecurr.style.display = 'none';
+   	});
+   	
+   	A.one('#<portlet:namespace />makeNoRecurrent').on('click', function(event){
+   		var inputRecurrent = A.one("#<portlet:namespace />recurrent");
+   		inputRecurrent.set('value', false);
+   		var divNoRecurr = document.getElementById('noRecurrencyDiv');
+   		var divRecurr = document.getElementById('recurrencyDiv');
+   		divRecurr.style.display = 'none';
+   		divNoRecurr.style.display = 'block';
+   	});
 });
+
+
 </aui:script>

@@ -29,6 +29,7 @@
 		<property name="registrationRequired" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="requiredFullName" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="requiredPhone" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="recurrent" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<one-to-one name="imageBlobModel" access="com.liferay.portal.dao.orm.hibernate.PrivatePropertyAccessor" class="com.rivetlogic.event.model.EventImageBlobModel" cascade="save-update" outer-join="false" constrained="true" />
 		<property name="locationId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="targetId" type="com.liferay.portal.dao.orm.hibernate.LongType" />

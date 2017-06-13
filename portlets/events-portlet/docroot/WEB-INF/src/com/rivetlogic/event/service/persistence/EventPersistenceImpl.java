@@ -2820,6 +2820,7 @@ public class EventPersistenceImpl extends BasePersistenceImpl<Event>
 		eventImpl.setRegistrationRequired(event.isRegistrationRequired());
 		eventImpl.setRequiredFullName(event.isRequiredFullName());
 		eventImpl.setRequiredPhone(event.isRequiredPhone());
+		eventImpl.setRecurrent(event.isRecurrent());
 		eventImpl.setImage(event.getImage());
 		eventImpl.setLocationId(event.getLocationId());
 		eventImpl.setTargetId(event.getTargetId());

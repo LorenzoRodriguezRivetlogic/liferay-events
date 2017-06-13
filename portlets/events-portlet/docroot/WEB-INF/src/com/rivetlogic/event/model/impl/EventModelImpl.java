@@ -81,12 +81,13 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 			{ "registrationRequired", Types.BOOLEAN },
 			{ "requiredFullName", Types.BOOLEAN },
 			{ "requiredPhone", Types.BOOLEAN },
+			{ "recurrent", Types.BOOLEAN },
 			{ "image", Types.BLOB },
 			{ "locationId", Types.BIGINT },
 			{ "targetId", Types.BIGINT },
 			{ "typeId", Types.BIGINT }
 		};
-	public static final String TABLE_SQL_CREATE = "create table rivetlogic_event_Event (uuid_ VARCHAR(75) null,eventId LONG not null primary key,calendarBookingId LONG,calendarId LONG,groupId LONG,companyId LONG,userId LONG,name VARCHAR(400) null,location STRING null,description STRING null,tags VARCHAR(75) null,eventDate DATE null,eventEndDate DATE null,privateEvent BOOLEAN,registrationRequired BOOLEAN,requiredFullName BOOLEAN,requiredPhone BOOLEAN,image BLOB,locationId LONG,targetId LONG,typeId LONG)";
+	public static final String TABLE_SQL_CREATE = "create table rivetlogic_event_Event (uuid_ VARCHAR(75) null,eventId LONG not null primary key,calendarBookingId LONG,calendarId LONG,groupId LONG,companyId LONG,userId LONG,name VARCHAR(400) null,location STRING null,description STRING null,tags VARCHAR(75) null,eventDate DATE null,eventEndDate DATE null,privateEvent BOOLEAN,registrationRequired BOOLEAN,requiredFullName BOOLEAN,requiredPhone BOOLEAN,recurrent BOOLEAN,image BLOB,locationId LONG,targetId LONG,typeId LONG)";
 	public static final String TABLE_SQL_DROP = "drop table rivetlogic_event_Event";
 	public static final String ORDER_BY_JPQL = " ORDER BY event.eventDate ASC, event.name ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY rivetlogic_event_Event.eventDate ASC, rivetlogic_event_Event.name ASC";
@@ -164,6 +165,7 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 		attributes.put("registrationRequired", getRegistrationRequired());
 		attributes.put("requiredFullName", getRequiredFullName());
 		attributes.put("requiredPhone", getRequiredPhone());
+		attributes.put("recurrent", getRecurrent());
 		attributes.put("image", getImage());
 		attributes.put("locationId", getLocationId());
 		attributes.put("targetId", getTargetId());
@@ -275,6 +277,12 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 		if (requiredPhone != null) {
 			setRequiredPhone(requiredPhone);
+		}
+
+		Boolean recurrent = (Boolean)attributes.get("recurrent");
+
+		if (recurrent != null) {
+			setRecurrent(recurrent);
 		}
 
 		Blob image = (Blob)attributes.get("image");
@@ -564,6 +572,21 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 	}
 
 	@Override
+	public boolean getRecurrent() {
+		return _recurrent;
+	}
+
+	@Override
+	public boolean isRecurrent() {
+		return _recurrent;
+	}
+
+	@Override
+	public void setRecurrent(boolean recurrent) {
+		_recurrent = recurrent;
+	}
+
+	@Override
 	public Blob getImage() {
 		if (_imageBlobModel == null) {
 			try {
@@ -670,6 +693,7 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 		eventImpl.setRegistrationRequired(getRegistrationRequired());
 		eventImpl.setRequiredFullName(getRequiredFullName());
 		eventImpl.setRequiredPhone(getRequiredPhone());
+		eventImpl.setRecurrent(getRecurrent());
 		eventImpl.setLocationId(getLocationId());
 		eventImpl.setTargetId(getTargetId());
 		eventImpl.setTypeId(getTypeId());
@@ -826,6 +850,8 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 		eventCacheModel.requiredPhone = getRequiredPhone();
 
+		eventCacheModel.recurrent = getRecurrent();
+
 		eventCacheModel.locationId = getLocationId();
 
 		eventCacheModel.targetId = getTargetId();
@@ -837,7 +863,7 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(45);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -873,6 +899,8 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 		sb.append(getRequiredFullName());
 		sb.append(", requiredPhone=");
 		sb.append(getRequiredPhone());
+		sb.append(", recurrent=");
+		sb.append(getRecurrent());
 		sb.append(", locationId=");
 		sb.append(getLocationId());
 		sb.append(", targetId=");
@@ -886,7 +914,7 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(67);
+		StringBundler sb = new StringBundler(70);
 
 		sb.append("<model><model-name>");
 		sb.append("com.rivetlogic.event.model.Event");
@@ -961,6 +989,10 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 		sb.append(getRequiredPhone());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>recurrent</column-name><column-value><![CDATA[");
+		sb.append(getRecurrent());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>locationId</column-name><column-value><![CDATA[");
 		sb.append(getLocationId());
 		sb.append("]]></column-value></column>");
@@ -1003,6 +1035,7 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 	private boolean _registrationRequired;
 	private boolean _requiredFullName;
 	private boolean _requiredPhone;
+	private boolean _recurrent;
 	private EventImageBlobModel _imageBlobModel;
 	private long _locationId;
 	private long _targetId;

@@ -349,6 +349,27 @@ public interface EventModel extends BaseModel<Event> {
 	public void setRequiredPhone(boolean requiredPhone);
 
 	/**
+	 * Returns the recurrent of this event.
+	 *
+	 * @return the recurrent of this event
+	 */
+	public boolean getRecurrent();
+
+	/**
+	 * Returns <code>true</code> if this event is recurrent.
+	 *
+	 * @return <code>true</code> if this event is recurrent; <code>false</code> otherwise
+	 */
+	public boolean isRecurrent();
+
+	/**
+	 * Sets whether this event is recurrent.
+	 *
+	 * @param recurrent the recurrent of this event
+	 */
+	public void setRecurrent(boolean recurrent);
+
+	/**
 	 * Returns the image of this event.
 	 *
 	 * @return the image of this event

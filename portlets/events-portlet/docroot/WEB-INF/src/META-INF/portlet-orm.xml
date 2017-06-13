@@ -32,6 +32,7 @@
 			<basic name="registrationRequired" />
 			<basic name="requiredFullName" />
 			<basic name="requiredPhone" />
+			<basic name="recurrent" />
 			<basic name="image" />
 			<basic name="locationId" />
 			<basic name="targetId" />
