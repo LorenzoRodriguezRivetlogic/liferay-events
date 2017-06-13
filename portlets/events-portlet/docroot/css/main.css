@@ -97,3 +97,8 @@ span.event-message{
 .event-detail {
 	padding: 10px;
 }
+
+.simple-box {
+	border: 1px solid #e5e5e5;
+	padding: 15px ;
+}

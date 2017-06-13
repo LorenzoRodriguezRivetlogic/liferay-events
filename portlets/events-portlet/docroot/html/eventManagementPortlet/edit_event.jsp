@@ -62,6 +62,8 @@ Long targetId = event.getTargetId();
 
 String divStyle = event.getRegistrationRequired() ?  "block":"none";
 String divStylePrivateEvent = event.getPrivateEvent()?  "block":"none";
+String divStyleRecurrency = false ?  "block":"none";
+String divStyleNoRecurrency = true ?  "block":"none";
 %>
 
 <liferay-ui:error key="event-save-error" message="event-save-error" />
@@ -150,76 +152,149 @@ String divStylePrivateEvent = event.getPrivateEvent()?  "block":"none";
 			</div>
     	</aui:fieldset>
     	
-    	<aui:fieldset label="event-start-date">
-    	
-	        <aui:input name="<%=EventPortletConstants.PARAMETER_EVENT_DATE%>" label="" value="<%=eventDate%>" type="text" inlineField="<%=true%>">
-	        	<!--aui:validator name="required"/-->
-	        </aui:input>
-			<span class="control-group">
-				<c:choose>
-					<c:when test="<%= Validator.isNotNull(valueDate) %>">
-						<liferay-ui:input-time
-							name="startTime"
-							amPmParam="startAmpm" 
-							hourParam="startHour" 
-							minuteParam="startMin" 
-							minuteInterval="30"
-							hourValue="<%=valueDate.get(Calendar.HOUR)%>" 
-							minuteValue="<%=valueDate.get(Calendar.MINUTE)%>"
-							amPmValue="<%=valueDate.get(Calendar.AM_PM)%>"
-							cssClass="event-hour"
-						/>
-					</c:when>
-					<c:otherwise>
-						<liferay-ui:input-time 
-							name="startTime"
-							amPmParam="startAmpm" 
-							hourParam="startHour" 
-							minuteParam="startMin" 
-							minuteInterval="30"
-							cssClass="event-hour"
-						/>
-					</c:otherwise>
-				</c:choose>
-			</span>
-
-		</aui:fieldset>
-    	
-    	<aui:fieldset label="event-end-date">
-    	
-	        <aui:input name="<%=EventPortletConstants.PARAMETER_EVENT_END_DATE%>" label="" value="<%=eventEndDate%>" type="text" inlineField="<%=true%>">
-	        	<!--aui:validator name="required"/-->
-	        </aui:input>
+    	<div id="noRecurrencyDiv" style="display: <%= divStyleNoRecurrency %>" >
+	    	<aui:fieldset label="event-start-date">
+	    	
+		        <aui:input name="<%=EventPortletConstants.PARAMETER_EVENT_DATE%>" label="" value="<%=eventDate%>" type="text" inlineField="<%=true%>">
+		        	<!--aui:validator name="required"/-->
+		        </aui:input>
+				<span class="control-group">
+					<c:choose>
+						<c:when test="<%= Validator.isNotNull(valueDate) %>">
+							<liferay-ui:input-time
+								name="startTime"
+								amPmParam="startAmpm" 
+								hourParam="startHour" 
+								minuteParam="startMin" 
+								minuteInterval="30"
+								hourValue="<%=valueDate.get(Calendar.HOUR)%>" 
+								minuteValue="<%=valueDate.get(Calendar.MINUTE)%>"
+								amPmValue="<%=valueDate.get(Calendar.AM_PM)%>"
+								cssClass="event-hour"
+							/>
+						</c:when>
+						<c:otherwise>
+							<liferay-ui:input-time 
+								name="startTime"
+								amPmParam="startAmpm" 
+								hourParam="startHour" 
+								minuteParam="startMin" 
+								minuteInterval="30"
+								cssClass="event-hour"
+							/>
+						</c:otherwise>
+					</c:choose>
+				</span>
+				<aui:button value="event-multiple-dates-make-recurring" cssClass="event-button" inlineField="<%=true%>" >
+					
+				</aui:button>
+	
+			</aui:fieldset>
+	    	
+	    	<aui:fieldset label="event-end-date">
+	    	
+		        <aui:input name="<%=EventPortletConstants.PARAMETER_EVENT_END_DATE%>" label="" value="<%=eventEndDate%>" type="text" inlineField="<%=true%>">
+		        	<!--aui:validator name="required"/-->
+		        </aui:input>
+			
+				<span class="control-group">
+					<c:choose>
+						<c:when test="<%= Validator.isNotNull(valueEndDate) %>">
+							<liferay-ui:input-time
+								name="endTime"
+								amPmParam="endAmpm" 
+								hourParam="endHour" 
+								minuteParam="endMin" 
+								minuteInterval="30"
+								hourValue="<%=valueEndDate.get(Calendar.HOUR)%>" 
+								minuteValue="<%=valueEndDate.get(Calendar.MINUTE)%>"
+								amPmValue="<%=valueEndDate.get(Calendar.AM_PM)%>"
+								cssClass="event-hour"
+							/>
+						</c:when>
+						<c:otherwise>
+							<liferay-ui:input-time
+								name="endTime" 
+								amPmParam="endAmpm" 
+								hourParam="endHour" 
+								minuteParam="endMin" 
+								minuteInterval="30"
+								cssClass="event-hour"
+							/>
+						</c:otherwise>
+					</c:choose>
+				</span>
+	
+			</aui:fieldset>
+		</div>
 		
-			<span class="control-group">
-				<c:choose>
-					<c:when test="<%= Validator.isNotNull(valueEndDate) %>">
-						<liferay-ui:input-time
-							name="endTime"
-							amPmParam="endAmpm" 
-							hourParam="endHour" 
-							minuteParam="endMin" 
-							minuteInterval="30"
-							hourValue="<%=valueEndDate.get(Calendar.HOUR)%>" 
-							minuteValue="<%=valueEndDate.get(Calendar.MINUTE)%>"
-							amPmValue="<%=valueEndDate.get(Calendar.AM_PM)%>"
-							cssClass="event-hour"
-						/>
-					</c:when>
-					<c:otherwise>
-						<liferay-ui:input-time
-							name="endTime" 
-							amPmParam="endAmpm" 
-							hourParam="endHour" 
-							minuteParam="endMin" 
-							minuteInterval="30"
-							cssClass="event-hour"
-						/>
-					</c:otherwise>
-				</c:choose>
-			</span>
-
-		</aui:fieldset>
+		<div id="recurrencyDiv" style="display: <%= divStyleRecurrency %>" class="simple-box">
+	    	<aui:fieldset cssClass="simple-box" label="event-multiple-dates">
+	    		<aui:select id="regularity" name="regularity" label="event-multiple-dates-regularity" showEmptyOption="true">
+					<% 
+					for (Location locationSel : locations) {
+					%>
+						<aui:option value="<%=locationSel.getLocationId()%>"  selected="<%= locationId == locationSel.getLocationId() %>">
+							<liferay-ui:message key="<%=locationSel.getName()%>" />
+						</aui:option>
+					<% 
+					}
+					%>
+				</aui:select>
+				<aui:button-row>
+					<liferay-ui:message key="event-multiple-dates-days" />
+					<aui:field-wrapper>
+						<aui:input name="<%=EventPortletConstants.PARAMETER_EVENT%>" label="event-multiple-dates-monday" type="checkbox" inlineField="<%=true%>"/>
+						<aui:input name="<%=EventPortletConstants.PARAMETER_EVENT%>" label="event-multiple-dates-tuesday" type="checkbox" inlineField="<%=true%>"/>
+						<aui:input name="<%=EventPortletConstants.PARAMETER_EVENT%>" label="event-multiple-dates-wednesday" type="checkbox" inlineField="<%=true%>"/>
+						<aui:input name="<%=EventPortletConstants.PARAMETER_EVENT%>" label="event-multiple-dates-thursday" type="checkbox" inlineField="<%=true%>"/>
+						<aui:input name="<%=EventPortletConstants.PARAMETER_EVENT%>" label="event-multiple-dates-friday" type="checkbox" inlineField="<%=true%>"/>
+						<aui:input name="<%=EventPortletConstants.PARAMETER_EVENT%>" label="event-multiple-dates-saturday" type="checkbox" inlineField="<%=true%>"/>
+						<aui:input name="<%=EventPortletConstants.PARAMETER_EVENT%>" label="event-multiple-dates-sunday" type="checkbox" inlineField="<%=true%>"/>
+					</aui:field-wrapper>
+				</aui:button-row>
+				
+				<aui:field-wrapper inlineField="<%=true%>">
+					<liferay-ui:message key="event-multiple-dates-from" />
+					<liferay-ui:input-time 
+						name="startTime"
+						amPmParam="startAmpm" 
+						hourParam="startHour" 
+						minuteParam="startMin" 
+						minuteInterval="30"
+						cssClass="event-hour"
+					/>
+				</aui:field-wrapper>
+				
+				<aui:field-wrapper inlineField="<%=true%>">
+					<liferay-ui:message key="event-multiple-dates-to" />
+					<liferay-ui:input-time 
+						name="startTime"
+						amPmParam="startAmpm" 
+						hourParam="startHour" 
+						minuteParam="startMin" 
+						minuteInterval="30"
+						cssClass="event-hour"
+					/>
+				</aui:field-wrapper>
+	
+				<aui:input name="startDate" label="event-multiple-dates-start" type="text" >
+	        	</aui:input>
+	
+				<aui:input name="endDate" label="event-multiple-dates-end" type="text" >
+	        	</aui:input>
+	        	
+	        	<b><liferay-ui:message key="event-multiple-dates-summary"/></b><br />
+	        	<liferay-ui:message key="Test"/>
+	        	
+	        	<aui:fieldset>
+					<aui:button-row>
+						<aui:button name="saveRecurrency" type="submit" cssClass="event-button" value="save"  />
+						<aui:button type="cancelRecurrency" value="Cancel" cssClass="event-button"  />
+		    		</aui:button-row>
+				</aui:fieldset>	
+	    	</aui:fieldset>
+    	</div>
 		
 		<aui:fieldset label="event-description">
 			<aui:field-wrapper>
