@@ -18,6 +18,7 @@
 * Boston, MA 02110-1301, USA. 
 */
 --%>
+<%@page import="com.rivetlogic.event.util.Utils"%>
 <%@include file="/html/init.jsp" %>
 
 <%
@@ -38,13 +39,16 @@
 
 <table>
 	<tr>
-		<td rowspan="2">
-			<img width="175" height="117" src="<%=imageResourceURL.toString()%>" alt="no Image"/>
+		<td rowspan="3">
+			<img width="175" height="100%" src="<%=imageResourceURL.toString()%>" alt="no Image"/>
 		</td>
-		<td><h4><%= event.getName() %></h4></td>
+		<td style="padding: 2px;"><h4><%= event.getName() %></h4></td>
 	</tr>
 	<tr>
-		<td>
+		<td style="padding: 2px;"><%= Utils.addSpaceTags(event.getTags())%></td>
+	</tr>
+	<tr>
+		<td style="padding: 2px;">
 			<liferay-ui:icon-menu>
 				<liferay-ui:icon image="view" message="event-view-read-more" url="${viewEventURL}"  />
 			</liferay-ui:icon-menu>
