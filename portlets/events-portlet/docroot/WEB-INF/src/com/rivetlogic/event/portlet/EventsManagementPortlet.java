@@ -157,7 +157,7 @@ public class EventsManagementPortlet extends MVCPortlet {
         event.setLocationId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_LOCATIONS));
         event.setTypeId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_TYPES));
         event.setTargetId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_TARGETS));
-        event.setTags(request.getParameter(EventPortletConstants.PARAMETER_TAGS));
+        event.setTags(request.getParameter(EventPortletConstants.PARAMETER_TAGS).toLowerCase());
         event.setDescription(ParamUtil.getString(upreq, EventPortletConstants.PARAMETER_DESCRIPTION));
         
         try {
@@ -367,7 +367,7 @@ public class EventsManagementPortlet extends MVCPortlet {
         event.setLocationId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_LOCATIONS));
         event.setTypeId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_TYPES));
         event.setTargetId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_TARGETS));
-        event.setTags(request.getParameter(EventPortletConstants.PARAMETER_TAGS));
+        event.setTags(request.getParameter(EventPortletConstants.PARAMETER_TAGS).toLowerCase());
         event.setDescription(ParamUtil.getString(upreq, EventPortletConstants.PARAMETER_DESCRIPTION));
         
         try {

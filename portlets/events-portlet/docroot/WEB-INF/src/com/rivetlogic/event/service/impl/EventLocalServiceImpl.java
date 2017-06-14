@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import com.liferay.calendar.model.Calendar;
 import com.liferay.calendar.model.CalendarBooking;
@@ -46,6 +47,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PortalUtil;
+import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
 import com.rivetlogic.event.NoSuchParticipantException;
 import com.rivetlogic.event.model.Event;
 import com.rivetlogic.event.service.base.EventLocalServiceBaseImpl;
@@ -96,7 +98,29 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
 		}
         event.setModelAttributes(newEvent.getModelAttributes());
         
-        return eventPersistence.update(event);
+        newEvent = eventPersistence.update(event);
+        
+        long[] cats = {0l};
+        AssetEntryLocalServiceUtil.updateEntry(newEvent.getUserId(), newEvent.getGroupId(), Event.class.getName(), newEvent.getEventId(), cats, formatTags(newEvent.getTags()));
+        
+        return newEvent;
+    }
+    
+    private String[] formatTags(String tags) {
+    	StringTokenizer st = new StringTokenizer(tags,",");  
+		List<String> newTags = new ArrayList<String>();
+		while (st.hasMoreTokens()) {  
+			newTags.add(st.nextToken());
+		} 
+		
+		String[] arrTags = new String[newTags.size()];
+		int count = 0;
+		for (String string : newTags) {
+			arrTags[count] = string;
+			count++;
+		}
+		
+		return arrTags;
     }
 
 	@SuppressWarnings("unchecked")
@@ -193,6 +217,9 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
 					booking.setEndTime(event.getEventEndDate().getTime());
 
 					CalendarBookingLocalServiceUtil.updateCalendarBooking(booking);
+					
+					long[] cats = {0l};
+			        AssetEntryLocalServiceUtil.updateEntry(event.getUserId(), event.getGroupId(), Event.class.getName(), event.getEventId(), cats, formatTags(event.getTags()));
 				}
 			} catch (PortalException e) {
 				_log.debug("Unable to update calendarBooking with id: " + event.getCalendarBookingId());
@@ -223,6 +250,12 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
 			}
 		}
     	
+
+        try {
+			AssetEntryLocalServiceUtil.deleteEntry(Event.class.getName(), event.getEventId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
         return eventPersistence.remove(event);
         
     }
