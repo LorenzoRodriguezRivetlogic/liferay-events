@@ -179,6 +179,10 @@ public class EventLocalServiceClp implements EventLocalService {
 				"java.lang.Long", "java.lang.Long", "java.lang.Long",
 				"java.lang.String"
 			};
+
+		_methodName33 = "getEventsCountByLocation";
+
+		_methodParameterTypes33 = new String[] { "java.lang.Long" };
 	}
 
 	@Override
@@ -1167,6 +1171,30 @@ public class EventLocalServiceClp implements EventLocalService {
 		return ((Integer)returnObj).intValue();
 	}
 
+	@Override
+	public int getEventsCountByLocation(java.lang.Long locationId) {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName33,
+					_methodParameterTypes33,
+					new Object[] { ClpSerializer.translateInput(locationId) });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Integer)returnObj).intValue();
+	}
+
 	private InvokableLocalService _invokableLocalService;
 	private String _methodName0;
 	private String[] _methodParameterTypes0;
@@ -1232,4 +1260,6 @@ public class EventLocalServiceClp implements EventLocalService {
 	private String[] _methodParameterTypes31;
 	private String _methodName32;
 	private String[] _methodParameterTypes32;
+	private String _methodName33;
+	private String[] _methodParameterTypes33;
 }

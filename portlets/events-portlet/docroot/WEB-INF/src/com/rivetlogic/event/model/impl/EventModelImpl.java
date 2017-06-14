@@ -104,9 +104,10 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 			true);
 	public static long COMPANYID_COLUMN_BITMASK = 1L;
 	public static long GROUPID_COLUMN_BITMASK = 2L;
-	public static long UUID_COLUMN_BITMASK = 4L;
-	public static long EVENTDATE_COLUMN_BITMASK = 8L;
-	public static long NAME_COLUMN_BITMASK = 16L;
+	public static long LOCATIONID_COLUMN_BITMASK = 4L;
+	public static long UUID_COLUMN_BITMASK = 8L;
+	public static long EVENTDATE_COLUMN_BITMASK = 16L;
+	public static long NAME_COLUMN_BITMASK = 32L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
 				"lock.expiration.time.com.rivetlogic.event.model.Event"));
 
@@ -599,7 +600,19 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 	@Override
 	public void setLocationId(long locationId) {
+		_columnBitmask |= LOCATIONID_COLUMN_BITMASK;
+
+		if (!_setOriginalLocationId) {
+			_setOriginalLocationId = true;
+
+			_originalLocationId = _locationId;
+		}
+
 		_locationId = locationId;
+	}
+
+	public long getOriginalLocationId() {
+		return _originalLocationId;
 	}
 
 	@Override
@@ -740,6 +753,10 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 		eventModelImpl._setOriginalCompanyId = false;
 
 		eventModelImpl._imageBlobModel = null;
+
+		eventModelImpl._originalLocationId = eventModelImpl._locationId;
+
+		eventModelImpl._setOriginalLocationId = false;
 
 		eventModelImpl._columnBitmask = 0;
 	}
@@ -1005,6 +1022,8 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 	private boolean _requiredPhone;
 	private EventImageBlobModel _imageBlobModel;
 	private long _locationId;
+	private long _originalLocationId;
+	private boolean _setOriginalLocationId;
 	private long _targetId;
 	private long _typeId;
 	private long _columnBitmask;

@@ -431,6 +431,18 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         return result;
     }
     
+    
+    public int getEventsCountByLocation(Long locationId ) {
+    	int result = 0;
+    	
+    	try {
+			result = eventPersistence.countByLocationId(locationId);
+		} catch (SystemException e) {
+			e.printStackTrace();
+		}
+    	
+    	return result;
+    }
     private static final String EVENT_DATE_COLUMN = "eventDate";
     private static final String EVENT_PRIVATE_COLUMN = "privateEvent";
     private static final String EVENT_LOCATION_COLUMN = "locationId";

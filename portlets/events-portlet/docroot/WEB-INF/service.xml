@@ -58,6 +58,9 @@
         <finder name="GroupId" return-type="Collection">
             <finder-column name="groupId" />
         </finder>
+        <finder name="LocationId" return-type="Collection">
+            <finder-column name="locationId"></finder-column>
+        </finder>
 
     </entity>
 

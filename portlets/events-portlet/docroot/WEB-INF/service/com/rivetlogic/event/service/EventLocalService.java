@@ -351,4 +351,7 @@ public interface EventLocalService extends BaseLocalService,
 	public int getPublicEventsCount(java.lang.Long locationId,
 		java.lang.Long typeId, java.lang.Long targetId,
 		java.lang.String searchText);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getEventsCountByLocation(java.lang.Long locationId);
 }

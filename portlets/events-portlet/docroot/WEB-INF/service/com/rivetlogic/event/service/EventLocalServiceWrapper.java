@@ -414,6 +414,11 @@ public class EventLocalServiceWrapper implements EventLocalService,
 			targetId, searchText);
 	}
 
+	@Override
+	public int getEventsCountByLocation(java.lang.Long locationId) {
+		return _eventLocalService.getEventsCountByLocation(locationId);
+	}
+
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */

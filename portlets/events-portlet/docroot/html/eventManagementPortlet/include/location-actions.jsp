@@ -6,6 +6,8 @@ String mvcPath = ParamUtil.getString(request, "mvcPath");
 ResultRow row = (ResultRow)request.getAttribute(WebKeys.SEARCH_CONTAINER_RESULT_ROW);
 
 Location location = (Location)row.getObject(); 
+
+int uses = EventLocalServiceUtil.getEventsCountByLocation(location.getLocationId());
 %>
 
 <liferay-ui:icon-menu>
@@ -13,5 +15,7 @@ Location location = (Location)row.getObject();
             <portlet:param name="locationId" value="<%= String.valueOf(location.getLocationId()) %>" />
         </portlet:actionURL>
 
-        <liferay-ui:icon-delete url="<%=deleteURL.toString() %>" />
+		<% if (uses == 0) { %>
+        	<liferay-ui:icon-delete url="<%=deleteURL.toString() %>" />
+        <% } %>
 </liferay-ui:icon-menu>

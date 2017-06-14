@@ -393,6 +393,10 @@ public class EventLocalServiceUtil {
 			searchText);
 	}
 
+	public static int getEventsCountByLocation(java.lang.Long locationId) {
+		return getService().getEventsCountByLocation(locationId);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}
