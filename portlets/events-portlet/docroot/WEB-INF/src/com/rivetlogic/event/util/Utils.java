@@ -27,4 +27,13 @@ public class Utils {
 		
 		return result;
 	}
+	
+	public static String formatUrlForShare(String url) {
+		url = url.replace(":", "%3A");
+		url = url.replace("/", "%2F");
+		url = url.replace("-", "%2D");
+		url = url.replace("_", "%5F");
+		
+		return url;
+	}
 }

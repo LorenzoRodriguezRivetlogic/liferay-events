@@ -236,6 +236,7 @@ String divStylePrivateEvent = event.getPrivateEvent()?  "block":"none";
 				<% if (event.getEventId() == 0) { %>
 					<aui:validator name="required"/>
 				<% } %>
+				<aui:validator name="acceptFiles">'jpg, png'</aui:validator>
 			</aui:input>
 		</aui:fieldset>
 		

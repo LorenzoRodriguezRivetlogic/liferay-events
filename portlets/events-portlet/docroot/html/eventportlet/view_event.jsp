@@ -126,7 +126,8 @@ if (Validator.isNotNull(event)){
 						<a href="<%= Utils.generateMailtoLink(event, currPageSocialLink) %>">
 							<i class="icon-envelope"></i>
 						</a>
-						<a href="https://www.facebook.com/sharer/sharer.php?u=<%=  currPageSocialLink%>">
+						<a href="https://www.facebook.com/sharer/sharer.php?u=<%= Utils.formatUrlForShare(currPageSocialLink)  %>" 
+							onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=600');return false;">
 							<i class="icon-facebook-sign"></i>
 						</a>
 						<a href="http://www.twitter.com/share?url=<%= currPageSocialLink %>&text=<%= Utils.replaceSpace(event.getName()) %>" 
