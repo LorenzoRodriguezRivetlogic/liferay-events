@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.dao.jdbc.SqlUpdateFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.Projection;
+import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.Indexable;
@@ -32,10 +33,14 @@ import com.liferay.portal.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.service.persistence.UserPersistence;
 
 import com.rivetlogic.event.model.Event;
+import com.rivetlogic.event.model.EventImageBlobModel;
 import com.rivetlogic.event.service.EventLocalService;
 import com.rivetlogic.event.service.persistence.EventPersistence;
+import com.rivetlogic.event.service.persistence.LocationPersistence;
 import com.rivetlogic.event.service.persistence.ParticipantPersistence;
+import com.rivetlogic.event.service.persistence.TargetPersistence;
 import com.rivetlogic.event.service.persistence.TokenPersistence;
+import com.rivetlogic.event.service.persistence.TypePersistence;
 
 import java.io.Serializable;
 
@@ -331,6 +336,25 @@ public abstract class EventLocalServiceBaseImpl extends BaseLocalServiceImpl
 		return eventPersistence.update(event);
 	}
 
+	@Override
+	public EventImageBlobModel getImageBlobModel(Serializable primaryKey)
+		throws SystemException {
+		Session session = null;
+
+		try {
+			session = eventPersistence.openSession();
+
+			return (com.rivetlogic.event.model.EventImageBlobModel)session.get(EventImageBlobModel.class,
+				primaryKey);
+		}
+		catch (Exception e) {
+			throw eventPersistence.processException(e);
+		}
+		finally {
+			eventPersistence.closeSession(session);
+		}
+	}
+
 	/**
 	 * Returns the event local service.
 	 *
@@ -366,6 +390,43 @@ public abstract class EventLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 */
 	public void setEventPersistence(EventPersistence eventPersistence) {
 		this.eventPersistence = eventPersistence;
+	}
+
+	/**
+	 * Returns the location local service.
+	 *
+	 * @return the location local service
+	 */
+	public com.rivetlogic.event.service.LocationLocalService getLocationLocalService() {
+		return locationLocalService;
+	}
+
+	/**
+	 * Sets the location local service.
+	 *
+	 * @param locationLocalService the location local service
+	 */
+	public void setLocationLocalService(
+		com.rivetlogic.event.service.LocationLocalService locationLocalService) {
+		this.locationLocalService = locationLocalService;
+	}
+
+	/**
+	 * Returns the location persistence.
+	 *
+	 * @return the location persistence
+	 */
+	public LocationPersistence getLocationPersistence() {
+		return locationPersistence;
+	}
+
+	/**
+	 * Sets the location persistence.
+	 *
+	 * @param locationPersistence the location persistence
+	 */
+	public void setLocationPersistence(LocationPersistence locationPersistence) {
+		this.locationPersistence = locationPersistence;
 	}
 
 	/**
@@ -407,6 +468,43 @@ public abstract class EventLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	/**
+	 * Returns the target local service.
+	 *
+	 * @return the target local service
+	 */
+	public com.rivetlogic.event.service.TargetLocalService getTargetLocalService() {
+		return targetLocalService;
+	}
+
+	/**
+	 * Sets the target local service.
+	 *
+	 * @param targetLocalService the target local service
+	 */
+	public void setTargetLocalService(
+		com.rivetlogic.event.service.TargetLocalService targetLocalService) {
+		this.targetLocalService = targetLocalService;
+	}
+
+	/**
+	 * Returns the target persistence.
+	 *
+	 * @return the target persistence
+	 */
+	public TargetPersistence getTargetPersistence() {
+		return targetPersistence;
+	}
+
+	/**
+	 * Sets the target persistence.
+	 *
+	 * @param targetPersistence the target persistence
+	 */
+	public void setTargetPersistence(TargetPersistence targetPersistence) {
+		this.targetPersistence = targetPersistence;
+	}
+
+	/**
 	 * Returns the token local service.
 	 *
 	 * @return the token local service
@@ -441,6 +539,43 @@ public abstract class EventLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 */
 	public void setTokenPersistence(TokenPersistence tokenPersistence) {
 		this.tokenPersistence = tokenPersistence;
+	}
+
+	/**
+	 * Returns the type local service.
+	 *
+	 * @return the type local service
+	 */
+	public com.rivetlogic.event.service.TypeLocalService getTypeLocalService() {
+		return typeLocalService;
+	}
+
+	/**
+	 * Sets the type local service.
+	 *
+	 * @param typeLocalService the type local service
+	 */
+	public void setTypeLocalService(
+		com.rivetlogic.event.service.TypeLocalService typeLocalService) {
+		this.typeLocalService = typeLocalService;
+	}
+
+	/**
+	 * Returns the type persistence.
+	 *
+	 * @return the type persistence
+	 */
+	public TypePersistence getTypePersistence() {
+		return typePersistence;
+	}
+
+	/**
+	 * Sets the type persistence.
+	 *
+	 * @param typePersistence the type persistence
+	 */
+	public void setTypePersistence(TypePersistence typePersistence) {
+		this.typePersistence = typePersistence;
 	}
 
 	/**
@@ -623,14 +758,26 @@ public abstract class EventLocalServiceBaseImpl extends BaseLocalServiceImpl
 	protected com.rivetlogic.event.service.EventLocalService eventLocalService;
 	@BeanReference(type = EventPersistence.class)
 	protected EventPersistence eventPersistence;
+	@BeanReference(type = com.rivetlogic.event.service.LocationLocalService.class)
+	protected com.rivetlogic.event.service.LocationLocalService locationLocalService;
+	@BeanReference(type = LocationPersistence.class)
+	protected LocationPersistence locationPersistence;
 	@BeanReference(type = com.rivetlogic.event.service.ParticipantLocalService.class)
 	protected com.rivetlogic.event.service.ParticipantLocalService participantLocalService;
 	@BeanReference(type = ParticipantPersistence.class)
 	protected ParticipantPersistence participantPersistence;
+	@BeanReference(type = com.rivetlogic.event.service.TargetLocalService.class)
+	protected com.rivetlogic.event.service.TargetLocalService targetLocalService;
+	@BeanReference(type = TargetPersistence.class)
+	protected TargetPersistence targetPersistence;
 	@BeanReference(type = com.rivetlogic.event.service.TokenLocalService.class)
 	protected com.rivetlogic.event.service.TokenLocalService tokenLocalService;
 	@BeanReference(type = TokenPersistence.class)
 	protected TokenPersistence tokenPersistence;
+	@BeanReference(type = com.rivetlogic.event.service.TypeLocalService.class)
+	protected com.rivetlogic.event.service.TypeLocalService typeLocalService;
+	@BeanReference(type = TypePersistence.class)
+	protected TypePersistence typePersistence;
 	@BeanReference(type = com.liferay.counter.service.CounterLocalService.class)
 	protected com.liferay.counter.service.CounterLocalService counterLocalService;
 	@BeanReference(type = com.liferay.portal.service.ResourceLocalService.class)

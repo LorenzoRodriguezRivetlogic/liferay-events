@@ -19,13 +19,16 @@
 
 package com.rivetlogic.event.portlet;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
+import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.Layout;
@@ -52,23 +55,43 @@ import com.rivetlogic.event.util.EventValidator;
 import com.rivetlogic.event.util.WebKeys;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URI;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletConfig;
 import javax.portlet.PortletException;
 import javax.portlet.PortletRequest;
 import javax.portlet.ReadOnlyException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 import javax.portlet.ValidatorException;
-import javax.servlet.jsp.JspPage;
+
+import net.fortuna.ical4j.data.CalendarOutputter;
+import net.fortuna.ical4j.data.ParserException;
+import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.Date;
+import net.fortuna.ical4j.model.component.VEvent;
+import net.fortuna.ical4j.model.parameter.Role;
+import net.fortuna.ical4j.model.property.Attendee;
+import net.fortuna.ical4j.model.property.CalScale;
+import net.fortuna.ical4j.model.property.ProdId;
+import net.fortuna.ical4j.model.property.Version;
+import net.fortuna.ical4j.util.UidGenerator;
+import net.fortuna.ical4j.validate.ValidationException;
 
 /**
  * @author charlesrodriguez
  * @author christopherjimenez
  * @author juancarrillo
+ * @author lorenzorodriguez
  */
 public class EventPortlet extends MVCPortlet {
     
@@ -117,7 +140,7 @@ public class EventPortlet extends MVCPortlet {
         include(jspPage, request, response);
     }
     
-    public void registerUserToEvent(ActionRequest request, ActionResponse response) throws IOException {
+    public void registerUserToEvent(ActionRequest request, ActionResponse response) throws IOException, PortalException, SystemException {
         Participant participant = EventActionUtil.getParticipantFromRequest(request);
         
         List<String> errors = new ArrayList<String>();
@@ -126,7 +149,9 @@ public class EventPortlet extends MVCPortlet {
         
         String redirect = ParamUtil.getString(request, WebKeys.REDIRECT);
         
-        if (EventValidator.validateRegisteredParticipant(participant, null, errors, repeatedEmails, invalidEmails)) {
+        Event event = EventLocalServiceUtil.getEvent(participant.getEventId());
+        
+        if (EventValidator.validateRegisteredParticipant(participant, null, errors, repeatedEmails, invalidEmails, event)) {
             saveParticipant(request, response, participant, redirect);
             
         } else {
@@ -294,6 +319,113 @@ public class EventPortlet extends MVCPortlet {
         }
     }
     
+    public void searchEvents(ActionRequest request, ActionResponse response) throws IOException {
+    	String searchText = ParamUtil.getString(request, WebKeys.SEARCH_TEXT);
+		Long locationId = ParamUtil.getLong(request, WebKeys.LOCATION);
+		Long typeId = ParamUtil.getLong(request, WebKeys.TYPE);
+		Long targetId = ParamUtil.getLong(request, WebKeys.TARGET);
+
+		response.setRenderParameter(WebKeys.SEARCH_TEXT, searchText);
+	    response.setRenderParameter(WebKeys.LOCATION, String.valueOf(locationId));
+	    response.setRenderParameter(WebKeys.TYPE, String.valueOf(typeId));
+	    response.setRenderParameter(WebKeys.TARGET, String.valueOf(targetId));
+	    
+	    disableNotifications(request);
+    }
+    
+    @Override
+    public void serveResource(ResourceRequest resourceRequest, ResourceResponse resourceResponse) 
+    		throws  IOException, PortletException {
+
+		try {
+			String  action  =ParamUtil.getString(resourceRequest,WebKeys.RESOURCE_ACTION);
+			
+			System.out.println();
+			
+			if(action.equals(WebKeys.ACTION_IMAGE)) {
+				getResourceImage(resourceRequest, resourceResponse);
+			}
+			
+			if(action.equals(WebKeys.ACTION_ICS)) {
+				getResourceIcs(resourceRequest, resourceResponse);
+			}
+			
+			  
+		} catch (Exception e) {
+		}
+    }
+    
+    private void getResourceImage (ResourceRequest resourceRequest, ResourceResponse resourceResponse) 
+    		throws PortalException, SystemException, SQLException, IOException {
+    	
+    	long eventId=ParamUtil.getLong(resourceRequest,"eventId");
+		Event event=  EventLocalServiceUtil.getEvent(eventId);
+		if(event != null){
+			Blob image = event.getImage();
+			byte[ ] imgData = image.getBytes(1,(int)image.length());
+			resourceResponse.setContentType("image/jpg");
+			OutputStream o = resourceResponse.getPortletOutputStream();
+			o.write(imgData);
+			o.flush();
+			o.close();
+		}  
+    }
+    
+    private void getResourceIcs (ResourceRequest resourceRequest, ResourceResponse resourceResponse) 
+    		throws PortalException, SystemException, SQLException, IOException {
+    	
+    	try {
+    		
+	    	long eventId=ParamUtil.getLong(resourceRequest,"eventId");
+			Event event=  EventLocalServiceUtil.getEvent(eventId);
+			if(event != null){
+				Calendar cal = createIcsEvent(event);
+				
+				resourceResponse.setContentType("text/calendar");
+				OutputStream o = resourceResponse.getPortletOutputStream();
+				
+				CalendarOutputter outputter = new CalendarOutputter(true);
+				outputter.output(cal, o);
+				
+				o.flush();
+				o.close();
+			}  
+		
+    	} catch (ValidationException e) {
+			e.printStackTrace();
+		} catch (ParserException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    private Calendar createIcsEvent (Event event) throws ValidationException, IOException, ParserException {
+    	Calendar calendar = new Calendar();
+    	calendar.getProperties().add(new ProdId("-//Ben Fortuna//iCal4j 1.0//EN"));
+		calendar.getProperties().add(Version.VERSION_2_0);
+		calendar.getProperties().add(CalScale.GREGORIAN);
+		
+		VEvent vEvent = new VEvent(new Date(event.getEventDate()), new Date(event.getEventEndDate()), event.getName());
+
+		UidGenerator uidGenerator = new UidGenerator("uidGen");
+		vEvent.getProperties().add(uidGenerator.generateUid());
+		
+		for (Participant participant : event.getParticipants()) {
+			Attendee par = new Attendee(URI.create("mailto:"+participant.getEmail()));
+			par.getParameters().add(Role.REQ_PARTICIPANT);
+			vEvent.getProperties().add(par);
+		}
+
+		calendar.getComponents().add(vEvent);
+		  
+		return calendar;
+    }
+    
+    private void disableNotifications(ActionRequest request) {
+		PortletConfig portletConfig = (PortletConfig) request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
+        LiferayPortletConfig liferayPortletConfig = (LiferayPortletConfig) portletConfig;
+        SessionMessages.add(request, liferayPortletConfig.getPortletId() + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_SUCCESS_MESSAGE);
+	}
+   
     private static final Log _log = LogFactoryUtil.getLog(EventPortlet.class);
     
     private static final String ERROR_SAVING_PARTICIPANT = "participant-save-error";

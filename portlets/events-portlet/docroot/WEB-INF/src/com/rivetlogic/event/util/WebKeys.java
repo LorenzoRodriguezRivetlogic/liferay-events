@@ -31,6 +31,12 @@ public class WebKeys implements com.liferay.portal.kernel.util.WebKeys {
     
     public static final String EDIT_EVENT_PAGE = "/html/eventManagementPortlet/edit_event.jsp";
     
+    public static final String LOCATION_POPUP = "/html/dialog/locations_dialog.jsp";
+    
+    public static final String TYPE_POPUP = "/html/dialog/type_dialog.jsp";
+    
+    public static final String TARGET_POPUP = "/html/dialog/target_dialog.jsp";
+    
     public static final String PARTICIPANTS = "participants";
     
     public static final String PARTICIPANT_INDEXES = "participantIndexes";
@@ -57,4 +63,33 @@ public class WebKeys implements com.liferay.portal.kernel.util.WebKeys {
     
     public static final String ACTION_KEY_MANAGE_BOOKINGS = "MANAGE_BOOKINGS";
     
+    public static final String LOCATION_ID = "locationId";
+    
+    public static final String TARGET_ID = "targetId";
+    
+    public static final String TYPE_ID = "typeId";
+    
+    public static final String GET_LOCATIONS = "getLocations";
+    
+    public static final String GET_TYPES = "getTypes";
+    
+    public static final String GET_TARGETS = "getTargets";
+    
+    public static final String GET_IMAGE = "getImage";
+    
+    public static final String LOCATION = "locations";
+    
+    public static final String TYPE = "types";
+    
+    public static final String TARGET = "targets";
+    
+    public static final String SEARCH_TEXT = "searchText";
+    
+    public static final String SEARCH_TAG = "searchTag";
+    
+    public static final String RESOURCE_ACTION = "action";
+    
+    public static final String ACTION_IMAGE = "image";
+    
+    public static final String ACTION_ICS = "ics";
 }

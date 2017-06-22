@@ -24,6 +24,8 @@ import com.liferay.portlet.expando.model.ExpandoBridge;
 
 import java.io.Serializable;
 
+import java.sql.Blob;
+
 import java.util.Date;
 
 /**
@@ -220,6 +222,21 @@ public interface EventModel extends BaseModel<Event> {
 	public void setDescription(String description);
 
 	/**
+	 * Returns the tags of this event.
+	 *
+	 * @return the tags of this event
+	 */
+	@AutoEscape
+	public String getTags();
+
+	/**
+	 * Sets the tags of this event.
+	 *
+	 * @param tags the tags of this event
+	 */
+	public void setTags(String tags);
+
+	/**
 	 * Returns the event date of this event.
 	 *
 	 * @return the event date of this event
@@ -268,6 +285,125 @@ public interface EventModel extends BaseModel<Event> {
 	 */
 	public void setPrivateEvent(boolean privateEvent);
 
+	/**
+	 * Returns the registration required of this event.
+	 *
+	 * @return the registration required of this event
+	 */
+	public boolean getRegistrationRequired();
+
+	/**
+	 * Returns <code>true</code> if this event is registration required.
+	 *
+	 * @return <code>true</code> if this event is registration required; <code>false</code> otherwise
+	 */
+	public boolean isRegistrationRequired();
+
+	/**
+	 * Sets whether this event is registration required.
+	 *
+	 * @param registrationRequired the registration required of this event
+	 */
+	public void setRegistrationRequired(boolean registrationRequired);
+
+	/**
+	 * Returns the required full name of this event.
+	 *
+	 * @return the required full name of this event
+	 */
+	public boolean getRequiredFullName();
+
+	/**
+	 * Returns <code>true</code> if this event is required full name.
+	 *
+	 * @return <code>true</code> if this event is required full name; <code>false</code> otherwise
+	 */
+	public boolean isRequiredFullName();
+
+	/**
+	 * Sets whether this event is required full name.
+	 *
+	 * @param requiredFullName the required full name of this event
+	 */
+	public void setRequiredFullName(boolean requiredFullName);
+
+	/**
+	 * Returns the required phone of this event.
+	 *
+	 * @return the required phone of this event
+	 */
+	public boolean getRequiredPhone();
+
+	/**
+	 * Returns <code>true</code> if this event is required phone.
+	 *
+	 * @return <code>true</code> if this event is required phone; <code>false</code> otherwise
+	 */
+	public boolean isRequiredPhone();
+
+	/**
+	 * Sets whether this event is required phone.
+	 *
+	 * @param requiredPhone the required phone of this event
+	 */
+	public void setRequiredPhone(boolean requiredPhone);
+
+	/**
+	 * Returns the image of this event.
+	 *
+	 * @return the image of this event
+	 */
+	public Blob getImage();
+
+	/**
+	 * Sets the image of this event.
+	 *
+	 * @param image the image of this event
+	 */
+	public void setImage(Blob image);
+
+	/**
+	 * Returns the location ID of this event.
+	 *
+	 * @return the location ID of this event
+	 */
+	public long getLocationId();
+
+	/**
+	 * Sets the location ID of this event.
+	 *
+	 * @param locationId the location ID of this event
+	 */
+	public void setLocationId(long locationId);
+
+	/**
+	 * Returns the target ID of this event.
+	 *
+	 * @return the target ID of this event
+	 */
+	public long getTargetId();
+
+	/**
+	 * Sets the target ID of this event.
+	 *
+	 * @param targetId the target ID of this event
+	 */
+	public void setTargetId(long targetId);
+
+	/**
+	 * Returns the type ID of this event.
+	 *
+	 * @return the type ID of this event
+	 */
+	public long getTypeId();
+
+	/**
+	 * Sets the type ID of this event.
+	 *
+	 * @param typeId the type ID of this event
+	 */
+	public void setTypeId(long typeId);
+
 	@Override
 	public boolean isNew();
 
@@ -305,19 +441,19 @@ public interface EventModel extends BaseModel<Event> {
 	public Object clone();
 
 	@Override
-	public int compareTo(Event event);
+	public int compareTo(com.rivetlogic.event.model.Event event);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<Event> toCacheModel();
+	public CacheModel<com.rivetlogic.event.model.Event> toCacheModel();
 
 	@Override
-	public Event toEscapedModel();
+	public com.rivetlogic.event.model.Event toEscapedModel();
 
 	@Override
-	public Event toUnescapedModel();
+	public com.rivetlogic.event.model.Event toUnescapedModel();
 
 	@Override
 	public String toString();

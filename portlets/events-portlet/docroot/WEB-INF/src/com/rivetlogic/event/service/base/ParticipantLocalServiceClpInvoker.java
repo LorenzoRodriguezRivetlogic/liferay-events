@@ -122,47 +122,47 @@ public class ParticipantLocalServiceClpInvoker {
 				"com.rivetlogic.event.model.Participant"
 			};
 
-		_methodName44 = "getBeanIdentifier";
+		_methodName56 = "getBeanIdentifier";
 
-		_methodParameterTypes44 = new String[] {  };
+		_methodParameterTypes56 = new String[] {  };
 
-		_methodName45 = "setBeanIdentifier";
+		_methodName57 = "setBeanIdentifier";
 
-		_methodParameterTypes45 = new String[] { "java.lang.String" };
+		_methodParameterTypes57 = new String[] { "java.lang.String" };
 
-		_methodName50 = "addParticipant";
+		_methodName62 = "addParticipant";
 
-		_methodParameterTypes50 = new String[] {
+		_methodParameterTypes62 = new String[] {
 				"com.rivetlogic.event.model.Participant"
 			};
 
-		_methodName51 = "getParticipants";
+		_methodName63 = "getParticipants";
 
-		_methodParameterTypes51 = new String[] { "long" };
+		_methodParameterTypes63 = new String[] { "long" };
 
-		_methodName52 = "getParticipants";
+		_methodName64 = "getParticipants";
 
-		_methodParameterTypes52 = new String[] { "int", "long" };
+		_methodParameterTypes64 = new String[] { "int", "long" };
 
-		_methodName53 = "getParticipantsCount";
+		_methodName65 = "getParticipantsCount";
 
-		_methodParameterTypes53 = new String[] { "long" };
+		_methodParameterTypes65 = new String[] { "long" };
 
-		_methodName54 = "getParticipantsCount";
+		_methodName66 = "getParticipantsCount";
 
-		_methodParameterTypes54 = new String[] { "int", "long" };
+		_methodParameterTypes66 = new String[] { "int", "long" };
 
-		_methodName55 = "clearParticipantsByEventId";
+		_methodName67 = "clearParticipantsByEventId";
 
-		_methodParameterTypes55 = new String[] { "java.lang.Long" };
+		_methodParameterTypes67 = new String[] { "java.lang.Long" };
 
-		_methodName56 = "removeParticipants";
+		_methodName68 = "removeParticipants";
 
-		_methodParameterTypes56 = new String[] { "java.lang.Long[][]" };
+		_methodParameterTypes68 = new String[] { "java.lang.Long[][]" };
 
-		_methodName57 = "findParticipantByEventIdAndEmail";
+		_methodName69 = "findParticipantByEventIdAndEmail";
 
-		_methodParameterTypes57 = new String[] {
+		_methodParameterTypes69 = new String[] {
 				"java.lang.Long", "java.lang.String"
 			};
 	}
@@ -280,61 +280,61 @@ public class ParticipantLocalServiceClpInvoker {
 			return ParticipantLocalServiceUtil.updateParticipant((com.rivetlogic.event.model.Participant)arguments[0]);
 		}
 
-		if (_methodName44.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes44, parameterTypes)) {
+		if (_methodName56.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes56, parameterTypes)) {
 			return ParticipantLocalServiceUtil.getBeanIdentifier();
 		}
 
-		if (_methodName45.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes45, parameterTypes)) {
+		if (_methodName57.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes57, parameterTypes)) {
 			ParticipantLocalServiceUtil.setBeanIdentifier((java.lang.String)arguments[0]);
 
 			return null;
 		}
 
-		if (_methodName50.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes50, parameterTypes)) {
+		if (_methodName62.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes62, parameterTypes)) {
 			return ParticipantLocalServiceUtil.addParticipant((com.rivetlogic.event.model.Participant)arguments[0]);
 		}
 
-		if (_methodName51.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes51, parameterTypes)) {
+		if (_methodName63.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes63, parameterTypes)) {
 			return ParticipantLocalServiceUtil.getParticipants(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName52.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes52, parameterTypes)) {
+		if (_methodName64.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes64, parameterTypes)) {
 			return ParticipantLocalServiceUtil.getParticipants(((Integer)arguments[0]).intValue(),
 				((Long)arguments[1]).longValue());
 		}
 
-		if (_methodName53.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes53, parameterTypes)) {
+		if (_methodName65.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes65, parameterTypes)) {
 			return ParticipantLocalServiceUtil.getParticipantsCount(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName54.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes54, parameterTypes)) {
+		if (_methodName66.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes66, parameterTypes)) {
 			return ParticipantLocalServiceUtil.getParticipantsCount(((Integer)arguments[0]).intValue(),
 				((Long)arguments[1]).longValue());
 		}
 
-		if (_methodName55.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes55, parameterTypes)) {
+		if (_methodName67.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes67, parameterTypes)) {
 			ParticipantLocalServiceUtil.clearParticipantsByEventId((java.lang.Long)arguments[0]);
 
 			return null;
 		}
 
-		if (_methodName56.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes56, parameterTypes)) {
+		if (_methodName68.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes68, parameterTypes)) {
 			ParticipantLocalServiceUtil.removeParticipants((java.lang.Long[])arguments[0]);
 
 			return null;
 		}
 
-		if (_methodName57.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes57, parameterTypes)) {
+		if (_methodName69.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes69, parameterTypes)) {
 			return ParticipantLocalServiceUtil.findParticipantByEventIdAndEmail((java.lang.Long)arguments[0],
 				(java.lang.String)arguments[1]);
 		}
@@ -382,24 +382,24 @@ public class ParticipantLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName44;
-	private String[] _methodParameterTypes44;
-	private String _methodName45;
-	private String[] _methodParameterTypes45;
-	private String _methodName50;
-	private String[] _methodParameterTypes50;
-	private String _methodName51;
-	private String[] _methodParameterTypes51;
-	private String _methodName52;
-	private String[] _methodParameterTypes52;
-	private String _methodName53;
-	private String[] _methodParameterTypes53;
-	private String _methodName54;
-	private String[] _methodParameterTypes54;
-	private String _methodName55;
-	private String[] _methodParameterTypes55;
 	private String _methodName56;
 	private String[] _methodParameterTypes56;
 	private String _methodName57;
 	private String[] _methodParameterTypes57;
+	private String _methodName62;
+	private String[] _methodParameterTypes62;
+	private String _methodName63;
+	private String[] _methodParameterTypes63;
+	private String _methodName64;
+	private String[] _methodParameterTypes64;
+	private String _methodName65;
+	private String[] _methodParameterTypes65;
+	private String _methodName66;
+	private String[] _methodParameterTypes66;
+	private String _methodName67;
+	private String[] _methodParameterTypes67;
+	private String _methodName68;
+	private String[] _methodParameterTypes68;
+	private String _methodName69;
+	private String[] _methodParameterTypes69;
 }

@@ -18,19 +18,39 @@
 * Boston, MA 02110-1301, USA. 
 */
 --%>
-
-<%@page import="com.liferay.portal.kernel.util.StringUtil"%>
-<%@page import="com.liferay.portal.model.Phone"%>
-<%@page import="com.rivetlogic.event.model.impl.ParticipantImpl"%>
-<%@page import="com.liferay.portal.model.User"%>
+<%@page import="com.rivetlogic.event.util.Utils"%>
+<%@page import="com.liferay.portal.kernel.portlet.LiferayPortletMode"%>
+<%@page import="java.util.StringTokenizer"%>
 <%@include file="/html/init.jsp" %>
 
 <%
 long resourcePrimKey = ParamUtil.getLong(request, EventPortletConstants.PARAMETER_RESOURCE_PRIMARY_KEY);
 Event event = (Event) renderRequest.getAttribute(WebKeys.EVENT_ENTRY);
 
-
 if (Validator.isNotNull(event)){
+	Date date = event.getEventDate();
+	Date endDate = event.getEventEndDate();
+	
+	Calendar cal1 = Calendar.getInstance();
+	Calendar cal2 = Calendar.getInstance();
+	cal1.setTime(date);
+	cal2.setTime(endDate);
+	
+	boolean isSameDate = false;
+	int compare = TimeIgnoringComparator.compare(cal1, cal2);
+	if (compare == 0) {
+		isSameDate = true;
+	}
+	
+	String locationName = "";
+	try {
+		Location location = LocationLocalServiceUtil.getLocation(event.getLocationId());
+		locationName = location.getName();
+	} catch (Exception ex) {
+		locationName = "";
+	}
+	
+	String currPageSocialLink = PortalUtil.getCanonicalURL((PortalUtil.getCurrentURL(request)), themeDisplay, layout);
 %>
 
 <liferay-ui:error key="participant-fullname-required" message="participant-fullname-required" />
@@ -58,42 +78,138 @@ if (Validator.isNotNull(event)){
 	<portlet:param name="<%=WebKeys.REDIRECT%>" value="${backURL}"/>
 </portlet:actionURL>
 
+<portlet:resourceURL  var="imageResourceURL">
+	<portlet:param name="action" value="image"/>
+	<portlet:param name="eventId" value="<%= String.valueOf(event.getEventId()) %>"/>
+</portlet:resourceURL>
+
+<portlet:resourceURL  var="icsResourceURL">
+	<portlet:param name="action" value="ics"/>
+	<portlet:param name="eventId" value="<%= String.valueOf(event.getEventId()) %>"/>
+	<portlet:param name="resourceId" value="<%= event.getName() %>"/>
+</portlet:resourceURL>
+
 <div class="view-event">
 
 	<liferay-ui:header backURL="${backURL}" title="event-information"/>
 	
-	<%@include file="/html/eventportlet/include/event-summary.jspf" %>
-	
-	<liferay-ui:header title="event-register"/>
-	
-	<aui:form name="register_event_fm" action="${registerUserToEventUrl}" method="post">
+	<div class="container-fluid event-info">
+		<div class="row">
+			<div class="span5">
+				<img width="100%" src="<%=imageResourceURL.toString()%>" alt="no Image"/>
+			</div>
+			<div class="span7 event-detail" >
+				<div class="row">
+					<div class="span6">
+						<h2><%= event.getName() %></h2>
+					</div>
+					<div class="span6">
+						<a href="<%= icsResourceURL.toString() %>">
+							<i class="icon-calendar"></i>
+							<liferay-ui:message key="add-to-your-calendar" />
+						</a>  
+					</div>
+				</div>
+				<div class="row">
+					<div class="span6">
+						<% if (isSameDate) { %>
+							<h4><%= NotificationConstants.SDFWD.format(event.getEventDate()) %></h4>
+							<h4><%= NotificationConstants.SDFH.format(event.getEventDate()) %> - <%= NotificationConstants.SDFH.format(event.getEventEndDate()) %></h4>
+						<% } else { %>
+							<h4><%= NotificationConstants.SDF.format(event.getEventDate()) %> - </h4>
+							<h4><%= NotificationConstants.SDF.format(event.getEventEndDate()) %></h4>
+						<% } %>
+						<h4><%= locationName %></h4>
+					</div>
+					<div class="span6">
+						<liferay-ui:message key="share-with-friends" /><br />
+						<a href="<%= Utils.generateMailtoLink(event, currPageSocialLink) %>">
+							<i class="icon-envelope"></i>
+						</a>
+						<a href="https://www.facebook.com/sharer/sharer.php?u=<%= Utils.formatUrlForShare(currPageSocialLink)  %>" 
+							onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=600');return false;">
+							<i class="icon-facebook-sign"></i>
+						</a>
+						<a href="http://www.twitter.com/share?url=<%= currPageSocialLink %>&text=<%= Utils.replaceSpace(event.getName()) %>" 
+							onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=600');return false;">
+							
+							<i class="icon-twitter-sign"></i>
+						</a>
+					</div>
+				</div>
+				<div class="row">
+					<div class="span12">
+						<%= event.getDescription() %>
+					</div>
+				</div>
+				<div class="row">
+					<div class="span12">
+						<b><liferay-ui:message key="tags-label" />:</b>
+						<%
+							StringTokenizer st = new StringTokenizer(event.getTags(),",");  
+							while (st.hasMoreTokens()) { 
+								String token = st.nextToken();
+						%>	
+								<portlet:renderURL var="tagUrl" windowState="<%= LiferayWindowState.NORMAL.toString() %>">
+									<portlet:param name="<%=WebKeys.SEARCH_TAG %>" value="<%= token %>"/>
+								</portlet:renderURL>
+								<a href="<%= tagUrl.toString() %>"><%= token %></a>  
+						<%
+							}   
+						%>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<%
+	if (event.getRegistrationRequired()) {
+	%>
+		<liferay-ui:header title="event-register"/>
 		
-		<aui:fieldset>
-			<aui:input name="<%=EventPortletConstants.PARAMETER_FULL_NAME%>" label="event-fullname" value="${participant.fullName}" type="text">
-				<aui:validator name="required"/>
-			</aui:input>
-			<aui:input name="<%=EventPortletConstants.PARAMETER_EMAIL%>" label="event-email" value="${participant.email}" type="text">
-				<aui:validator name="required"/>
-				<aui:validator name="email"/>
-			</aui:input>
-			<aui:input name="<%=EventPortletConstants.PARAMETER_COMPANY_NAME%>" label="event-company-name" value="${participant.companyName}" type="text">
-				<aui:validator name="required"/>
-			</aui:input>
-			<aui:input name="<%=EventPortletConstants.PARAMETER_PHONE_NUMBER%>" label="event-phone-number" value="${participant.phoneNumber}" type="text">
-				<aui:validator name="required"/>
-			</aui:input>
-			<aui:button-row>
-				<aui:button name="registerEvent" label="event-register" type="submit" value='<%=LanguageUtil.get(pageContext, "event-register") %>'/>
-				<aui:button name="cancel" type="cancel" onClick="${backURL}"/>
-			</aui:button-row>
+		<aui:form name="register_event_fm" action="${registerUserToEventUrl}" method="post">
 			
-		</aui:fieldset>
-	</aui:form>
+			<aui:fieldset>
+				
+				<% 
+				if (event.getRequiredFullName()) {
+				%>
+					<aui:input name="<%=EventPortletConstants.PARAMETER_FULL_NAME%>" label="event-fullname" value="${participant.fullName}" type="text">
+						<aui:validator name="required"/>
+					</aui:input>
+				<% 
+				}
+				%>
+				
+				<aui:input name="<%=EventPortletConstants.PARAMETER_EMAIL%>" label="event-email" value="${participant.email}" type="text">
+					<aui:validator name="required"/>
+					<aui:validator name="email"/>
+				</aui:input>
+				<% 
+
+				if (event.getRequiredPhone()) {
+				%>
+					<aui:input name="<%=EventPortletConstants.PARAMETER_PHONE_NUMBER%>" label="event-phone-number" value="${participant.phoneNumber}" type="text">
+						<aui:validator name="required"/>
+					</aui:input>
+				<% 
+				}
+				%>
+				<aui:button-row>
+					<aui:button name="registerEvent" label="event-register" type="submit" value='<%=LanguageUtil.get(pageContext, "event-register") %>'/>
+					<aui:button name="cancel" type="cancel" onClick="${backURL}"/>
+				</aui:button-row>
+				
+			</aui:fieldset>
+		</aui:form>
+	<%
+	}
+	%>
 </div>
 
 <%
-}
-else{
+} else {
 %>
     <liferay-ui:error key="no-such-event" message='<%=LanguageUtil.format(pageContext, "no-such-event", String.valueOf(resourcePrimKey)) %>' />
     <liferay-ui:error key="event-must-be-public" message="event-must-be-public" />

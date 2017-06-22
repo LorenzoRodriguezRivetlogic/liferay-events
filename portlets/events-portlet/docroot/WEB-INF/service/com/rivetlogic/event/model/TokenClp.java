@@ -333,6 +333,10 @@ public class TokenClp extends BaseModelImpl<Token> implements Token {
 		}
 	}
 
+	public Class<?> getClpSerializerClass() {
+		return _clpSerializerClass;
+	}
+
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
@@ -390,4 +394,5 @@ public class TokenClp extends BaseModelImpl<Token> implements Token {
 	private long _participantId;
 	private Date _expiredDate;
 	private BaseModel<?> _tokenRemoteModel;
+	private Class<?> _clpSerializerClass = com.rivetlogic.event.service.ClpSerializer.class;
 }

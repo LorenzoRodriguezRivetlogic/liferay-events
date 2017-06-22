@@ -29,12 +29,20 @@
         <column name="name" type="String" />
         <column name="location" type="String" />
         <column name="description" type="String" />
+        <column name="tags" type="String"></column>
         <column name="eventDate" type="Date" />
         <column name="eventEndDate" type="Date" />
         <column name="privateEvent" type="boolean" />
+        <column name="registrationRequired" type="boolean"></column>
         <!--<column name="participants" type="Collection" entity="Participant" mapping-key="eventId"/>-->
 
         <!-- Order -->
+        <column name="requiredFullName" type="boolean"></column>
+        <column name="requiredPhone" type="boolean"></column>
+        <column name="image" type="Blob" />
+        <column name="locationId" type="long"></column>
+        <column name="targetId" type="long"></column>
+        <column name="typeId" type="long"></column>
 
         <order>
             <order-column name="eventDate" order-by="asc" />
@@ -49,6 +57,9 @@
 
         <finder name="GroupId" return-type="Collection">
             <finder-column name="groupId" />
+        </finder>
+        <finder name="LocationId" return-type="Collection">
+            <finder-column name="locationId"></finder-column>
         </finder>
 
     </entity>
@@ -103,7 +114,74 @@
     		<finder-column name="participantId"/>
     	</finder>
     </entity>
-    
+    <entity name="Location" local-service="true" remote-service="false">
+        <column name="locationId" type="long" primary="true"></column>
+        <column name="name" type="String"></column>
+        <column name="description" type="String"></column>
+        <column name="userId" type="long"></column>
+        <column name="companyId" type="long"></column>
+        <column name="groupId" type="long"></column>
+        <column name="createDate" type="Date"></column>
+        <column name="modifiedDate" type="Date"></column>
+        <order by="asc">
+            <order-column name="name" order-by="asc"></order-column>
+        </order>
+        <finder name="GroupId" return-type="Collection">
+            <finder-column name="groupId"></finder-column>
+        </finder>
+    </entity>
+    <entity name="Type" local-service="true" remote-service="false">
+    	<column name="typeId" type="long" primary="true"></column>
+    	<column name="name" type="String"></column>
+    	<column name="description" type="String"></column>
+
+
+    	<!-- PK fields -->
+
+    	<!-- Group instance -->
+
+    	<column name="groupId" type="long"></column>
+
+    	<!-- Audit fields -->
+
+    	<column name="companyId" type="long"></column>
+    	<column name="userId" type="long"></column>
+    	<column name="createDate" type="Date"></column>
+    	<column name="modifiedDate" type="Date"></column>
+        <order by="asc">
+            <order-column name="name" order-by="asc"></order-column>
+        </order>
+        <finder name="GroupId" return-type="Collection">
+            <finder-column name="groupId"></finder-column>
+        </finder>
+    </entity>
+    <entity name="Target" local-service="true" remote-service="false">
+
+    	<column name="targetId" type="long" primary="true"></column>
+    	<column name="name" type="String"></column>
+    	<column name="description" type="String"></column>
+
+
+    	<!-- PK fields -->
+
+    	<!-- Group instance -->
+
+    	<column name="groupId" type="long"></column>
+
+    	<!-- Audit fields -->
+
+    	<column name="companyId" type="long"></column>
+    	<column name="userId" type="long"></column>
+    	<column name="createDate" type="Date"></column>
+    	<column name="modifiedDate" type="Date"></column>
+        <order by="asc">
+            <order-column name="name" order-by="asc"></order-column>
+        </order>
+        <finder name="GroupId" return-type="Collection">
+            <finder-column name="groupId"></finder-column>
+        </finder>
+    </entity>
+
     <exceptions>
         <exception>ImportParticipants</exception>
     </exceptions>

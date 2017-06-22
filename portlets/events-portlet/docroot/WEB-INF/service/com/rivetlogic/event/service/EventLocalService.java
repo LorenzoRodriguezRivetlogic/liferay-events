@@ -16,6 +16,7 @@ package com.rivetlogic.event.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -52,6 +53,7 @@ public interface EventLocalService extends BaseLocalService,
 	* @return the event that was added
 	* @throws SystemException if a system exception occurred
 	*/
+	@com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
 	public com.rivetlogic.event.model.Event addEvent(
 		com.rivetlogic.event.model.Event event)
 		throws com.liferay.portal.kernel.exception.SystemException;
@@ -72,6 +74,7 @@ public interface EventLocalService extends BaseLocalService,
 	* @throws PortalException if a event with the primary key could not be found
 	* @throws SystemException if a system exception occurred
 	*/
+	@com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
 	public com.rivetlogic.event.model.Event deleteEvent(long eventId)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;
@@ -83,6 +86,7 @@ public interface EventLocalService extends BaseLocalService,
 	* @return the event that was removed
 	* @throws SystemException if a system exception occurred
 	*/
+	@com.liferay.portal.kernel.search.Indexable(type = IndexableType.DELETE)
 	public com.rivetlogic.event.model.Event deleteEvent(
 		com.rivetlogic.event.model.Event event)
 		throws com.liferay.portal.kernel.exception.SystemException;
@@ -278,8 +282,14 @@ public interface EventLocalService extends BaseLocalService,
 	* @return the event that was updated
 	* @throws SystemException if a system exception occurred
 	*/
+	@com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
 	public com.rivetlogic.event.model.Event updateEvent(
 		com.rivetlogic.event.model.Event event)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public com.rivetlogic.event.model.EventImageBlobModel getImageBlobModel(
+		java.io.Serializable primaryKey)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
@@ -334,8 +344,14 @@ public interface EventLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.rivetlogic.event.model.Event> getPublicEvents(
-		int start, int end);
+		int start, int end, java.lang.Long locationId, java.lang.Long typeId,
+		java.lang.Long targetId, java.lang.String searchText);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getPublicEventsCount();
+	public int getPublicEventsCount(java.lang.Long locationId,
+		java.lang.Long typeId, java.lang.Long targetId,
+		java.lang.String searchText);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getEventsCountByLocation(java.lang.Long locationId);
 }

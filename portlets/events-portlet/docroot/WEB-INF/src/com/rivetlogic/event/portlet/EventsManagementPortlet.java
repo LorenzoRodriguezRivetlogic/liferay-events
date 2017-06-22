@@ -19,8 +19,10 @@
 
 package com.rivetlogic.event.portlet;
 
+import com.liferay.portal.kernel.dao.jdbc.OutputBlob;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
@@ -32,6 +34,7 @@ import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -39,14 +42,20 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.rivetlogic.event.beans.ManagementPrefsBean;
 import com.rivetlogic.event.model.Event;
+import com.rivetlogic.event.model.Location;
 import com.rivetlogic.event.model.Participant;
+import com.rivetlogic.event.model.Target;
+import com.rivetlogic.event.model.Type;
 import com.rivetlogic.event.model.impl.EventImpl;
 import com.rivetlogic.event.model.impl.ParticipantImpl;
 import com.rivetlogic.event.notification.constant.EventPortletConstants;
 import com.rivetlogic.event.notification.constant.NotificationConstants;
 import com.rivetlogic.event.notification.constant.PreferencesConstants;
 import com.rivetlogic.event.service.EventLocalServiceUtil;
+import com.rivetlogic.event.service.LocationLocalServiceUtil;
 import com.rivetlogic.event.service.ParticipantLocalServiceUtil;
+import com.rivetlogic.event.service.TargetLocalServiceUtil;
+import com.rivetlogic.event.service.TypeLocalServiceUtil;
 import com.rivetlogic.event.util.EventActionUtil;
 import com.rivetlogic.event.util.EventConstant;
 import com.rivetlogic.event.util.EventValidator;
@@ -54,9 +63,13 @@ import com.rivetlogic.event.util.WebKeys;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -75,12 +88,15 @@ import javax.portlet.PortletRequest;
 import javax.portlet.ReadOnlyException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 import javax.portlet.ValidatorException;
 
 /**
  * @author charlesrodriguez
  * @author christopherjimenez
  * @author juancarrillo
+ * @author lorenzorodriguez
  */
 public class EventsManagementPortlet extends MVCPortlet {
     
@@ -138,18 +154,36 @@ public class EventsManagementPortlet extends MVCPortlet {
         event.setUserId(themeDisplay.getUserId());
         
         event.setName(ParamUtil.getString(upreq, EventPortletConstants.PARAMETER_NAME));
-        event.setLocation(ParamUtil.getString(upreq, EventPortletConstants.PARAMETER_LOCATION));
+        event.setLocationId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_LOCATIONS));
+        event.setTypeId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_TYPES));
+        event.setTargetId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_TARGETS));
+        event.setTags(request.getParameter(EventPortletConstants.PARAMETER_TAGS).toLowerCase());
         event.setDescription(ParamUtil.getString(upreq, EventPortletConstants.PARAMETER_DESCRIPTION));
+        
+        try {
+        	File photoImage = upreq.getFile(EventPortletConstants.PARAMETER_PHOTO);
+            InputStream fis =new FileInputStream(photoImage);
+            OutputBlob dataOutputBlob = new OutputBlob(fis, photoImage.length());
+            event.setImage(dataOutputBlob);
+        } catch (FileNotFoundException e) {
+        }
+        
         event.setEventDate(newEventDate.getTime());
         event.setEventEndDate(newEventEndDate.getTime());
         event.setPrivateEvent(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_EVENT));
+        event.setRegistrationRequired(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_REGISTRATION_REQUIRED));
+        event.setRequiredFullName(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_REGISTRATION_FULL_NAME));
+        event.setRequiredPhone(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_REGISTRATION_TELEPHONE));
         event.setCalendarId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_CALENDAR_ID));
         
         List<String> errors = new ArrayList<String>();
         EventValidator.validateEvent(event, errors);
         EventActionUtil.setErrors(errors, request);
         
-        List<Participant> participants = createParticipants(request, upreq, themeDisplay, event);
+        List<Participant> participants = new ArrayList<Participant>();
+        if(event.getPrivateEvent()) {
+        	participants = createParticipants(request, upreq, themeDisplay, event);
+        }
         
         if (SessionErrors.isEmpty(request)) {
             saveNewEvent(request, themeDisplay, event, participants);
@@ -330,11 +364,26 @@ public class EventsManagementPortlet extends MVCPortlet {
         Event event = (Event) dbEvent.clone();
         
         event.setName(ParamUtil.getString(upreq, EventPortletConstants.PARAMETER_NAME));
-        event.setLocation(ParamUtil.getString(upreq, EventPortletConstants.PARAMETER_LOCATION));
+        event.setLocationId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_LOCATIONS));
+        event.setTypeId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_TYPES));
+        event.setTargetId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_TARGETS));
+        event.setTags(request.getParameter(EventPortletConstants.PARAMETER_TAGS).toLowerCase());
         event.setDescription(ParamUtil.getString(upreq, EventPortletConstants.PARAMETER_DESCRIPTION));
+        
+        try {
+        	File photoImage = upreq.getFile(EventPortletConstants.PARAMETER_PHOTO);
+            InputStream fis =new FileInputStream(photoImage);
+            OutputBlob dataOutputBlob = new OutputBlob(fis, photoImage.length());
+            event.setImage(dataOutputBlob);
+        } catch (FileNotFoundException e) {
+        }
+
         event.setEventDate(newEventDate.getTime());
         event.setEventEndDate(newEventEndDate.getTime());
         event.setPrivateEvent(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_EVENT));
+        event.setRegistrationRequired(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_REGISTRATION_REQUIRED));
+        event.setRequiredFullName(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_REGISTRATION_FULL_NAME));
+        event.setRequiredPhone(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_REGISTRATION_TELEPHONE));
         event.setCalendarId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_CALENDAR_ID));
         
         List<String> errors = new ArrayList<String>();
@@ -711,6 +760,228 @@ public class EventsManagementPortlet extends MVCPortlet {
         return useCSV;
     }
     
+    public void addLocation(ActionRequest request, ActionResponse response) {
+    	ThemeDisplay td  =(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+    	User user = td.getUser();
+    	
+    	try {
+    	
+    		ServiceContext serviceContext = ServiceContextFactory.getInstance(Location.class.getName(), request);
+    		String name = ParamUtil.getString(request, "name");
+	    
+	    	LocationLocalServiceUtil.addLocation(user.getUserId(), td.getLayout().getGroupId(), name, "", serviceContext);
+	
+	    	response.setRenderParameter(WebKeys.REDIRECT, PortalUtil.getCurrentURL(request));
+	    	response.setRenderParameter(WebKeys.MVC_PATH, WebKeys.LOCATION_POPUP);
+	    } catch (Exception e) {
+	        SessionErrors.add(request, ERROR_SAVE_LOCATION);
+            response.setRenderParameter(WebKeys.REDIRECT, PortalUtil.getCurrentURL(request));
+            response.setRenderParameter(WebKeys.MVC_PATH, WebKeys.LOCATION_POPUP);
+	    }
+    }
+    
+    public void deleteLocation (ActionRequest request, ActionResponse response) {
+
+        long locationId = ParamUtil.getLong(request, WebKeys.LOCATION_ID);
+
+        try {
+
+           ServiceContext serviceContext = ServiceContextFactory.getInstance(Location.class.getName(), request);
+
+           LocationLocalServiceUtil.deleteLocation(locationId, serviceContext);
+
+           response.setRenderParameter(WebKeys.REDIRECT, PortalUtil.getCurrentURL(request));
+           response.setRenderParameter(WebKeys.MVC_PATH, WebKeys.LOCATION_POPUP);
+        } catch (Exception e) {
+           SessionErrors.add(request, ERROR_DELETE_LOCATION);
+           response.setRenderParameter(WebKeys.REDIRECT, PortalUtil.getCurrentURL(request));
+           response.setRenderParameter(WebKeys.MVC_PATH, WebKeys.LOCATION_POPUP);
+        }
+    }
+    
+    public void addType (ActionRequest request, ActionResponse response) {
+    	ThemeDisplay td  =(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+    	User user = td.getUser();
+    	
+    	try {
+    	
+    		ServiceContext serviceContext = ServiceContextFactory.getInstance(Location.class.getName(), request);
+    		String name = ParamUtil.getString(request, "name");
+	    
+	    	TypeLocalServiceUtil.addType(user.getUserId(), td.getLayout().getGroupId(), name, "", serviceContext);
+	
+	    	response.setRenderParameter(WebKeys.REDIRECT, PortalUtil.getCurrentURL(request));
+	    	response.setRenderParameter(WebKeys.MVC_PATH, WebKeys.TYPE_POPUP);
+	    } catch (Exception e) {
+	        SessionErrors.add(request, ERROR_SAVE_TYPE);
+            response.setRenderParameter(WebKeys.REDIRECT, PortalUtil.getCurrentURL(request));
+            response.setRenderParameter(WebKeys.MVC_PATH, WebKeys.TYPE_POPUP);
+	    }
+    }
+    
+    public void deleteType (ActionRequest request, ActionResponse response) {
+
+        long typeId = ParamUtil.getLong(request, WebKeys.TYPE_ID);
+
+        try {
+
+           ServiceContext serviceContext = ServiceContextFactory.getInstance(Location.class.getName(), request);
+
+           TypeLocalServiceUtil.deleteType(typeId, serviceContext);
+
+           response.setRenderParameter(WebKeys.REDIRECT, PortalUtil.getCurrentURL(request));
+           response.setRenderParameter(WebKeys.MVC_PATH, WebKeys.TYPE_POPUP);
+        } catch (Exception e) {
+           SessionErrors.add(request, ERROR_DELETE_TYPE);
+           response.setRenderParameter(WebKeys.REDIRECT, PortalUtil.getCurrentURL(request));
+           response.setRenderParameter(WebKeys.MVC_PATH, WebKeys.TYPE_POPUP);
+        }
+    }
+    
+    public void addTarget (ActionRequest request, ActionResponse response) {
+    	ThemeDisplay td  =(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+    	User user = td.getUser();
+    	
+    	try {
+    	
+    		ServiceContext serviceContext = ServiceContextFactory.getInstance(Location.class.getName(), request);
+    		String name = ParamUtil.getString(request, "name");
+	    
+	    	TargetLocalServiceUtil.addTarget(user.getUserId(), td.getLayout().getGroupId(), name, "", serviceContext);
+	
+	    	response.setRenderParameter(WebKeys.REDIRECT, PortalUtil.getCurrentURL(request));
+	    	response.setRenderParameter(WebKeys.MVC_PATH, WebKeys.TARGET_POPUP);
+	    } catch (Exception e) {
+	        SessionErrors.add(request, ERROR_SAVE_TARGET);
+            response.setRenderParameter(WebKeys.REDIRECT, PortalUtil.getCurrentURL(request));
+            response.setRenderParameter(WebKeys.MVC_PATH, WebKeys.TARGET_POPUP);
+	    }
+    }
+    
+    public void deleteTarget (ActionRequest request, ActionResponse response) {
+
+        long targetId = ParamUtil.getLong(request, WebKeys.TARGET_ID);
+
+        try {
+
+           ServiceContext serviceContext = ServiceContextFactory.getInstance(Location.class.getName(), request);
+
+           TargetLocalServiceUtil.deleteTarget(targetId, serviceContext);
+
+           response.setRenderParameter(WebKeys.REDIRECT, PortalUtil.getCurrentURL(request));
+           response.setRenderParameter(WebKeys.MVC_PATH, WebKeys.TARGET_POPUP);
+        } catch (Exception e) {
+           SessionErrors.add(request, ERROR_DELETE_TARGET);
+           response.setRenderParameter(WebKeys.REDIRECT, PortalUtil.getCurrentURL(request));
+           response.setRenderParameter(WebKeys.MVC_PATH, WebKeys.TARGET_POPUP);
+        }
+    }
+    
+    public void serveResource(ResourceRequest resourceRequest, ResourceResponse resourceResponse) throws IOException, PortletException {
+    	String action = ParamUtil.getString(resourceRequest, "action");
+    	
+    	try {
+	    	if (action.equals(WebKeys.GET_LOCATIONS)) {
+				getLocations(resourceRequest, resourceResponse);
+	    	}
+	    	if (action.equals(WebKeys.GET_TYPES)) {
+				getTypes(resourceRequest, resourceResponse);
+	    	}
+	    	if (action.equals(WebKeys.GET_TARGETS)) {
+				getTargets(resourceRequest, resourceResponse);
+	    	}
+    	} catch (PortalException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    private void getLocations(ResourceRequest resourceRequest, ResourceResponse resourceResponse) 
+    		throws IOException, PortalException, PortletException {
+    	
+    	ThemeDisplay td  =(ThemeDisplay) resourceRequest.getAttribute(WebKeys.THEME_DISPLAY);
+    	Map<String, String> data = new HashMap<String, String>();
+    	
+    	PrintWriter writer = resourceResponse.getWriter();
+    	
+    	try {
+			List<Location> locations = LocationLocalServiceUtil.getLocationsByGroupId(td.getLayout().getGroupId());
+			
+			for (Location location : locations) {
+				data.put(String.valueOf(location.getLocationId()), location.getName());
+			}
+			
+			String jsonData = JSONFactoryUtil.looseSerialize(data);
+			writer.print(jsonData);
+		} catch (SystemException e) {
+			writer.print("error");
+			e.printStackTrace();
+		}
+    	
+    	writer.flush();
+    	writer.close();
+    	super.serveResource(resourceRequest, resourceResponse);
+    }
+    
+    private void getTypes(ResourceRequest resourceRequest, ResourceResponse resourceResponse) 
+    		throws IOException, PortalException, PortletException {
+    	
+    	ThemeDisplay td  =(ThemeDisplay) resourceRequest.getAttribute(WebKeys.THEME_DISPLAY);
+    	Map<String, String> data = new HashMap<String, String>();
+    	
+    	PrintWriter writer = resourceResponse.getWriter();
+    	
+    	try {
+			List<Type> types = TypeLocalServiceUtil.getTypesByGroupId(td.getLayout().getGroupId());
+			
+			for (Type type : types) {
+				data.put(String.valueOf(type.getTypeId()), type.getName());
+			}
+			
+			String jsonData = JSONFactoryUtil.looseSerialize(data);
+			writer.print(jsonData);
+		} catch (SystemException e) {
+			writer.print("error");
+			e.printStackTrace();
+		}
+    	
+    	writer.flush();
+    	writer.close();
+    	super.serveResource(resourceRequest, resourceResponse);
+    }
+    
+    private void getTargets(ResourceRequest resourceRequest, ResourceResponse resourceResponse) 
+    		throws IOException, PortalException, PortletException {
+    	
+    	ThemeDisplay td  =(ThemeDisplay) resourceRequest.getAttribute(WebKeys.THEME_DISPLAY);
+    	Map<String, String> data = new HashMap<String, String>();
+    	
+    	PrintWriter writer = resourceResponse.getWriter();
+    	
+    	try {
+			List<Target> targets = TargetLocalServiceUtil.getTargetsByGroupId(td.getLayout().getGroupId());
+			
+			for (Target target : targets) {
+				data.put(String.valueOf(target.getTargetId()), target.getName());
+			}
+			
+			String jsonData = JSONFactoryUtil.looseSerialize(data);
+			writer.print(jsonData);
+		} catch (SystemException e) {
+			writer.print("error");
+			e.printStackTrace();
+		}
+    	
+    	writer.flush();
+    	writer.close();
+    	super.serveResource(resourceRequest, resourceResponse);
+    }
+    
+    private static final String ERROR_DELETE_TARGET = "target-delete-error";
+    private static final String ERROR_SAVE_TARGET = "target-save-error";
+    private static final String ERROR_DELETE_TYPE = "type-delete-error";
+    private static final String ERROR_SAVE_TYPE = "type-save-error";
+    private static final String ERROR_DELETE_LOCATION = "location-delete-error";
+    private static final String ERROR_SAVE_LOCATION = "location-save-error";
     private static final String ERROR_SAVE_EVENT = "event-save-error";
     private static final String ERROR_INVALID_CSV = "invalid-csv-file";
     private static final String ERROR_PROCESING_CSV = "error-processing-csv";

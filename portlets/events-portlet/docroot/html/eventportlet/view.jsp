@@ -18,21 +18,83 @@
 * Boston, MA 02110-1301, USA. 
 */
 --%>
-
 <%@include file="/html/init.jsp" %>
 
 <liferay-ui:success key="participant-registration-success" message="participant-registration-success" />
 <liferay-ui:success key="participant-registration-email" message="participant-registration-email" />
 <liferay-ui:error message="participant-already-registered" key="participant-already-registered"/>
 
+<%
+String searchText = ParamUtil.getString(request, WebKeys.SEARCH_TEXT);
+String searchTag = request.getParameter(WebKeys.SEARCH_TAG);
+Long locationId = ParamUtil.getLong(request, WebKeys.LOCATION);
+Long typeId = ParamUtil.getLong(request, WebKeys.TYPE);
+Long targetId = ParamUtil.getLong(request, WebKeys.TARGET);
+
+List<Location> locations = LocationLocalServiceUtil.getLocationsByGroupId(portletGroupId);
+List<Type> types = TypeLocalServiceUtil.getTypesByGroupId(portletGroupId);
+List<Target> targets = TargetLocalServiceUtil.getTargetsByGroupId(portletGroupId);
+
+if (searchTag != null) {
+	searchText = searchTag;
+}
+%>
+
+<portlet:actionURL name="searchEvents" var="searchEventsURL">
+</portlet:actionURL>
+
+<portlet:renderURL var="tagUrl" windowState="<%= LiferayWindowState.NORMAL.toString() %>">
+</portlet:renderURL>
+
 <liferay-ui:header title="event-upcoming-events"/>
+
+<aui:form action="<%= searchEventsURL %>" method="post" name="fm">
+	<aui:button-row>
+		<aui:select id="locations" name="locations" label="locations" showEmptyOption="true" inlineField="<%=true%>" >
+			<% 
+			for (Location locationSel : locations) {
+			%>
+				<aui:option value="<%=locationSel.getLocationId()%>"  selected="<%= locationId == locationSel.getLocationId() %>">
+				<liferay-ui:message key="<%=locationSel.getName()%>" />
+				</aui:option>
+			<% 
+			}
+			%>
+		</aui:select>
+		<aui:select id="types" name="types" label="types" showEmptyOption="true" inlineField="<%=true%>" >
+			<% 
+			for (Type typeSel : types) {
+			%>
+				<aui:option value="<%=typeSel.getTypeId()%>"  selected="<%= typeId == typeSel.getTypeId() %>">
+				<liferay-ui:message key="<%=typeSel.getName()%>" />
+				</aui:option>
+			<% 
+			}
+			%>
+		</aui:select>
+		<aui:select id="targets" name="targets" label="targets" showEmptyOption="true" inlineField="<%=true%>">
+			<% 
+			for (Target targetSel : targets) {
+			%>
+				<aui:option value="<%=targetSel.getTargetId()%>"  selected="<%= targetId == targetSel.getTargetId() %>">
+				<liferay-ui:message key="<%=targetSel.getName()%>" />
+				</aui:option>
+			<% 
+			}
+			%>
+		</aui:select>
+		<aui:input name="searchText" label="search-text" type="text" inlineField="<%=true%>" value="<%= searchText %>" >
+		</aui:input>
+		<aui:button name="searchButton" type="submit" cssClass="event-button" value="search-label"  inlineField="<%=true%>" />
+	</aui:button-row>
+</aui:form> 
 
 <liferay-ui:search-container 
 	emptyResultsMessage="event-empty-results" delta="${prefBean.numRows}" deltaConfigurable="true">
 	<liferay-ui:search-container-results>
 		<%
-		total = EventLocalServiceUtil.getPublicEventsCount();
-		results = EventLocalServiceUtil.getPublicEvents(searchContainer.getStart(), searchContainer.getEnd());
+		total = EventLocalServiceUtil.getPublicEventsCount(locationId, typeId, targetId, searchText);
+		results = EventLocalServiceUtil.getPublicEvents(searchContainer.getStart(), searchContainer.getEnd(), locationId, typeId, targetId, searchText);
 		pageContext.setAttribute("results", results);
 		pageContext.setAttribute("total", total);
 		%>
@@ -45,16 +107,9 @@
 			<portlet:param name="<%=WebKeys.MVC_PATH %>" value="/html/eventportlet/view_event.jsp" />
 			<portlet:param name="<%=EventPortletConstants.PARAMETER_RESOURCE_PRIMARY_KEY %>" value="<%=String.valueOf(event.getPrimaryKey())%>" />
 		</portlet:renderURL>
-		<liferay-ui:search-container-column-text name="event-name" property="name" href="${rowURL}" />
-		<liferay-ui:search-container-column-text name="event-date" buffer="buffer">
-			<%
-				buffer.append(NotificationConstants.SDF.format(event.getEventDate()));
-				if(Validator.isNotNull(event.getEventEndDate())) {
-					buffer.append(EventPortletConstants.START_END_DATES_SEPARATOR).append(NotificationConstants.SDF.format(event.getEventEndDate()));
-				}
-			 %>
-		</liferay-ui:search-container-column-text>
-		<liferay-ui:search-container-column-jsp path="/html/eventportlet/include/view_actions.jsp"/>
+		
+		<liferay-ui:search-container-column-jsp path="/html/eventportlet/include/row-date.jsp"/>
+		<liferay-ui:search-container-column-jsp path="/html/eventportlet/include/row-info.jsp"/>
 	</liferay-ui:search-container-row>
 	
 	<liferay-ui:search-iterator />

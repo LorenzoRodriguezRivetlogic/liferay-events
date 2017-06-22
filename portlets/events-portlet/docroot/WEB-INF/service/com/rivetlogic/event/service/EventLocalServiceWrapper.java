@@ -317,6 +317,13 @@ public class EventLocalServiceWrapper implements EventLocalService,
 		return _eventLocalService.updateEvent(event);
 	}
 
+	@Override
+	public com.rivetlogic.event.model.EventImageBlobModel getImageBlobModel(
+		java.io.Serializable primaryKey)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _eventLocalService.getImageBlobModel(primaryKey);
+	}
+
 	/**
 	* Returns the Spring bean ID for this bean.
 	*
@@ -393,13 +400,23 @@ public class EventLocalServiceWrapper implements EventLocalService,
 
 	@Override
 	public java.util.List<com.rivetlogic.event.model.Event> getPublicEvents(
-		int start, int end) {
-		return _eventLocalService.getPublicEvents(start, end);
+		int start, int end, java.lang.Long locationId, java.lang.Long typeId,
+		java.lang.Long targetId, java.lang.String searchText) {
+		return _eventLocalService.getPublicEvents(start, end, locationId,
+			typeId, targetId, searchText);
 	}
 
 	@Override
-	public int getPublicEventsCount() {
-		return _eventLocalService.getPublicEventsCount();
+	public int getPublicEventsCount(java.lang.Long locationId,
+		java.lang.Long typeId, java.lang.Long targetId,
+		java.lang.String searchText) {
+		return _eventLocalService.getPublicEventsCount(locationId, typeId,
+			targetId, searchText);
+	}
+
+	@Override
+	public int getEventsCountByLocation(java.lang.Long locationId) {
+		return _eventLocalService.getEventsCountByLocation(locationId);
 	}
 
 	/**

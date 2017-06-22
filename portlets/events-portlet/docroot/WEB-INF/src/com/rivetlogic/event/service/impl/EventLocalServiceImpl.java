@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import com.liferay.calendar.model.Calendar;
 import com.liferay.calendar.model.CalendarBooking;
@@ -32,10 +33,10 @@ import com.liferay.calendar.service.CalendarBookingLocalServiceUtil;
 import com.liferay.calendar.service.CalendarBookingServiceUtil;
 import com.liferay.calendar.service.CalendarLocalServiceUtil;
 import com.liferay.calendar.service.CalendarResourceLocalServiceUtil;
-import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.Junction;
 import com.liferay.portal.kernel.dao.orm.Order;
 import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
@@ -46,6 +47,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PortalUtil;
+import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
 import com.rivetlogic.event.NoSuchParticipantException;
 import com.rivetlogic.event.model.Event;
 import com.rivetlogic.event.service.base.EventLocalServiceBaseImpl;
@@ -66,6 +68,7 @@ import com.rivetlogic.event.service.base.EventLocalServiceBaseImpl;
  * </p>
  * 
  * @author juancarrillo
+ * @author lorenzorodriguez
  * @see com.rivetlogic.event.service.base.EventLocalServiceBaseImpl
  * @see com.rivetlogic.event.service.EventLocalServiceUtil
  */
@@ -95,9 +98,32 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
 		}
         event.setModelAttributes(newEvent.getModelAttributes());
         
-        return eventPersistence.update(event);
+        newEvent = eventPersistence.update(event);
+        
+        long[] cats = {0l};
+        AssetEntryLocalServiceUtil.updateEntry(newEvent.getUserId(), newEvent.getGroupId(), Event.class.getName(), newEvent.getEventId(), cats, formatTags(newEvent.getTags()));
+        
+        return newEvent;
+    }
+    
+    private String[] formatTags(String tags) {
+    	StringTokenizer st = new StringTokenizer(tags,",");  
+		List<String> newTags = new ArrayList<String>();
+		while (st.hasMoreTokens()) {  
+			newTags.add(st.nextToken());
+		} 
+		
+		String[] arrTags = new String[newTags.size()];
+		int count = 0;
+		for (String string : newTags) {
+			arrTags[count] = string;
+			count++;
+		}
+		
+		return arrTags;
     }
 
+	@SuppressWarnings("unchecked")
 	public Calendar getUserCalendar(long userId,
 			ServiceContext serviceContext) throws SystemException,
 			PortalException {
@@ -191,6 +217,9 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
 					booking.setEndTime(event.getEventEndDate().getTime());
 
 					CalendarBookingLocalServiceUtil.updateCalendarBooking(booking);
+					
+					long[] cats = {0l};
+			        AssetEntryLocalServiceUtil.updateEntry(event.getUserId(), event.getGroupId(), Event.class.getName(), event.getEventId(), cats, formatTags(event.getTags()));
 				}
 			} catch (PortalException e) {
 				_log.debug("Unable to update calendarBooking with id: " + event.getCalendarBookingId());
@@ -221,6 +250,12 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
 			}
 		}
     	
+
+        try {
+			AssetEntryLocalServiceUtil.deleteEntry(Event.class.getName(), event.getEventId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
         return eventPersistence.remove(event);
         
     }
@@ -322,19 +357,58 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         return result;
     }
     
-    private DynamicQuery getPublicUpcomingEventsDynamicQuery(boolean useOrder, long userId) {
+    @SuppressWarnings("unused")
+	private DynamicQuery getPublicUpcomingEventsDynamicQuery(boolean useOrder, long userId) {
         DynamicQuery dynamicQuery = getUpcomingEventsDynamicQuery(useOrder, userId);
         Criterion criterion = RestrictionsFactoryUtil.eq(EVENT_PRIVATE_COLUMN, false);
         dynamicQuery.add(criterion);
         return dynamicQuery;
     }
     
+    private DynamicQuery getPublicUpcomingFilteredEventsDynamicQuery(boolean useOrder, long userId, Long locationId, Long typeId, Long targetId, String searchText) {
+        DynamicQuery dynamicQuery = getUpcomingEventsDynamicQuery(useOrder, userId);
+        
+        Criterion criterion = RestrictionsFactoryUtil.eq(EVENT_PRIVATE_COLUMN, false);
+        
+        Junction junction = RestrictionsFactoryUtil.conjunction();
+        junction.add(criterion);
+        
+        if (locationId != null && locationId.longValue() != 0) {
+        	Criterion criterionLocation = RestrictionsFactoryUtil.eq(EVENT_LOCATION_COLUMN, locationId);
+        	junction.add(criterionLocation);
+        }
+        
+        if (typeId != null && typeId.longValue() != 0) {
+        	Criterion criterionType = RestrictionsFactoryUtil.eq(EVENT_TYPE_COLUMN, typeId);
+        	junction.add(criterionType);
+        }
+        
+        if (targetId != null && targetId.longValue() != 0) {
+        	Criterion criterionTarget = RestrictionsFactoryUtil.eq(EVENT_TARGET_COLUMN, targetId);
+        	junction.add(criterionTarget);
+        }
+        
+        if (searchText != null && !searchText.equals("")) {
+        	Junction junctionOr = RestrictionsFactoryUtil.disjunction();
+        	Criterion criterionName = RestrictionsFactoryUtil.ilike(EVENT_NAME_COLUMN, new StringBuilder("%").append(searchText).append("%").toString());
+        	Criterion criterionTag = RestrictionsFactoryUtil.ilike(EVENT_TAG_COLUMN, new StringBuilder("%").append(searchText).append("%").toString());
+        	junctionOr.add(criterionName);
+        	junctionOr.add(criterionTag);
+        	
+        	junction.add(junctionOr);
+        }
+        
+        
+        dynamicQuery.add(junction);
+        return dynamicQuery;
+    }
+    
     @SuppressWarnings("unchecked")
-    public List<Event> getPublicEvents(int start, int end) {
+    public List<Event> getPublicEvents(int start, int end, Long locationId, Long typeId, Long targetId, String searchText) {
         
         List<Event> publicEvents = new ArrayList<Event>();
         
-        DynamicQuery dynamicQuery = getPublicUpcomingEventsDynamicQuery(true, 0);
+        DynamicQuery dynamicQuery = getPublicUpcomingFilteredEventsDynamicQuery(true, 0, locationId, typeId, targetId, searchText);
         
         try {
             publicEvents = (List<Event>) eventPersistence.findWithDynamicQuery(dynamicQuery, start, end);
@@ -345,10 +419,10 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         return publicEvents;
     }
     
-    public int getPublicEventsCount() {
+    public int getPublicEventsCount(Long locationId, Long typeId, Long targetId, String searchText) {
         
         int result = 0;
-        DynamicQuery dynamicQuery = getPublicUpcomingEventsDynamicQuery(false, 0);
+        DynamicQuery dynamicQuery = getPublicUpcomingFilteredEventsDynamicQuery(false, 0, locationId, typeId, targetId, searchText);
         try {
             result = (int) eventPersistence.countWithDynamicQuery(dynamicQuery);
         } catch (SystemException e) {
@@ -357,8 +431,25 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         return result;
     }
     
+    
+    public int getEventsCountByLocation(Long locationId ) {
+    	int result = 0;
+    	
+    	try {
+			result = eventPersistence.countByLocationId(locationId);
+		} catch (SystemException e) {
+			e.printStackTrace();
+		}
+    	
+    	return result;
+    }
     private static final String EVENT_DATE_COLUMN = "eventDate";
     private static final String EVENT_PRIVATE_COLUMN = "privateEvent";
+    private static final String EVENT_LOCATION_COLUMN = "locationId";
+    private static final String EVENT_TARGET_COLUMN = "targetId";
+    private static final String EVENT_TYPE_COLUMN = "typeId";
+    private static final String EVENT_TAG_COLUMN = "tags";
+    private static final String EVENT_NAME_COLUMN = "name";
     private static final String EVENT_USER_ID = "userId";
     private static Log _log = LogFactoryUtil.getLog(EventLocalServiceImpl.class);
 }

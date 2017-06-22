@@ -31,11 +31,11 @@ public class EventValidator {
     private static final String EVENT_NAME_REQUIRED = "event-name-required";
     private static final String EVENT_DESCRIPTION_REQUIRED = "event-description-required";
     private static final String EVENT_LOCATION_REQUIRED = "event-location-required";
+    private static final String EVENT_IMAGE_REQUIRED = "event-image-required";
     private static final String EVENT_DATETIME_REQUIRED = "event-date-time-required";
     private static final String PARTICIPANT_FULL_NAME_REQUIRED = "participant-fullname-required";
     private static final String PARTICIPANT_PHONE_REQUIRED = "participant-phone-required";
     private static final String PARTICIPANT_PHONE_INVALID = "participant-phone-invalid";
-    private static final String PARTICIPANT_COMPANY_NAME_REQUIRED = "participant-company-name-required";
     private static final String PARTICIPANT_EMAIL_REQUIRED = "participant-email-required";
     private static final String PARTICIPANT_INVALID_EMAIL = "participant-invalid-email-";
     private static final String PARTICIPANT_REPEATED_EMAIL = "participant-repeated-email-";
@@ -52,8 +52,12 @@ public class EventValidator {
             errors.add(EVENT_DESCRIPTION_REQUIRED);
         }
         
-        if (Validator.isNull(event.getLocation())) {
+        if (Validator.isNull(event.getLocationId())) {
             errors.add(EVENT_LOCATION_REQUIRED);
+        }
+
+        if (Validator.isNull(event.getImage())) {
+        	errors.add(EVENT_IMAGE_REQUIRED);
         }
         
         if (Validator.isNull(event.getEventDate())) {
@@ -68,26 +72,25 @@ public class EventValidator {
     }
     
     public static boolean validateParticipantInfo(Participant participant, List<Participant> participants,
-            List<String> errors, List<String> repeatedEmails, List<String> invalidEmails) {
+            List<String> errors, List<String> repeatedEmails, List<String> invalidEmails, Event event) {
         
         boolean isValid = false;
         
-        if (Validator.isNull(participant.getFullName())) {
-            errors.add(PARTICIPANT_FULL_NAME_REQUIRED);
+        if (event.getRequiredFullName()) {
+        	if (Validator.isNull(participant.getFullName())) {
+                errors.add(PARTICIPANT_FULL_NAME_REQUIRED);
+            }
         }
         
-        if (Validator.isNull(participant.getPhoneNumber())) {
-            errors.add(PARTICIPANT_PHONE_REQUIRED);
-            
-        } else if (!Validator.isPhoneNumber(participant.getPhoneNumber())) {
-            errors.add(PARTICIPANT_PHONE_INVALID);
+        if (event.getRequiredPhone()) {
+        	if (Validator.isNull(participant.getPhoneNumber())) {
+                errors.add(PARTICIPANT_PHONE_REQUIRED);
+            } else if (!Validator.isPhoneNumber(participant.getPhoneNumber())) {
+                errors.add(PARTICIPANT_PHONE_INVALID);
+            }
         }
         
-        if (Validator.isNull(participant.getCompanyName())) {
-            errors.add(PARTICIPANT_COMPANY_NAME_REQUIRED);
-        }
-        
-        String participantEmail = participant.getEmail();
+    	String participantEmail = participant.getEmail();
         
         if (Validator.isNull(participantEmail)) {
             errors.add(PARTICIPANT_EMAIL_REQUIRED);
@@ -113,6 +116,81 @@ public class EventValidator {
                     }
                 }
                 
+            }
+        }
+
+        if (errors.isEmpty()) {
+            isValid = true;
+        }
+        
+        return isValid;
+    }
+    
+    public static boolean validateParticipantInfo(Participant participant, List<Participant> participants,
+            List<String> errors, List<String> repeatedEmails, List<String> invalidEmails) {
+        
+        boolean isValid = false;
+
+    	if (Validator.isNull(participant.getFullName())) {
+            errors.add(PARTICIPANT_FULL_NAME_REQUIRED);
+        }
+        
+    	if (Validator.isNull(participant.getPhoneNumber())) {
+            errors.add(PARTICIPANT_PHONE_REQUIRED);
+        } else if (!Validator.isPhoneNumber(participant.getPhoneNumber())) {
+            errors.add(PARTICIPANT_PHONE_INVALID);
+        }
+        
+    	String participantEmail = participant.getEmail();
+        
+        if (Validator.isNull(participantEmail)) {
+            errors.add(PARTICIPANT_EMAIL_REQUIRED);
+            
+        } else if (!Validator.isEmailAddress(participantEmail)) {
+            errors.add(PARTICIPANT_INVALID_EMAIL + participantEmail);
+            
+            if (!invalidEmails.contains(participantEmail)) {
+                invalidEmails.add(participantEmail);
+            }
+            
+        } else {
+            
+            if (Validator.isNotNull(participants)) {
+                
+                for (int i = 0; i < participants.size(); ++i) {
+                    
+                    if (participants.get(i).getEmail().equals(participantEmail)) {
+                        errors.add(PARTICIPANT_REPEATED_EMAIL + participantEmail);
+                        if (!repeatedEmails.contains(participantEmail)) {
+                            repeatedEmails.add(participantEmail);
+                        }
+                    }
+                }
+                
+            }
+        }
+
+        if (errors.isEmpty()) {
+            isValid = true;
+        }
+        
+        return isValid;
+    }
+    
+    public static boolean validateRegisteredParticipant(Participant participant, List<Participant> participants,
+            List<String> errors, List<String> repeatedEmails, List<String> invalidEmails, Event event) {
+        
+        boolean isValid = false;
+        
+        validateParticipantInfo(participant, participants, errors, repeatedEmails, invalidEmails, event);
+        
+        String participantEmail = participant.getEmail();
+        
+        if (!ParticipantLocalServiceUtil.findParticipantByEventIdAndEmail(participant.getEventId(), participantEmail)
+                .isEmpty()) {
+            errors.add(PARTICIPANT_REPEATED_EMAIL + participantEmail);
+            if (!repeatedEmails.contains(participantEmail)) {
+                repeatedEmails.add(participantEmail);
             }
         }
         

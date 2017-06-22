@@ -40,11 +40,16 @@
 	<portlet:param name="<%=EventPortletConstants.PARAMETER_RESOURCE_PRIMARY_KEY %>" value="<%=String.valueOf(event.getPrimaryKey())%>" />
 </portlet:renderURL>
 
+
 <liferay-ui:icon-menu>
 	<%if(!event.isPast()){ %>
 		<liferay-ui:icon image="edit" url="${editEvent}"/>
-		<liferay-ui:icon image="page" url="${sendReminderUrl}" message="send-reminder"/>	
+		<% if (event.getRegistrationRequired()) { %>
+			<liferay-ui:icon image="page" url="${sendReminderUrl}" message="send-reminder"/>
+		<% } %>	
 	<%} %>
-	<liferay-ui:icon image="view" message="event-attendees" url="${viewEventAttendees}"  />
+	<% if (event.getRegistrationRequired()) { %>
+		<liferay-ui:icon image="view" message="event-attendees" url="${viewEventAttendees}"  />
+	<% } %>
 	<liferay-ui:icon-delete url="${deleteEventUrl}" />
 </liferay-ui:icon-menu>

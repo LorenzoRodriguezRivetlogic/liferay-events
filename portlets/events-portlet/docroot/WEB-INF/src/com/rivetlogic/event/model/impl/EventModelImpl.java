@@ -30,10 +30,13 @@ import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import com.rivetlogic.event.model.Event;
+import com.rivetlogic.event.model.EventImageBlobModel;
 import com.rivetlogic.event.model.EventModel;
+import com.rivetlogic.event.service.EventLocalServiceUtil;
 
 import java.io.Serializable;
 
+import java.sql.Blob;
 import java.sql.Types;
 
 import java.util.Date;
@@ -71,11 +74,19 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 			{ "name", Types.VARCHAR },
 			{ "location", Types.VARCHAR },
 			{ "description", Types.VARCHAR },
+			{ "tags", Types.VARCHAR },
 			{ "eventDate", Types.TIMESTAMP },
 			{ "eventEndDate", Types.TIMESTAMP },
-			{ "privateEvent", Types.BOOLEAN }
+			{ "privateEvent", Types.BOOLEAN },
+			{ "registrationRequired", Types.BOOLEAN },
+			{ "requiredFullName", Types.BOOLEAN },
+			{ "requiredPhone", Types.BOOLEAN },
+			{ "image", Types.BLOB },
+			{ "locationId", Types.BIGINT },
+			{ "targetId", Types.BIGINT },
+			{ "typeId", Types.BIGINT }
 		};
-	public static final String TABLE_SQL_CREATE = "create table rivetlogic_event_Event (uuid_ VARCHAR(75) null,eventId LONG not null primary key,calendarBookingId LONG,calendarId LONG,groupId LONG,companyId LONG,userId LONG,name VARCHAR(400) null,location STRING null,description STRING null,eventDate DATE null,eventEndDate DATE null,privateEvent BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table rivetlogic_event_Event (uuid_ VARCHAR(75) null,eventId LONG not null primary key,calendarBookingId LONG,calendarId LONG,groupId LONG,companyId LONG,userId LONG,name VARCHAR(400) null,location STRING null,description STRING null,tags VARCHAR(75) null,eventDate DATE null,eventEndDate DATE null,privateEvent BOOLEAN,registrationRequired BOOLEAN,requiredFullName BOOLEAN,requiredPhone BOOLEAN,image BLOB,locationId LONG,targetId LONG,typeId LONG)";
 	public static final String TABLE_SQL_DROP = "drop table rivetlogic_event_Event";
 	public static final String ORDER_BY_JPQL = " ORDER BY event.eventDate ASC, event.name ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY rivetlogic_event_Event.eventDate ASC, rivetlogic_event_Event.name ASC";
@@ -93,9 +104,10 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 			true);
 	public static long COMPANYID_COLUMN_BITMASK = 1L;
 	public static long GROUPID_COLUMN_BITMASK = 2L;
-	public static long UUID_COLUMN_BITMASK = 4L;
-	public static long EVENTDATE_COLUMN_BITMASK = 8L;
-	public static long NAME_COLUMN_BITMASK = 16L;
+	public static long LOCATIONID_COLUMN_BITMASK = 4L;
+	public static long UUID_COLUMN_BITMASK = 8L;
+	public static long EVENTDATE_COLUMN_BITMASK = 16L;
+	public static long NAME_COLUMN_BITMASK = 32L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
 				"lock.expiration.time.com.rivetlogic.event.model.Event"));
 
@@ -146,9 +158,17 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 		attributes.put("name", getName());
 		attributes.put("location", getLocation());
 		attributes.put("description", getDescription());
+		attributes.put("tags", getTags());
 		attributes.put("eventDate", getEventDate());
 		attributes.put("eventEndDate", getEventEndDate());
 		attributes.put("privateEvent", getPrivateEvent());
+		attributes.put("registrationRequired", getRegistrationRequired());
+		attributes.put("requiredFullName", getRequiredFullName());
+		attributes.put("requiredPhone", getRequiredPhone());
+		attributes.put("image", getImage());
+		attributes.put("locationId", getLocationId());
+		attributes.put("targetId", getTargetId());
+		attributes.put("typeId", getTypeId());
 
 		return attributes;
 	}
@@ -215,6 +235,12 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 			setDescription(description);
 		}
 
+		String tags = (String)attributes.get("tags");
+
+		if (tags != null) {
+			setTags(tags);
+		}
+
 		Date eventDate = (Date)attributes.get("eventDate");
 
 		if (eventDate != null) {
@@ -231,6 +257,49 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 		if (privateEvent != null) {
 			setPrivateEvent(privateEvent);
+		}
+
+		Boolean registrationRequired = (Boolean)attributes.get(
+				"registrationRequired");
+
+		if (registrationRequired != null) {
+			setRegistrationRequired(registrationRequired);
+		}
+
+		Boolean requiredFullName = (Boolean)attributes.get("requiredFullName");
+
+		if (requiredFullName != null) {
+			setRequiredFullName(requiredFullName);
+		}
+
+		Boolean requiredPhone = (Boolean)attributes.get("requiredPhone");
+
+		if (requiredPhone != null) {
+			setRequiredPhone(requiredPhone);
+		}
+
+		Blob image = (Blob)attributes.get("image");
+
+		if (image != null) {
+			setImage(image);
+		}
+
+		Long locationId = (Long)attributes.get("locationId");
+
+		if (locationId != null) {
+			setLocationId(locationId);
+		}
+
+		Long targetId = (Long)attributes.get("targetId");
+
+		if (targetId != null) {
+			setTargetId(targetId);
+		}
+
+		Long typeId = (Long)attributes.get("typeId");
+
+		if (typeId != null) {
+			setTypeId(typeId);
 		}
 	}
 
@@ -399,6 +468,21 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 	}
 
 	@Override
+	public String getTags() {
+		if (_tags == null) {
+			return StringPool.BLANK;
+		}
+		else {
+			return _tags;
+		}
+	}
+
+	@Override
+	public void setTags(String tags) {
+		_tags = tags;
+	}
+
+	@Override
 	public Date getEventDate() {
 		return _eventDate;
 	}
@@ -433,6 +517,122 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 	@Override
 	public void setPrivateEvent(boolean privateEvent) {
 		_privateEvent = privateEvent;
+	}
+
+	@Override
+	public boolean getRegistrationRequired() {
+		return _registrationRequired;
+	}
+
+	@Override
+	public boolean isRegistrationRequired() {
+		return _registrationRequired;
+	}
+
+	@Override
+	public void setRegistrationRequired(boolean registrationRequired) {
+		_registrationRequired = registrationRequired;
+	}
+
+	@Override
+	public boolean getRequiredFullName() {
+		return _requiredFullName;
+	}
+
+	@Override
+	public boolean isRequiredFullName() {
+		return _requiredFullName;
+	}
+
+	@Override
+	public void setRequiredFullName(boolean requiredFullName) {
+		_requiredFullName = requiredFullName;
+	}
+
+	@Override
+	public boolean getRequiredPhone() {
+		return _requiredPhone;
+	}
+
+	@Override
+	public boolean isRequiredPhone() {
+		return _requiredPhone;
+	}
+
+	@Override
+	public void setRequiredPhone(boolean requiredPhone) {
+		_requiredPhone = requiredPhone;
+	}
+
+	@Override
+	public Blob getImage() {
+		if (_imageBlobModel == null) {
+			try {
+				_imageBlobModel = EventLocalServiceUtil.getImageBlobModel(getPrimaryKey());
+			}
+			catch (Exception e) {
+			}
+		}
+
+		Blob blob = null;
+
+		if (_imageBlobModel != null) {
+			blob = _imageBlobModel.getImageBlob();
+		}
+
+		return blob;
+	}
+
+	@Override
+	public void setImage(Blob image) {
+		if (_imageBlobModel == null) {
+			_imageBlobModel = new EventImageBlobModel(getPrimaryKey(), image);
+		}
+		else {
+			_imageBlobModel.setImageBlob(image);
+		}
+	}
+
+	@Override
+	public long getLocationId() {
+		return _locationId;
+	}
+
+	@Override
+	public void setLocationId(long locationId) {
+		_columnBitmask |= LOCATIONID_COLUMN_BITMASK;
+
+		if (!_setOriginalLocationId) {
+			_setOriginalLocationId = true;
+
+			_originalLocationId = _locationId;
+		}
+
+		_locationId = locationId;
+	}
+
+	public long getOriginalLocationId() {
+		return _originalLocationId;
+	}
+
+	@Override
+	public long getTargetId() {
+		return _targetId;
+	}
+
+	@Override
+	public void setTargetId(long targetId) {
+		_targetId = targetId;
+	}
+
+	@Override
+	public long getTypeId() {
+		return _typeId;
+	}
+
+	@Override
+	public void setTypeId(long typeId) {
+		_typeId = typeId;
 	}
 
 	public long getColumnBitmask() {
@@ -476,9 +676,16 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 		eventImpl.setName(getName());
 		eventImpl.setLocation(getLocation());
 		eventImpl.setDescription(getDescription());
+		eventImpl.setTags(getTags());
 		eventImpl.setEventDate(getEventDate());
 		eventImpl.setEventEndDate(getEventEndDate());
 		eventImpl.setPrivateEvent(getPrivateEvent());
+		eventImpl.setRegistrationRequired(getRegistrationRequired());
+		eventImpl.setRequiredFullName(getRequiredFullName());
+		eventImpl.setRequiredPhone(getRequiredPhone());
+		eventImpl.setLocationId(getLocationId());
+		eventImpl.setTargetId(getTargetId());
+		eventImpl.setTypeId(getTypeId());
 
 		eventImpl.resetOriginalValues();
 
@@ -545,6 +752,12 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 		eventModelImpl._setOriginalCompanyId = false;
 
+		eventModelImpl._imageBlobModel = null;
+
+		eventModelImpl._originalLocationId = eventModelImpl._locationId;
+
+		eventModelImpl._setOriginalLocationId = false;
+
 		eventModelImpl._columnBitmask = 0;
 	}
 
@@ -596,6 +809,14 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 			eventCacheModel.description = null;
 		}
 
+		eventCacheModel.tags = getTags();
+
+		String tags = eventCacheModel.tags;
+
+		if ((tags != null) && (tags.length() == 0)) {
+			eventCacheModel.tags = null;
+		}
+
 		Date eventDate = getEventDate();
 
 		if (eventDate != null) {
@@ -616,12 +837,24 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 		eventCacheModel.privateEvent = getPrivateEvent();
 
+		eventCacheModel.registrationRequired = getRegistrationRequired();
+
+		eventCacheModel.requiredFullName = getRequiredFullName();
+
+		eventCacheModel.requiredPhone = getRequiredPhone();
+
+		eventCacheModel.locationId = getLocationId();
+
+		eventCacheModel.targetId = getTargetId();
+
+		eventCacheModel.typeId = getTypeId();
+
 		return eventCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(27);
+		StringBundler sb = new StringBundler(43);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -643,12 +876,26 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 		sb.append(getLocation());
 		sb.append(", description=");
 		sb.append(getDescription());
+		sb.append(", tags=");
+		sb.append(getTags());
 		sb.append(", eventDate=");
 		sb.append(getEventDate());
 		sb.append(", eventEndDate=");
 		sb.append(getEventEndDate());
 		sb.append(", privateEvent=");
 		sb.append(getPrivateEvent());
+		sb.append(", registrationRequired=");
+		sb.append(getRegistrationRequired());
+		sb.append(", requiredFullName=");
+		sb.append(getRequiredFullName());
+		sb.append(", requiredPhone=");
+		sb.append(getRequiredPhone());
+		sb.append(", locationId=");
+		sb.append(getLocationId());
+		sb.append(", targetId=");
+		sb.append(getTargetId());
+		sb.append(", typeId=");
+		sb.append(getTypeId());
 		sb.append("}");
 
 		return sb.toString();
@@ -656,7 +903,7 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(67);
 
 		sb.append("<model><model-name>");
 		sb.append("com.rivetlogic.event.model.Event");
@@ -703,6 +950,10 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 		sb.append(getDescription());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>tags</column-name><column-value><![CDATA[");
+		sb.append(getTags());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>eventDate</column-name><column-value><![CDATA[");
 		sb.append(getEventDate());
 		sb.append("]]></column-value></column>");
@@ -713,6 +964,30 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 		sb.append(
 			"<column><column-name>privateEvent</column-name><column-value><![CDATA[");
 		sb.append(getPrivateEvent());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>registrationRequired</column-name><column-value><![CDATA[");
+		sb.append(getRegistrationRequired());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>requiredFullName</column-name><column-value><![CDATA[");
+		sb.append(getRequiredFullName());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>requiredPhone</column-name><column-value><![CDATA[");
+		sb.append(getRequiredPhone());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>locationId</column-name><column-value><![CDATA[");
+		sb.append(getLocationId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>targetId</column-name><column-value><![CDATA[");
+		sb.append(getTargetId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>typeId</column-name><column-value><![CDATA[");
+		sb.append(getTypeId());
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
@@ -738,9 +1013,19 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 	private String _name;
 	private String _location;
 	private String _description;
+	private String _tags;
 	private Date _eventDate;
 	private Date _eventEndDate;
 	private boolean _privateEvent;
+	private boolean _registrationRequired;
+	private boolean _requiredFullName;
+	private boolean _requiredPhone;
+	private EventImageBlobModel _imageBlobModel;
+	private long _locationId;
+	private long _originalLocationId;
+	private boolean _setOriginalLocationId;
+	private long _targetId;
+	private long _typeId;
 	private long _columnBitmask;
 	private Event _escapedModel;
 }

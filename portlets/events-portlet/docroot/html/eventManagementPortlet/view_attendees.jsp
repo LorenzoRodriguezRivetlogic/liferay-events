@@ -45,7 +45,10 @@ ThemeDisplay display = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY
 	<liferay-ui:search-container-row 
 		className="com.rivetlogic.event.model.Participant" 
 		keyProperty="participantId" modelVar="participant">
-		<liferay-ui:search-container-column-text name="participant-name" property="fullName" />
+		
+		<% if (event.getRequiredFullName()) { %>
+			<liferay-ui:search-container-column-text name="participant-name" property="fullName" />
+		<% } %>
 		<liferay-ui:search-container-column-text name="participant-email" property="email" />
 	</liferay-ui:search-container-row>
 	

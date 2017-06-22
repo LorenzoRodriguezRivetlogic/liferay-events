@@ -17,6 +17,8 @@ package com.rivetlogic.event.model;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
 
+import java.sql.Blob;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,9 +61,17 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 		attributes.put("name", getName());
 		attributes.put("location", getLocation());
 		attributes.put("description", getDescription());
+		attributes.put("tags", getTags());
 		attributes.put("eventDate", getEventDate());
 		attributes.put("eventEndDate", getEventEndDate());
 		attributes.put("privateEvent", getPrivateEvent());
+		attributes.put("registrationRequired", getRegistrationRequired());
+		attributes.put("requiredFullName", getRequiredFullName());
+		attributes.put("requiredPhone", getRequiredPhone());
+		attributes.put("image", getImage());
+		attributes.put("locationId", getLocationId());
+		attributes.put("targetId", getTargetId());
+		attributes.put("typeId", getTypeId());
 
 		return attributes;
 	}
@@ -128,6 +138,12 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 			setDescription(description);
 		}
 
+		String tags = (String)attributes.get("tags");
+
+		if (tags != null) {
+			setTags(tags);
+		}
+
 		Date eventDate = (Date)attributes.get("eventDate");
 
 		if (eventDate != null) {
@@ -144,6 +160,49 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 
 		if (privateEvent != null) {
 			setPrivateEvent(privateEvent);
+		}
+
+		Boolean registrationRequired = (Boolean)attributes.get(
+				"registrationRequired");
+
+		if (registrationRequired != null) {
+			setRegistrationRequired(registrationRequired);
+		}
+
+		Boolean requiredFullName = (Boolean)attributes.get("requiredFullName");
+
+		if (requiredFullName != null) {
+			setRequiredFullName(requiredFullName);
+		}
+
+		Boolean requiredPhone = (Boolean)attributes.get("requiredPhone");
+
+		if (requiredPhone != null) {
+			setRequiredPhone(requiredPhone);
+		}
+
+		Blob image = (Blob)attributes.get("image");
+
+		if (image != null) {
+			setImage(image);
+		}
+
+		Long locationId = (Long)attributes.get("locationId");
+
+		if (locationId != null) {
+			setLocationId(locationId);
+		}
+
+		Long targetId = (Long)attributes.get("targetId");
+
+		if (targetId != null) {
+			setTargetId(targetId);
+		}
+
+		Long typeId = (Long)attributes.get("typeId");
+
+		if (typeId != null) {
+			setTypeId(typeId);
 		}
 	}
 
@@ -390,6 +449,26 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 	}
 
 	/**
+	* Returns the tags of this event.
+	*
+	* @return the tags of this event
+	*/
+	@Override
+	public java.lang.String getTags() {
+		return _event.getTags();
+	}
+
+	/**
+	* Sets the tags of this event.
+	*
+	* @param tags the tags of this event
+	*/
+	@Override
+	public void setTags(java.lang.String tags) {
+		_event.setTags(tags);
+	}
+
+	/**
 	* Returns the event date of this event.
 	*
 	* @return the event date of this event
@@ -457,6 +536,176 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 	@Override
 	public void setPrivateEvent(boolean privateEvent) {
 		_event.setPrivateEvent(privateEvent);
+	}
+
+	/**
+	* Returns the registration required of this event.
+	*
+	* @return the registration required of this event
+	*/
+	@Override
+	public boolean getRegistrationRequired() {
+		return _event.getRegistrationRequired();
+	}
+
+	/**
+	* Returns <code>true</code> if this event is registration required.
+	*
+	* @return <code>true</code> if this event is registration required; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isRegistrationRequired() {
+		return _event.isRegistrationRequired();
+	}
+
+	/**
+	* Sets whether this event is registration required.
+	*
+	* @param registrationRequired the registration required of this event
+	*/
+	@Override
+	public void setRegistrationRequired(boolean registrationRequired) {
+		_event.setRegistrationRequired(registrationRequired);
+	}
+
+	/**
+	* Returns the required full name of this event.
+	*
+	* @return the required full name of this event
+	*/
+	@Override
+	public boolean getRequiredFullName() {
+		return _event.getRequiredFullName();
+	}
+
+	/**
+	* Returns <code>true</code> if this event is required full name.
+	*
+	* @return <code>true</code> if this event is required full name; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isRequiredFullName() {
+		return _event.isRequiredFullName();
+	}
+
+	/**
+	* Sets whether this event is required full name.
+	*
+	* @param requiredFullName the required full name of this event
+	*/
+	@Override
+	public void setRequiredFullName(boolean requiredFullName) {
+		_event.setRequiredFullName(requiredFullName);
+	}
+
+	/**
+	* Returns the required phone of this event.
+	*
+	* @return the required phone of this event
+	*/
+	@Override
+	public boolean getRequiredPhone() {
+		return _event.getRequiredPhone();
+	}
+
+	/**
+	* Returns <code>true</code> if this event is required phone.
+	*
+	* @return <code>true</code> if this event is required phone; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isRequiredPhone() {
+		return _event.isRequiredPhone();
+	}
+
+	/**
+	* Sets whether this event is required phone.
+	*
+	* @param requiredPhone the required phone of this event
+	*/
+	@Override
+	public void setRequiredPhone(boolean requiredPhone) {
+		_event.setRequiredPhone(requiredPhone);
+	}
+
+	/**
+	* Returns the image of this event.
+	*
+	* @return the image of this event
+	*/
+	@Override
+	public java.sql.Blob getImage() {
+		return _event.getImage();
+	}
+
+	/**
+	* Sets the image of this event.
+	*
+	* @param image the image of this event
+	*/
+	@Override
+	public void setImage(java.sql.Blob image) {
+		_event.setImage(image);
+	}
+
+	/**
+	* Returns the location ID of this event.
+	*
+	* @return the location ID of this event
+	*/
+	@Override
+	public long getLocationId() {
+		return _event.getLocationId();
+	}
+
+	/**
+	* Sets the location ID of this event.
+	*
+	* @param locationId the location ID of this event
+	*/
+	@Override
+	public void setLocationId(long locationId) {
+		_event.setLocationId(locationId);
+	}
+
+	/**
+	* Returns the target ID of this event.
+	*
+	* @return the target ID of this event
+	*/
+	@Override
+	public long getTargetId() {
+		return _event.getTargetId();
+	}
+
+	/**
+	* Sets the target ID of this event.
+	*
+	* @param targetId the target ID of this event
+	*/
+	@Override
+	public void setTargetId(long targetId) {
+		_event.setTargetId(targetId);
+	}
+
+	/**
+	* Returns the type ID of this event.
+	*
+	* @return the type ID of this event
+	*/
+	@Override
+	public long getTypeId() {
+		return _event.getTypeId();
+	}
+
+	/**
+	* Sets the type ID of this event.
+	*
+	* @param typeId the type ID of this event
+	*/
+	@Override
+	public void setTypeId(long typeId) {
+		_event.setTypeId(typeId);
 	}
 
 	@Override

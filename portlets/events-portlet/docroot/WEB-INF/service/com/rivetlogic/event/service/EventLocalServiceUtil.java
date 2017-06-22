@@ -307,6 +307,12 @@ public class EventLocalServiceUtil {
 		return getService().updateEvent(event);
 	}
 
+	public static com.rivetlogic.event.model.EventImageBlobModel getImageBlobModel(
+		java.io.Serializable primaryKey)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getImageBlobModel(primaryKey);
+	}
+
 	/**
 	* Returns the Spring bean ID for this bean.
 	*
@@ -372,12 +378,23 @@ public class EventLocalServiceUtil {
 	}
 
 	public static java.util.List<com.rivetlogic.event.model.Event> getPublicEvents(
-		int start, int end) {
-		return getService().getPublicEvents(start, end);
+		int start, int end, java.lang.Long locationId, java.lang.Long typeId,
+		java.lang.Long targetId, java.lang.String searchText) {
+		return getService()
+				   .getPublicEvents(start, end, locationId, typeId, targetId,
+			searchText);
 	}
 
-	public static int getPublicEventsCount() {
-		return getService().getPublicEventsCount();
+	public static int getPublicEventsCount(java.lang.Long locationId,
+		java.lang.Long typeId, java.lang.Long targetId,
+		java.lang.String searchText) {
+		return getService()
+				   .getPublicEventsCount(locationId, typeId, targetId,
+			searchText);
+	}
+
+	public static int getEventsCountByLocation(java.lang.Long locationId) {
+		return getService().getEventsCountByLocation(locationId);
 	}
 
 	public static void clearService() {

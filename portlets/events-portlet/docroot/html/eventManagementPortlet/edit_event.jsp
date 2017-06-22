@@ -18,12 +18,6 @@
 * Boston, MA 02110-1301, USA. 
 */
 --%>
-
-<%@page import="com.liferay.portal.security.permission.ActionKeys"%>
-<%@page import="com.liferay.calendar.util.comparator.CalendarNameComparator"%>
-<%@page import="com.liferay.portal.kernel.dao.orm.QueryUtil"%>
-<%@page import="com.liferay.calendar.service.CalendarServiceUtil"%>
-<%@page import="com.liferay.calendar.service.CalendarBookingLocalServiceUtil"%>
 <%@include file="/html/init.jsp" %>
 
 <%
@@ -57,6 +51,17 @@ List<com.liferay.calendar.model.Calendar> manageableCalendars = CalendarServiceU
 
 long calendarId = event.getCalendarId();
 	
+List<Location> locations = LocationLocalServiceUtil.getLocationsByGroupId(portletGroupId);
+Long locationId = event.getLocationId();
+
+List<Type> types = TypeLocalServiceUtil.getTypesByGroupId(portletGroupId);
+Long typeId = event.getTypeId();
+
+List<Target> targets = TargetLocalServiceUtil.getTargetsByGroupId(portletGroupId);
+Long targetId = event.getTargetId();
+
+String divStyle = event.getRegistrationRequired() ?  "block":"none";
+String divStylePrivateEvent = event.getPrivateEvent()?  "block":"none";
 %>
 
 <liferay-ui:error key="event-save-error" message="event-save-error" />
@@ -90,6 +95,20 @@ long calendarId = event.getCalendarId();
 	<portlet:param name="<%=WebKeys.MVC_PATH %>" value="/html/eventManagementPortlet/view.jsp" />
 </portlet:renderURL>
 
+<portlet:renderURL var="dialogLocations" windowState="<%=LiferayWindowState.POP_UP.toString()%>">
+	<portlet:param name="mvcPath" value="/html/dialog/locations_dialog.jsp"/>
+</portlet:renderURL>
+
+<portlet:renderURL var="dialogTypes" windowState="<%=LiferayWindowState.POP_UP.toString()%>">
+	<portlet:param name="mvcPath" value="/html/dialog/type_dialog.jsp"/>
+</portlet:renderURL>
+
+<portlet:renderURL var="dialogTarget" windowState="<%=LiferayWindowState.POP_UP.toString()%>">
+	<portlet:param name="mvcPath" value="/html/dialog/target_dialog.jsp"/>
+</portlet:renderURL>
+
+<portlet:resourceURL var="resourceURL"/>
+
 <portlet:actionURL name="addEditEvent" var="addEditEventURL" >
 	<portlet:param name="<%=EventPortletConstants.PARAMETER_RESOURCE_PRIMARY_KEY %>" value="${event.eventId}" />
 	<portlet:param name="<%=WebKeys.REDIRECT%>" value="${backURL}"/>
@@ -115,9 +134,20 @@ long calendarId = event.getCalendarId();
 			<aui:input name="<%=EventPortletConstants.PARAMETER_NAME%>" label="participant-name" type="text" value="${event.name}">
 				<!-- aui:validator name="required"/-->
 			</aui:input>
-			<aui:input name="<%=EventPortletConstants.PARAMETER_LOCATION%>" label="event-location" type="textarea" value="${event.location}">
-				<!--aui:validator name="required"/-->
-			</aui:input>
+			<div>
+				<aui:select id="locations" name="locations" label="locations" showEmptyOption="true" inlineField="<%=true%>">
+					<% 
+					for (Location locationSel : locations) {
+					%>
+						<aui:option value="<%=locationSel.getLocationId()%>"  selected="<%= locationId == locationSel.getLocationId() %>">
+							<liferay-ui:message key="<%=locationSel.getName()%>" />
+						</aui:option>
+					<% 
+					}
+					%>
+				</aui:select>
+				<aui:button style="display:inline-block" name="dialog-locations"  id="dialog-locations" value="event-add-location" inlineField="<%=true%>"></aui:button>
+			</div>
     	</aui:fieldset>
     	
     	<aui:fieldset label="event-start-date">
@@ -200,6 +230,49 @@ long calendarId = event.getCalendarId();
 			</aui:field-wrapper>
 		</aui:fieldset>
 		
+		<aui:fieldset label="event-image">
+			<p><liferay-ui:message key="event-photo-info"/></p>
+			<aui:input  name="photo" value="" type="file" label="event-upload-file">
+				<% if (event.getEventId() == 0) { %>
+					<aui:validator name="required"/>
+				<% } %>
+				<aui:validator name="acceptFiles">'jpg, png'</aui:validator>
+			</aui:input>
+		</aui:fieldset>
+		
+		<aui:fieldset label="event-categorization">
+			<div>
+				<aui:select id="types" name="types" label="types" showEmptyOption="true" inlineField="<%=true%>" >
+					<% 
+					for (Type typeSel : types) {
+					%>
+						<aui:option value="<%=typeSel.getTypeId()%>"  selected="<%= typeId == typeSel.getTypeId() %>">
+							<liferay-ui:message key="<%=typeSel.getName()%>" />
+						</aui:option>
+					<% 
+					}
+					%>
+				</aui:select>
+				<aui:button name="dialog-types"  id="dialog-types" value="event-new" inlineField="<%=true%>"> </aui:button>
+			</div>
+			<div>
+				<aui:select id="targets" name="targets" label="targets" showEmptyOption="true" inlineField="<%=true%>">
+					<% 
+					for (Target targetSel : targets) {
+					%>
+						<aui:option value="<%=targetSel.getTargetId()%>"  selected="<%= targetId == targetSel.getTargetId() %>">
+							<liferay-ui:message key="<%=targetSel.getName()%>" />
+						</aui:option>
+					<% 
+					}
+					%>
+				</aui:select>
+				<aui:button name="dialog-targets"  id="dialog-targets" value="event-new" inlineField="<%=true%>"> </aui:button>
+			</div>
+			
+			<liferay-ui:asset-tags-selector curTags="<%= event.getTags() %>"/>
+		</aui:fieldset>
+		
 		<aui:fieldset label="calendar">
 			<aui:select label="" name="calendarId">
 				<%
@@ -214,83 +287,103 @@ long calendarId = event.getCalendarId();
 			</aui:select>
 		</aui:fieldset>
 		
-		<aui:fieldset label="label-participants">
-			<div id="${pns}upload">
-		    	<aui:fieldset>
-		        	<p><liferay-ui:message key="message-upload-participants"/></p>
-		            <div>
-		            	<aui:input type="file" name="<%=EventPortletConstants.PARAMETER_FILE%>" value="upload-file">
-			            	<aui:validator name="acceptFiles">'.csv'</aui:validator>
-		            	</aui:input>
-		            </div>
-		    	</aui:fieldset>
-			</div>
-		</aui:fieldset>
-		
-		<c:if test="<%=event != null%>">
-		
-			<liferay-ui:search-container 
-					emptyResultsMessage="participant-empty-results" delta="${prefBean.numRows}" deltaConfigurable="true">
-					<liferay-ui:search-container-results 
-						results="<%=ParticipantLocalServiceUtil.getParticipants(event.getEventId())%>"
-						total="<%=ParticipantLocalServiceUtil.getParticipantsCount(event.getEventId())%>"
-					/>
-				<liferay-ui:search-container-row 
-					className="com.rivetlogic.event.model.Participant" 
-					keyProperty="participantId" modelVar="participant">
-					<%
-						String statusLabel = LanguageUtil.get(pageContext, "participant-status-"+participant.getStatus());
-					%>
-					<liferay-ui:search-container-column-text name="participant-status" value="<%=statusLabel %>" />
-					<liferay-ui:search-container-column-text name="participant-name" property="fullName" />
-					<liferay-ui:search-container-column-text name="participant-email" property="email" />
-					<liferay-ui:search-container-column-jsp path="/html/eventManagementPortlet/include/edit-event-actions.jsp"/>
-				</liferay-ui:search-container-row>
-		
-				<liferay-ui:search-iterator />
-		
-			</liferay-ui:search-container>
-			
-		</c:if>
-		
-		<aui:fieldset id="add-participants">
-			<div class="participant-info">
-				<div class="div-table-row">
-					<div class="div-table-col">
-			    		<liferay-ui:message key="participant-fullname"/>
-					</div>
-					<div class="div-table-col">
-					    <liferay-ui:message key="participant-email"/>
-					</div>
+		<div id="hiddenParticipants" style="display: <%= divStylePrivateEvent %>">
+			<aui:fieldset label="label-participants">
+				<div id="${pns}upload">
+			    	<aui:fieldset>
+			        	<p><liferay-ui:message key="message-upload-participants"/></p>
+			            <div>
+			            	<aui:input type="file" name="<%=EventPortletConstants.PARAMETER_FILE%>" value="upload-file">
+				            	<aui:validator name="acceptFiles">'.csv'</aui:validator>
+			            	</aui:input>
+			            </div>
+			    	</aui:fieldset>
 				</div>
-				<c:set var="paramFullName" value="<%=EventPortletConstants.PARAMETER_PARTICIPANT_FULL_NAME%>" />
-				<c:set var="paramEmail" value="<%=EventPortletConstants.PARAMETER_PARTICIPANT_EMAIL%>" />
-				<c:choose>
-					<c:when test="${not empty participants}">
-						<c:forEach items="${participants}" var="participant" varStatus="loop">
+			</aui:fieldset>
+			
+			<c:if test="<%=event != null%>">
+			
+				<liferay-ui:search-container 
+						emptyResultsMessage="participant-empty-results" delta="${prefBean.numRows}" deltaConfigurable="true">
+						<liferay-ui:search-container-results 
+							results="<%=ParticipantLocalServiceUtil.getParticipants(event.getEventId())%>"
+							total="<%=ParticipantLocalServiceUtil.getParticipantsCount(event.getEventId())%>"
+						/>
+					<liferay-ui:search-container-row 
+						className="com.rivetlogic.event.model.Participant" 
+						keyProperty="participantId" modelVar="participant">
+						<%
+							String statusLabel = LanguageUtil.get(pageContext, "participant-status-"+participant.getStatus());
+						%>
+						<liferay-ui:search-container-column-text name="participant-status" value="<%=statusLabel %>" />
+						<liferay-ui:search-container-column-text name="participant-name" property="fullName" />
+						<liferay-ui:search-container-column-text name="participant-email" property="email" />
+						<liferay-ui:search-container-column-jsp path="/html/eventManagementPortlet/include/edit-event-actions.jsp"/>
+					</liferay-ui:search-container-row>
+			
+					<liferay-ui:search-iterator />
+			
+				</liferay-ui:search-container>
+				
+			</c:if>
+			
+			<aui:fieldset id="add-participants">
+				<div class="participant-info">
+					<div class="div-table-row">
+						<div class="div-table-col">
+				    		<liferay-ui:message key="participant-fullname"/>
+						</div>
+						<div class="div-table-col">
+						    <liferay-ui:message key="participant-email"/>
+						</div>
+					</div>
+					<c:set var="paramFullName" value="<%=EventPortletConstants.PARAMETER_PARTICIPANT_FULL_NAME%>" />
+					<c:set var="paramEmail" value="<%=EventPortletConstants.PARAMETER_PARTICIPANT_EMAIL%>" />
+					<c:choose>
+						<c:when test="${not empty participants}">
+							<c:forEach items="${participants}" var="participant" varStatus="loop">
+								<div class="lfr-form-row" >
+							    	<div class="row-fields">
+							    		<aui:input name="${paramFullName}${loop.count}" label="" value="${participant.fullName}" type="text" inlineField="<%= true %>"/>
+							    		<aui:input name="${paramEmail}${loop.count}" label="" value="${participant.email}" type="text" inlineField="<%= true %>">
+							    			<aui:validator name="email"/>
+							    		</aui:input>
+							    	</div>
+							    </div>
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
 							<div class="lfr-form-row" >
 						    	<div class="row-fields">
-						    		<aui:input name="${paramFullName}${loop.count}" label="" value="${participant.fullName}" type="text" inlineField="<%= true %>"/>
-						    		<aui:input name="${paramEmail}${loop.count}" label="" value="${participant.email}" type="text" inlineField="<%= true %>">
+						    		<aui:input name="${paramFullName}1" label="" type="text" inlineField="<%= true %>"/>
+						    		<aui:input name="${paramEmail}1" label="" type="text" inlineField="<%= true %>">
 						    			<aui:validator name="email"/>
 						    		</aui:input>
 						    	</div>
 						    </div>
-						</c:forEach>
-					</c:when>
-					<c:otherwise>
-						<div class="lfr-form-row" >
-					    	<div class="row-fields">
-					    		<aui:input name="${paramFullName}1" label="" type="text" inlineField="<%= true %>"/>
-					    		<aui:input name="${paramEmail}1" label="" type="text" inlineField="<%= true %>">
-					    			<aui:validator name="email"/>
-					    		</aui:input>
-					    	</div>
-					    </div>
-					</c:otherwise>
-				</c:choose>
+						</c:otherwise>
+					</c:choose>
+				</div>
+			   	<aui:input name="<%=WebKeys.PARTICIPANT_INDEXES%>" type="hidden"/>
+			</aui:fieldset>	
+		</div>	
+		
+		<aui:fieldset label="event-registration">
+			<aui:field-wrapper>
+				<aui:input name="registrationRequired" id="registrationRequired" type="checkbox"  value="${event.registrationRequired}"></aui:input>
+			</aui:field-wrapper>
+			
+			<div id="hiddenInfo" style="display: <%= divStyle %>">
+				<span class="title-text" ><liferay-ui:message key="event-registration-information" /></span>
+				<div class="accordion-inner">
+					<aui:field-wrapper inlineField="<%=true%>">
+						<aui:input name="<%=EventPortletConstants.PARAMETER_REGISTRATION_FULL_NAME%>" label="event-registration-full-name" type="checkbox" value="${event.requiredFullName}"/>
+					</aui:field-wrapper>
+					<aui:field-wrapper inlineField="<%=true%>">
+						<aui:input name="<%=EventPortletConstants.PARAMETER_REGISTRATION_TELEPHONE%>" label="event-registration-telephone" type="checkbox" value="${event.requiredPhone}"/>
+					</aui:field-wrapper>
+				</div>
 			</div>
-		   	<aui:input name="<%=WebKeys.PARTICIPANT_INDEXES%>" type="hidden"/>
 		</aui:fieldset>	
 		
 		<aui:fieldset>
@@ -317,4 +410,193 @@ long calendarId = event.getCalendarId();
 		return document.<portlet:namespace/>fm_edit_event.<portlet:namespace/>description.value; 
 	}
 </aui:script>
+<aui:script>
+AUI().use('aui-base','aui-io-plugin-deprecated','liferay-util-window','aui-dialog-iframe-deprecated',function(A) {
+	A.one('#<portlet:namespace />dialog-locations').on('click', function(event){
+		Liferay.Util.openWindow({
+	    	dialog: {
+	        	width: 400,                        
+	         	modal: true,
+	         	constrain: true,
+	         	destroyOnClose: true,
+	         	destroyOnHide: true,
+	         	cache: false,
+	        	on: {
+	            	destroy: function() { 
+	            		reloadLocations();             
+	            	}
+	        	}
+	    	},
+   			uri: '<%=dialogLocations.toString()%>',
+    		id: 'locationPopup',
+    		title: 'Locations'
+		});
+	});
+	
+	
+	A.one('#<portlet:namespace />dialog-types').on('click', function(event){
+		Liferay.Util.openWindow({
+	    	dialog: {
+	        	width: 400,                        
+	         	modal: true,
+	         	constrain: true,
+	         	destroyOnClose: true,
+	         	destroyOnHide: true,
+	         	cache: false,
+	        	on: {
+	            	destroy: function() { 
+	            		reloadTypes();           
+	            	}
+	        	}
+	    	},
+   			uri: '<%=dialogTypes.toString()%>',
+    		id: 'typesPopup',
+    		title: 'Types'
+		});
+	});
+	
+	A.one('#<portlet:namespace />dialog-targets').on('click', function(event){
+		Liferay.Util.openWindow({
+	    	dialog: {
+	        	width: 400,                        
+	         	modal: true,
+	         	constrain: true,
+	         	destroyOnClose: true,
+	         	destroyOnHide: true,
+	         	cache: false,
+	        	on: {
+	            	destroy: function() { 
+	            		reloadTargets();
+	            	}
+	        	}
+	    	},
+   			uri: '<%=dialogTarget.toString()%>',
+    		id: 'targetsPopup',
+    		title: 'Target'
+		});
+	});
+});
 
+function reloadLocations(){
+	AUI().use('aui-base', function(A){
+		A.io.request('<%=resourceURL.toString()%>', {
+			method: 'post',
+			data: {
+				<portlet:namespace />action: 'getLocations',
+			},
+			dataType: 'json',
+			on: {
+				success: function() {
+			     	var result = this.get('responseData');
+			     	var select = A.one('#<portlet:namespace/>locations');
+			     	removeOptions(select);
+			     	var optionT = A.Node.create('<option value=\"\"></option>');
+	     	        select.append(optionT);
+			     	for(var k in result){
+			     	    if ({}.hasOwnProperty.call(result, k)){
+			     	        var option = A.Node.create('<option value=\"'+k+'\">'+result[k]+'</option>');
+			     	        select.append(option);
+			     	    }
+			     	}    
+			    }
+			}
+		});
+	});
+}
+
+function reloadTypes(){
+	AUI().use('aui-base', function(A){
+		A.io.request('<%=resourceURL.toString()%>', {
+			method: 'post',
+			data: {
+				<portlet:namespace />action: 'getTypes',
+			},
+			dataType: 'json',
+			on: {
+				success: function() {
+			     	var result = this.get('responseData');
+			     	var select = A.one('#<portlet:namespace/>types');
+			     	removeOptions(select);
+			     	var optionT = A.Node.create('<option value=\"\"></option>');
+	     	        select.append(optionT);
+			     	for(var k in result){
+			     	    if ({}.hasOwnProperty.call(result, k)){
+			     	        var option = A.Node.create('<option value=\"'+k+'\">'+result[k]+'</option>');
+			     	        select.append(option);
+			     	    }
+			     	}    
+			    }
+			}
+		});
+	});
+}
+
+function reloadTargets(){
+	AUI().use('aui-base', function(A){
+		A.io.request('<%=resourceURL.toString()%>', {
+			method: 'post',
+			data: {
+				<portlet:namespace />action: 'getTargets',
+			},
+			dataType: 'json',
+			on: {
+				success: function() {
+			     	var result = this.get('responseData');
+			     	var select = A.one('#<portlet:namespace/>targets');
+			     	removeOptions(select);
+			     	var optionT = A.Node.create('<option value=\"\"></option>');
+	     	        select.append(optionT);
+			     	for(var k in result){
+			     	    if ({}.hasOwnProperty.call(result, k)){
+			     	        var option = A.Node.create('<option value=\"'+k+'\">'+result[k]+'</option>');
+			     	        select.append(option);
+			     	    }
+			     	}    
+			    }
+			}
+		});
+	});
+}
+
+function removeOptions(comboBox){
+	comboBox.all('option').each(function() {
+		this.remove();
+	});
+}
+
+AUI().ready('aui-base','event','node', function(A){
+   	if(A.one("#<portlet:namespace />registrationRequiredCheckbox")){
+		A.one('#<portlet:namespace/>registrationRequiredCheckbox').on('click',function(e){ 
+			var visible = (A.one("#<portlet:namespace/>registrationRequired").attr('value') == 'true');
+			var div = document.getElementById('hiddenInfo');
+			if (visible) {
+				div.style.display = 'block';
+			} else {
+				div.style.display = 'none';
+				var checkboxFullname = A.one("#<portlet:namespace />registrationFullNameCheckbox");
+				var checkboxEmail = A.one("#<portlet:namespace />registrationEmailCheckbox");
+				var checkboxTelephone = A.one("#<portlet:namespace />registrationTelephoneCheckbox");
+				checkboxFullname.set('checked', false);
+				checkboxEmail.set('checked', false);
+				checkboxTelephone.set('checked', false);
+				Liferay.Util.updateCheckboxValue(checkboxFullname);
+				Liferay.Util.updateCheckboxValue(checkboxEmail);
+				Liferay.Util.updateCheckboxValue(checkboxTelephone);
+			}
+	    });
+	}
+   	
+   	if(A.one("#<portlet:namespace />eventCheckbox")){
+		A.one('#<portlet:namespace/>eventCheckbox').on('click',function(e){ 
+			var visible = (A.one("#<portlet:namespace/>event").attr('value') == 'true');
+			console.log(visible);
+			var div = document.getElementById('hiddenParticipants');
+			if (visible) {
+				div.style.display = 'block';
+			} else {
+				div.style.display = 'none';
+			}
+		});
+   	}
+});
+</aui:script>

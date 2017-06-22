@@ -19,8 +19,11 @@ import com.liferay.portal.kernel.messaging.Message;
 
 import com.rivetlogic.event.service.ClpSerializer;
 import com.rivetlogic.event.service.EventLocalServiceUtil;
+import com.rivetlogic.event.service.LocationLocalServiceUtil;
 import com.rivetlogic.event.service.ParticipantLocalServiceUtil;
+import com.rivetlogic.event.service.TargetLocalServiceUtil;
 import com.rivetlogic.event.service.TokenLocalServiceUtil;
+import com.rivetlogic.event.service.TypeLocalServiceUtil;
 
 /**
  * @author juancarrillo
@@ -39,9 +42,15 @@ public class ClpMessageListener extends BaseMessageListener {
 				servletContextName.equals(getServletContextName())) {
 			EventLocalServiceUtil.clearService();
 
+			LocationLocalServiceUtil.clearService();
+
 			ParticipantLocalServiceUtil.clearService();
 
+			TargetLocalServiceUtil.clearService();
+
 			TokenLocalServiceUtil.clearService();
+
+			TypeLocalServiceUtil.clearService();
 		}
 	}
 }

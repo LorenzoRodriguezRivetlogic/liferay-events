@@ -26,8 +26,11 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.BaseModel;
 
 import com.rivetlogic.event.model.EventClp;
+import com.rivetlogic.event.model.LocationClp;
 import com.rivetlogic.event.model.ParticipantClp;
+import com.rivetlogic.event.model.TargetClp;
 import com.rivetlogic.event.model.TokenClp;
+import com.rivetlogic.event.model.TypeClp;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -108,12 +111,24 @@ public class ClpSerializer {
 			return translateInputEvent(oldModel);
 		}
 
+		if (oldModelClassName.equals(LocationClp.class.getName())) {
+			return translateInputLocation(oldModel);
+		}
+
 		if (oldModelClassName.equals(ParticipantClp.class.getName())) {
 			return translateInputParticipant(oldModel);
 		}
 
+		if (oldModelClassName.equals(TargetClp.class.getName())) {
+			return translateInputTarget(oldModel);
+		}
+
 		if (oldModelClassName.equals(TokenClp.class.getName())) {
 			return translateInputToken(oldModel);
+		}
+
+		if (oldModelClassName.equals(TypeClp.class.getName())) {
+			return translateInputType(oldModel);
 		}
 
 		return oldModel;
@@ -141,6 +156,16 @@ public class ClpSerializer {
 		return newModel;
 	}
 
+	public static Object translateInputLocation(BaseModel<?> oldModel) {
+		LocationClp oldClpModel = (LocationClp)oldModel;
+
+		BaseModel<?> newModel = oldClpModel.getLocationRemoteModel();
+
+		newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+		return newModel;
+	}
+
 	public static Object translateInputParticipant(BaseModel<?> oldModel) {
 		ParticipantClp oldClpModel = (ParticipantClp)oldModel;
 
@@ -151,10 +176,30 @@ public class ClpSerializer {
 		return newModel;
 	}
 
+	public static Object translateInputTarget(BaseModel<?> oldModel) {
+		TargetClp oldClpModel = (TargetClp)oldModel;
+
+		BaseModel<?> newModel = oldClpModel.getTargetRemoteModel();
+
+		newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+		return newModel;
+	}
+
 	public static Object translateInputToken(BaseModel<?> oldModel) {
 		TokenClp oldClpModel = (TokenClp)oldModel;
 
 		BaseModel<?> newModel = oldClpModel.getTokenRemoteModel();
+
+		newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+		return newModel;
+	}
+
+	public static Object translateInputType(BaseModel<?> oldModel) {
+		TypeClp oldClpModel = (TypeClp)oldModel;
+
+		BaseModel<?> newModel = oldClpModel.getTypeRemoteModel();
 
 		newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -182,15 +227,221 @@ public class ClpSerializer {
 					"com.rivetlogic.event.model.impl.EventImpl")) {
 			return translateOutputEvent(oldModel);
 		}
+		else if (oldModelClassName.endsWith("Clp")) {
+			try {
+				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
+
+				Method getClpSerializerClassMethod = oldModelClass.getMethod(
+						"getClpSerializerClass");
+
+				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
+
+				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+
+				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
+						BaseModel.class);
+
+				Class<?> oldModelModelClass = oldModel.getModelClass();
+
+				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
+						oldModelModelClass.getSimpleName() + "RemoteModel");
+
+				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
+
+				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
+						oldRemoteModel);
+
+				return newModel;
+			}
+			catch (Throwable t) {
+				if (_log.isInfoEnabled()) {
+					_log.info("Unable to translate " + oldModelClassName, t);
+				}
+			}
+		}
+
+		if (oldModelClassName.equals(
+					"com.rivetlogic.event.model.impl.LocationImpl")) {
+			return translateOutputLocation(oldModel);
+		}
+		else if (oldModelClassName.endsWith("Clp")) {
+			try {
+				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
+
+				Method getClpSerializerClassMethod = oldModelClass.getMethod(
+						"getClpSerializerClass");
+
+				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
+
+				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+
+				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
+						BaseModel.class);
+
+				Class<?> oldModelModelClass = oldModel.getModelClass();
+
+				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
+						oldModelModelClass.getSimpleName() + "RemoteModel");
+
+				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
+
+				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
+						oldRemoteModel);
+
+				return newModel;
+			}
+			catch (Throwable t) {
+				if (_log.isInfoEnabled()) {
+					_log.info("Unable to translate " + oldModelClassName, t);
+				}
+			}
+		}
 
 		if (oldModelClassName.equals(
 					"com.rivetlogic.event.model.impl.ParticipantImpl")) {
 			return translateOutputParticipant(oldModel);
 		}
+		else if (oldModelClassName.endsWith("Clp")) {
+			try {
+				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
+
+				Method getClpSerializerClassMethod = oldModelClass.getMethod(
+						"getClpSerializerClass");
+
+				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
+
+				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+
+				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
+						BaseModel.class);
+
+				Class<?> oldModelModelClass = oldModel.getModelClass();
+
+				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
+						oldModelModelClass.getSimpleName() + "RemoteModel");
+
+				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
+
+				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
+						oldRemoteModel);
+
+				return newModel;
+			}
+			catch (Throwable t) {
+				if (_log.isInfoEnabled()) {
+					_log.info("Unable to translate " + oldModelClassName, t);
+				}
+			}
+		}
+
+		if (oldModelClassName.equals(
+					"com.rivetlogic.event.model.impl.TargetImpl")) {
+			return translateOutputTarget(oldModel);
+		}
+		else if (oldModelClassName.endsWith("Clp")) {
+			try {
+				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
+
+				Method getClpSerializerClassMethod = oldModelClass.getMethod(
+						"getClpSerializerClass");
+
+				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
+
+				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+
+				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
+						BaseModel.class);
+
+				Class<?> oldModelModelClass = oldModel.getModelClass();
+
+				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
+						oldModelModelClass.getSimpleName() + "RemoteModel");
+
+				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
+
+				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
+						oldRemoteModel);
+
+				return newModel;
+			}
+			catch (Throwable t) {
+				if (_log.isInfoEnabled()) {
+					_log.info("Unable to translate " + oldModelClassName, t);
+				}
+			}
+		}
 
 		if (oldModelClassName.equals(
 					"com.rivetlogic.event.model.impl.TokenImpl")) {
 			return translateOutputToken(oldModel);
+		}
+		else if (oldModelClassName.endsWith("Clp")) {
+			try {
+				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
+
+				Method getClpSerializerClassMethod = oldModelClass.getMethod(
+						"getClpSerializerClass");
+
+				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
+
+				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+
+				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
+						BaseModel.class);
+
+				Class<?> oldModelModelClass = oldModel.getModelClass();
+
+				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
+						oldModelModelClass.getSimpleName() + "RemoteModel");
+
+				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
+
+				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
+						oldRemoteModel);
+
+				return newModel;
+			}
+			catch (Throwable t) {
+				if (_log.isInfoEnabled()) {
+					_log.info("Unable to translate " + oldModelClassName, t);
+				}
+			}
+		}
+
+		if (oldModelClassName.equals("com.rivetlogic.event.model.impl.TypeImpl")) {
+			return translateOutputType(oldModel);
+		}
+		else if (oldModelClassName.endsWith("Clp")) {
+			try {
+				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
+
+				Method getClpSerializerClassMethod = oldModelClass.getMethod(
+						"getClpSerializerClass");
+
+				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
+
+				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+
+				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
+						BaseModel.class);
+
+				Class<?> oldModelModelClass = oldModel.getModelClass();
+
+				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
+						oldModelModelClass.getSimpleName() + "RemoteModel");
+
+				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
+
+				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
+						oldRemoteModel);
+
+				return newModel;
+			}
+			catch (Throwable t) {
+				if (_log.isInfoEnabled()) {
+					_log.info("Unable to translate " + oldModelClassName, t);
+				}
+			}
 		}
 
 		return oldModel;
@@ -281,12 +532,24 @@ public class ClpSerializer {
 			return new com.rivetlogic.event.NoSuchEventException();
 		}
 
+		if (className.equals("com.rivetlogic.event.NoSuchLocationException")) {
+			return new com.rivetlogic.event.NoSuchLocationException();
+		}
+
 		if (className.equals("com.rivetlogic.event.NoSuchParticipantException")) {
 			return new com.rivetlogic.event.NoSuchParticipantException();
 		}
 
+		if (className.equals("com.rivetlogic.event.NoSuchTargetException")) {
+			return new com.rivetlogic.event.NoSuchTargetException();
+		}
+
 		if (className.equals("com.rivetlogic.event.NoSuchTokenException")) {
 			return new com.rivetlogic.event.NoSuchTokenException();
+		}
+
+		if (className.equals("com.rivetlogic.event.NoSuchTypeException")) {
+			return new com.rivetlogic.event.NoSuchTypeException();
 		}
 
 		return throwable;
@@ -302,6 +565,16 @@ public class ClpSerializer {
 		return newModel;
 	}
 
+	public static Object translateOutputLocation(BaseModel<?> oldModel) {
+		LocationClp newModel = new LocationClp();
+
+		newModel.setModelAttributes(oldModel.getModelAttributes());
+
+		newModel.setLocationRemoteModel(oldModel);
+
+		return newModel;
+	}
+
 	public static Object translateOutputParticipant(BaseModel<?> oldModel) {
 		ParticipantClp newModel = new ParticipantClp();
 
@@ -312,12 +585,32 @@ public class ClpSerializer {
 		return newModel;
 	}
 
+	public static Object translateOutputTarget(BaseModel<?> oldModel) {
+		TargetClp newModel = new TargetClp();
+
+		newModel.setModelAttributes(oldModel.getModelAttributes());
+
+		newModel.setTargetRemoteModel(oldModel);
+
+		return newModel;
+	}
+
 	public static Object translateOutputToken(BaseModel<?> oldModel) {
 		TokenClp newModel = new TokenClp();
 
 		newModel.setModelAttributes(oldModel.getModelAttributes());
 
 		newModel.setTokenRemoteModel(oldModel);
+
+		return newModel;
+	}
+
+	public static Object translateOutputType(BaseModel<?> oldModel) {
+		TypeClp newModel = new TypeClp();
+
+		newModel.setModelAttributes(oldModel.getModelAttributes());
+
+		newModel.setTypeRemoteModel(oldModel);
 
 		return newModel;
 	}

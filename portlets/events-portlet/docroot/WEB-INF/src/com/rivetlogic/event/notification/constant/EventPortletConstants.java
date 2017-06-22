@@ -25,7 +25,11 @@ public class EventPortletConstants {
     public static final String PARAMETER_NAME = "name";
     public static final String PARAMETER_FULL_NAME = "fullname";
     public static final String PARAMETER_LOCATION = "location";
+    public static final String PARAMETER_LOCATIONS = "locations";
     public static final String PARAMETER_DESCRIPTION = "description";
+    public static final String PARAMETER_TYPES = "types";
+    public static final String PARAMETER_TARGETS = "targets";
+    public static final String PARAMETER_TAGS = "assetTagNames";
     public static final String PARAMETER_EVENT = "event";
     public static final String PARAMETER_EVENT_DATE = "eventDate";
     public static final String PARAMETER_EVENT_END_DATE = "eventEndDate";
@@ -42,6 +46,10 @@ public class EventPortletConstants {
     public static final String PARAMETER_COMPANY_NAME = "companyName";
     public static final String PARAMETER_PHONE_NUMBER = "phoneNumber";
     public static final String PARAMETER_CALENDAR_ID = "calendarId";
+    public static final String PARAMETER_REGISTRATION_REQUIRED = "registrationRequired";
+    public static final String PARAMETER_REGISTRATION_FULL_NAME = "registrationFullName";
+    public static final String PARAMETER_REGISTRATION_TELEPHONE = "registrationTelephone";
+    public static final String PARAMETER_PHOTO = "photo";
     public static final String PARAMETER_TOKEN = "token";
     public static final String START_END_DATES_SEPARATOR = " - ";
     public static final int INVALID_ID = -1;

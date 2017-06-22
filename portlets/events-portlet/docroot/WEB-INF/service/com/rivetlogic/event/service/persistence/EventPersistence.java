@@ -659,6 +659,144 @@ public interface EventPersistence extends BasePersistence<Event> {
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
+	* Returns all the events where locationId = &#63;.
+	*
+	* @param locationId the location ID
+	* @return the matching events
+	* @throws SystemException if a system exception occurred
+	*/
+	public java.util.List<com.rivetlogic.event.model.Event> findByLocationId(
+		long locationId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns a range of all the events where locationId = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.rivetlogic.event.model.impl.EventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param locationId the location ID
+	* @param start the lower bound of the range of events
+	* @param end the upper bound of the range of events (not inclusive)
+	* @return the range of matching events
+	* @throws SystemException if a system exception occurred
+	*/
+	public java.util.List<com.rivetlogic.event.model.Event> findByLocationId(
+		long locationId, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns an ordered range of all the events where locationId = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.rivetlogic.event.model.impl.EventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param locationId the location ID
+	* @param start the lower bound of the range of events
+	* @param end the upper bound of the range of events (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching events
+	* @throws SystemException if a system exception occurred
+	*/
+	public java.util.List<com.rivetlogic.event.model.Event> findByLocationId(
+		long locationId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns the first event in the ordered set where locationId = &#63;.
+	*
+	* @param locationId the location ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching event
+	* @throws com.rivetlogic.event.NoSuchEventException if a matching event could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.rivetlogic.event.model.Event findByLocationId_First(
+		long locationId,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.rivetlogic.event.NoSuchEventException;
+
+	/**
+	* Returns the first event in the ordered set where locationId = &#63;.
+	*
+	* @param locationId the location ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching event, or <code>null</code> if a matching event could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.rivetlogic.event.model.Event fetchByLocationId_First(
+		long locationId,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns the last event in the ordered set where locationId = &#63;.
+	*
+	* @param locationId the location ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching event
+	* @throws com.rivetlogic.event.NoSuchEventException if a matching event could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.rivetlogic.event.model.Event findByLocationId_Last(
+		long locationId,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.rivetlogic.event.NoSuchEventException;
+
+	/**
+	* Returns the last event in the ordered set where locationId = &#63;.
+	*
+	* @param locationId the location ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching event, or <code>null</code> if a matching event could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.rivetlogic.event.model.Event fetchByLocationId_Last(
+		long locationId,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns the events before and after the current event in the ordered set where locationId = &#63;.
+	*
+	* @param eventId the primary key of the current event
+	* @param locationId the location ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next event
+	* @throws com.rivetlogic.event.NoSuchEventException if a event with the primary key could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.rivetlogic.event.model.Event[] findByLocationId_PrevAndNext(
+		long eventId, long locationId,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.rivetlogic.event.NoSuchEventException;
+
+	/**
+	* Removes all the events where locationId = &#63; from the database.
+	*
+	* @param locationId the location ID
+	* @throws SystemException if a system exception occurred
+	*/
+	public void removeByLocationId(long locationId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns the number of events where locationId = &#63;.
+	*
+	* @param locationId the location ID
+	* @return the number of matching events
+	* @throws SystemException if a system exception occurred
+	*/
+	public int countByLocationId(long locationId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
 	* Caches the event in the entity cache if it is enabled.
 	*
 	* @param event the event

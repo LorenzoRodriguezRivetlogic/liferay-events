@@ -498,6 +498,10 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 		}
 	}
 
+	public Class<?> getClpSerializerClass() {
+		return _clpSerializerClass;
+	}
+
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
@@ -597,4 +601,5 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 	private String _companyName;
 	private int _status;
 	private BaseModel<?> _participantRemoteModel;
+	private Class<?> _clpSerializerClass = com.rivetlogic.event.service.ClpSerializer.class;
 }

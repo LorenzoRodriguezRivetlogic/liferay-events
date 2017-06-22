@@ -3,8 +3,14 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	<bean id="com.rivetlogic.event.service.EventLocalService" class="com.rivetlogic.event.service.impl.EventLocalServiceImpl" />
 	<bean id="com.rivetlogic.event.service.persistence.EventPersistence" class="com.rivetlogic.event.service.persistence.EventPersistenceImpl" parent="basePersistence" />
+	<bean id="com.rivetlogic.event.service.LocationLocalService" class="com.rivetlogic.event.service.impl.LocationLocalServiceImpl" />
+	<bean id="com.rivetlogic.event.service.persistence.LocationPersistence" class="com.rivetlogic.event.service.persistence.LocationPersistenceImpl" parent="basePersistence" />
 	<bean id="com.rivetlogic.event.service.ParticipantLocalService" class="com.rivetlogic.event.service.impl.ParticipantLocalServiceImpl" />
 	<bean id="com.rivetlogic.event.service.persistence.ParticipantPersistence" class="com.rivetlogic.event.service.persistence.ParticipantPersistenceImpl" parent="basePersistence" />
+	<bean id="com.rivetlogic.event.service.TargetLocalService" class="com.rivetlogic.event.service.impl.TargetLocalServiceImpl" />
+	<bean id="com.rivetlogic.event.service.persistence.TargetPersistence" class="com.rivetlogic.event.service.persistence.TargetPersistenceImpl" parent="basePersistence" />
 	<bean id="com.rivetlogic.event.service.TokenLocalService" class="com.rivetlogic.event.service.impl.TokenLocalServiceImpl" />
 	<bean id="com.rivetlogic.event.service.persistence.TokenPersistence" class="com.rivetlogic.event.service.persistence.TokenPersistenceImpl" parent="basePersistence" />
+	<bean id="com.rivetlogic.event.service.TypeLocalService" class="com.rivetlogic.event.service.impl.TypeLocalServiceImpl" />
+	<bean id="com.rivetlogic.event.service.persistence.TypePersistence" class="com.rivetlogic.event.service.persistence.TypePersistenceImpl" parent="basePersistence" />
 </beans>

@@ -16,6 +16,8 @@ package com.rivetlogic.event.model;
 
 import java.io.Serializable;
 
+import java.sql.Blob;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,9 +42,17 @@ public class EventSoap implements Serializable {
 		soapModel.setName(model.getName());
 		soapModel.setLocation(model.getLocation());
 		soapModel.setDescription(model.getDescription());
+		soapModel.setTags(model.getTags());
 		soapModel.setEventDate(model.getEventDate());
 		soapModel.setEventEndDate(model.getEventEndDate());
 		soapModel.setPrivateEvent(model.getPrivateEvent());
+		soapModel.setRegistrationRequired(model.getRegistrationRequired());
+		soapModel.setRequiredFullName(model.getRequiredFullName());
+		soapModel.setRequiredPhone(model.getRequiredPhone());
+		soapModel.setImage(model.getImage());
+		soapModel.setLocationId(model.getLocationId());
+		soapModel.setTargetId(model.getTargetId());
+		soapModel.setTypeId(model.getTypeId());
 
 		return soapModel;
 	}
@@ -175,6 +185,14 @@ public class EventSoap implements Serializable {
 		_description = description;
 	}
 
+	public String getTags() {
+		return _tags;
+	}
+
+	public void setTags(String tags) {
+		_tags = tags;
+	}
+
 	public Date getEventDate() {
 		return _eventDate;
 	}
@@ -203,6 +221,74 @@ public class EventSoap implements Serializable {
 		_privateEvent = privateEvent;
 	}
 
+	public boolean getRegistrationRequired() {
+		return _registrationRequired;
+	}
+
+	public boolean isRegistrationRequired() {
+		return _registrationRequired;
+	}
+
+	public void setRegistrationRequired(boolean registrationRequired) {
+		_registrationRequired = registrationRequired;
+	}
+
+	public boolean getRequiredFullName() {
+		return _requiredFullName;
+	}
+
+	public boolean isRequiredFullName() {
+		return _requiredFullName;
+	}
+
+	public void setRequiredFullName(boolean requiredFullName) {
+		_requiredFullName = requiredFullName;
+	}
+
+	public boolean getRequiredPhone() {
+		return _requiredPhone;
+	}
+
+	public boolean isRequiredPhone() {
+		return _requiredPhone;
+	}
+
+	public void setRequiredPhone(boolean requiredPhone) {
+		_requiredPhone = requiredPhone;
+	}
+
+	public Blob getImage() {
+		return _image;
+	}
+
+	public void setImage(Blob image) {
+		_image = image;
+	}
+
+	public long getLocationId() {
+		return _locationId;
+	}
+
+	public void setLocationId(long locationId) {
+		_locationId = locationId;
+	}
+
+	public long getTargetId() {
+		return _targetId;
+	}
+
+	public void setTargetId(long targetId) {
+		_targetId = targetId;
+	}
+
+	public long getTypeId() {
+		return _typeId;
+	}
+
+	public void setTypeId(long typeId) {
+		_typeId = typeId;
+	}
+
 	private String _uuid;
 	private long _eventId;
 	private long _calendarBookingId;
@@ -213,7 +299,15 @@ public class EventSoap implements Serializable {
 	private String _name;
 	private String _location;
 	private String _description;
+	private String _tags;
 	private Date _eventDate;
 	private Date _eventEndDate;
 	private boolean _privateEvent;
+	private boolean _registrationRequired;
+	private boolean _requiredFullName;
+	private boolean _requiredPhone;
+	private Blob _image;
+	private long _locationId;
+	private long _targetId;
+	private long _typeId;
 }

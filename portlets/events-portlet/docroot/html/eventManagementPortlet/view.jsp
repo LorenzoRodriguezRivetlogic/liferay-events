@@ -38,7 +38,6 @@
 	
 	<aui:button-row>
 		<aui:button value="add-new-event"  href="${addEvent}" />
-		<aui:button value="show-past-events" href="${showPastEvents}"/>
 	</aui:button-row>
 	
 	<liferay-ui:search-container 
@@ -76,3 +75,30 @@
 		
 	</liferay-ui:search-container>
 </div>
+
+<div class="past-events">
+	<liferay-ui:header title="event-my-past-events" />
+	
+	<liferay-ui:search-container emptyResultsMessage="event-empty-results" 
+		delta="${prefBean.numRows}" deltaConfigurable="true">
+		
+		<liferay-ui:search-container-results 
+			results="<%=EventLocalServiceUtil.getPastEvents(searchContainer.getStart(), searchContainer.getEnd(), user.getUserId())%>"
+			total="<%=EventLocalServiceUtil.getPastEventsCount(user.getUserId())%>"
+		/>
+	
+		<liferay-ui:search-container-row 
+			className="com.rivetlogic.event.model.Event" 
+			keyProperty="eventId" modelVar="event">
+				<liferay-ui:search-container-column-text name="event-date" buffer="buffer">
+					<% buffer.append(NotificationConstants.SDF.format(event.getEventDate())); %>
+				</liferay-ui:search-container-column-text>
+				<liferay-ui:search-container-column-text name="event-name" value="${event.name}" />
+				<liferay-ui:search-container-column-jsp path="/html/eventManagementPortlet/include/events-actions.jsp"/>
+		</liferay-ui:search-container-row>
+		
+		<liferay-ui:search-iterator />
+		
+	</liferay-ui:search-container>
+</div> 
+

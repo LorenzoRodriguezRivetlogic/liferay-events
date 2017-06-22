@@ -28,9 +28,14 @@
 <%@ page import="java.text.Format" %>
 <%@ page import="java.util.Calendar" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Date" %>
 
 <%@ page import="javax.portlet.PortletPreferences" %>
 
+<%@ page import="com.liferay.calendar.util.comparator.CalendarNameComparator"%>
+<%@ page import="com.liferay.portal.kernel.dao.orm.QueryUtil"%>
+<%@ page import="com.liferay.calendar.service.CalendarServiceUtil"%>
+<%@ page import="com.liferay.calendar.service.CalendarBookingLocalServiceUtil"%>
 <%@ page import="com.liferay.portal.kernel.language.LanguageUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.GetterUtil" %>
 <%@ page import="com.liferay.portal.kernel.bean.BeanParamUtil" %>
@@ -41,25 +46,39 @@
 <%@ page import="com.liferay.portal.kernel.log.Log" %>
 <%@ page import="com.liferay.portal.kernel.util.CalendarFactoryUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.FastDateFormatFactoryUtil" %>
+<%@ page import="com.liferay.portal.kernel.util.DateUtil"%>
+<%@ page import="com.liferay.portal.kernel.util.StringUtil"%>
 <%@ page import="com.liferay.portal.theme.ThemeDisplay" %>
 <%@ page import="com.liferay.portal.util.PortalUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.UnicodeFormatter" %>
 <%@ page import="com.liferay.portal.kernel.util.Validator" %>
 <%@ page import="com.liferay.portal.kernel.dao.search.ResultRow" %>
+<%@ page import="com.liferay.portal.kernel.portlet.LiferayWindowState"%>
+<%@ page import="com.liferay.portal.security.permission.ActionKeys"%>
+<%@ page import="com.liferay.portal.model.Phone"%>
+<%@ page import="com.liferay.portal.model.User"%>
 
 <%@ page import="com.rivetlogic.event.util.WebKeys" %>
 <%@ page import="com.rivetlogic.event.model.Event" %>
+<%@ page import="com.rivetlogic.event.model.Location" %>
 <%@ page import="com.rivetlogic.event.model.Participant" %>
+<%@ page import="com.rivetlogic.event.model.Type"%>
+<%@ page import="com.rivetlogic.event.model.Target" %>
+<%@ page import="com.rivetlogic.event.model.impl.ParticipantImpl"%>
 <%@ page import="com.rivetlogic.event.service.EventLocalServiceUtil" %>
 <%@ page import="com.rivetlogic.event.service.ParticipantLocalServiceUtil" %>
+<%@ page import="com.rivetlogic.event.service.LocationLocalServiceUtil"%>
+<%@ page import="com.rivetlogic.event.service.TargetLocalServiceUtil"%>
+<%@ page import="com.rivetlogic.event.service.TypeLocalServiceUtil"%>
+<%@ page import="com.rivetlogic.event.service.LocationLocalServiceUtil"%>
 <%@ page import="com.rivetlogic.event.util.EventConstant" %>
+<%@ page import="com.rivetlogic.event.util.TimeIgnoringComparator" %>
 <%@ page import="com.rivetlogic.event.notification.constant.NotificationConstants" %>
 <%@ page import="com.rivetlogic.event.notification.constant.PreferencesConstants" %>
 <%@ page import="com.rivetlogic.event.notification.constant.EmailTemplateVariables" %>
 <%@ page import="com.rivetlogic.event.beans.EventsPrefsBean" %>
 <%@ page import="com.rivetlogic.event.beans.ManagementPrefsBean" %>
 <%@ page import="com.rivetlogic.event.notification.constant.EventPortletConstants" %>
-
 
 <portlet:defineObjects />
 <liferay-theme:defineObjects />
