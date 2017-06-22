@@ -390,8 +390,8 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         
         if (searchText != null && !searchText.equals("")) {
         	Junction junctionOr = RestrictionsFactoryUtil.disjunction();
-        	Criterion criterionName = RestrictionsFactoryUtil.like(EVENT_NAME_COLUMN, new StringBuilder("%").append(searchText).append("%").toString());
-        	Criterion criterionTag = RestrictionsFactoryUtil.like(EVENT_TAG_COLUMN, new StringBuilder("%").append(searchText).append("%").toString());
+        	Criterion criterionName = RestrictionsFactoryUtil.ilike(EVENT_NAME_COLUMN, new StringBuilder("%").append(searchText).append("%").toString());
+        	Criterion criterionTag = RestrictionsFactoryUtil.ilike(EVENT_TAG_COLUMN, new StringBuilder("%").append(searchText).append("%").toString());
         	junctionOr.add(criterionName);
         	junctionOr.add(criterionTag);
         	

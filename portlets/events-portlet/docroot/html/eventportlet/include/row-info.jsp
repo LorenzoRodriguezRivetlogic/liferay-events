@@ -45,7 +45,7 @@
 		<td style="padding: 2px;"><h4><%= event.getName() %></h4></td>
 	</tr>
 	<tr>
-		<td style="padding: 2px;"><%= Utils.addSpaceTags(event.getTags())%></td>
+		<td style="padding: 2px;"><liferay-ui:message key="tags-label" />: <%= Utils.addSpaceTags(event.getTags())%></td>
 	</tr>
 	<tr>
 		<td style="padding: 2px;">
